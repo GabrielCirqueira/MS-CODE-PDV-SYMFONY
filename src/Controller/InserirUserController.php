@@ -21,7 +21,7 @@ class InserirUserController extends AbstractController
         $user->setPassword($hashedPassword);
 
         $msg = "NADA";
-
+        
         try {
         
             $em->persist($user);
