@@ -7,11 +7,6 @@
 
     <main class="form-signin text-center w-100 m-auto p-4 rounded shadow-sm bg-white">
         <form method="post">
-         
-            <div class="mb-4">
-                <!-- <img class="mb-2" src="/assets/images/logotipo.svg" width="72" height="72" alt="Logotipo"> -->
-                <h1 class="h3 fw-bold">MS Code - Estoque</h1>
-            </div>
 
                {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -34,7 +29,7 @@
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             <button class="btn btn-primary w-100 py-2 mb-3" type="submit">Acessar</button>
-            <a href="{{path('app_dashboard')}}" class="btn btn-outline-secondary w-100">Cadastrar</a>
+            <a href="{{path('app_register')}}" class="btn btn-outline-secondary w-100">Cadastrar</a>
         </form>
     </main>      
 {% endblock %}

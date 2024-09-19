@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Login;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -29,8 +29,9 @@ class RegistrationController extends AbstractController
             $nome = $request->request->get("nome");
             $senha = is_string($request->request->get("senha"));
             $token = $request->request->get("_csrf_token");
-
+            // conselho de services, uma pasta de services, para cuidas dessa parte dentro do if abaixo, ele vai lidar com essa logica de inserir o usuario dentro do IF
             if($this->isCsrfTokenValid("registrar",$token)){
+                
                 $usuario = new User;
                 $usuario->setEmail($email);
                 $usuario->setNome($nome);
@@ -42,6 +43,6 @@ class RegistrationController extends AbstractController
                 
             }
         }
-        return $this->render('registration/register.html.twig');
+        return $this->render('Login/register.html.twig');
     }
 }

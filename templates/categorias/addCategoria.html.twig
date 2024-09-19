@@ -1,0 +1,27 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Adicionar Categoria{% endblock %}
+
+{% block body %}
+<div class="container py-5 main">
+    <div class="mb-4">
+        <h1>Nova categoria</h1>
+    </div>
+
+    <div class="w-50 mt-2">
+        <form method="POST" action="{{path('app_RegistrarCategoria')}}" >
+            <div class="mb-3">
+                <label for="id" class="form-label">Id: </label>
+                <input type="email" class="form-control" id="id" disabled value="0">
+            </div>
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" name="nome-categoria" class="form-control" id="nome">
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('registarCategoria') }}">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

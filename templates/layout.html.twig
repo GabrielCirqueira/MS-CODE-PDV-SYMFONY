@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+<div class="border-bottom mb-2 bg-light shadow-sm border-bottom">
+    <div class="container">
+        <header
+            class="d-flex flex-wrap justify-content-between align-items-center py-3">
+            <a href="/"
+                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <img class="me-3" src="{{asset('img/logotipo.svg')}}" width="53" alt="Logotipo">
+                <span class="fs-4 fw-bold">MS Code - Estoque</span>
+            </a>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="{{path('app_dashboard')}}" class="nav-link active" aria-current="page">Início</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Vendas
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="">Vendas realizadas</a></li>
+                        <li><a class="dropdown-item" href="">Nova venda</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Produtos
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{path('app_dashboard')}}">Estoque</a></li>
+                        <li><a class="dropdown-item active" href="{{path('app_categorias')}}">Categorias</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="offcanvas" href="#offcanvasRight" role="button"
+                        aria-controls="offcanvasRight">
+                        <i class="fas fa-user-circle fa-2x text-primary"></i>
+                    </a>
+                </li>
+            </ul>
+        </header>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block menu %}
+<div class="offcanvas offcanvas-end" style="width: 250px;" tabindex="-1" id="offcanvasRight"
+            aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header bg-dark text-white">
+                <h5 id="offcanvasRightLabel" class="mb-0 align-items-center">Painel de Usuário</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column justify-content-between p-2 bg-light">
+                <div class="user-info text-center mb-4">
+                    <i class="fas fa-user-circle fa-4x mb-2 text-primary"></i>
+                    <h6 class="mb-0">TESTE</h6>
+                    <p class="text-muted mb-2" style="font-size: 0.875rem;">TESTE</p>
+                </div>
+
+                <div class="mt-auto">
+                    <a href="{{path('app_logout')}}" class="btn btn-outline-danger w-100" aria-current="page">
+                        <i class="fas fa-sign-out-alt me-2"></i>Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+{% endblock %}
