@@ -16,10 +16,11 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserService $userService): Response
     {
         if ($request->isMethod('POST')) {
+            
             $dados = [
-                "email" => $request->request->get("email"),
-                "nome"  => $request->request->get("nome"),
-                "senha" => $request->request->get("senha")
+                "email" => (string) $request->request->get("email"),
+                "nome"  => (string) $request->request->get("nome"),
+                "senha" => (string) $request->request->get("senha"),
             ];
 
             $token = $request->request->get("_csrf_token");

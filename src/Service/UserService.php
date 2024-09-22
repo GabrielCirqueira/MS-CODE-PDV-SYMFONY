@@ -24,7 +24,7 @@ class UserService
         $usuario->setNome($dados["nome"]);
         $usuario->setPassword($this->passwordHasher->hashPassword($usuario, $dados["senha"]));
         
-        $this->userRepository->save($usuario, true);
+        $this->userRepository->salvarUsuario($usuario);
 
         return true;
     }
