@@ -38,7 +38,7 @@ class LoginController extends AbstractController
                         $event = new InteractiveLoginEvent($request, $token);
                         $eventDispatcher->dispatch($event); 
 
-                        return $this->redirectToRoute('app_dashboard');
+                        return $this->redirectToRoute('app_home');
                     } else {
                         $erro = "Senha inválida!";
                     }

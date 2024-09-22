@@ -22,6 +22,10 @@
         <div class="form-floating mb-2">
             <input type="password" name="senha" id="password" placeholder="Senha" required >
         </div>
+        
+        {% if error %}
+        <div class="alert alert-danger mt-2" role="alert"><span>{{ error }}</span></div>
+        {% endif %}
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('registrar') }}">
         <button class="btn btn-primary w-100 py-2 mb-3" type="submit">Registrar</button>

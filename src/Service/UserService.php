@@ -19,6 +19,12 @@ class UserService
 
     public function registarUsuario($dados): bool
     {
+        $ConsultarEmail = $this->userRepository->buscarEmailUser($dados["email"]);
+
+        if($ConsultarEmail){
+            return False;
+        }
+
         $usuario = new User();
         $usuario->setEmail($dados["email"]);
         $usuario->setNome($dados["nome"]);
