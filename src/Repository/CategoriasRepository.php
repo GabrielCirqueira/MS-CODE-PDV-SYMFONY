@@ -40,4 +40,23 @@ class CategoriasRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function salvarUsuario(Categorias $categoria) : void
+    {
+        $this->getEntityManager()->persist($categoria);
+        $this->getEntityManager()->flush();
+    }
+
+    public function buscarCategoria($nome) : Categorias | false
+    {
+        $query = $this->createQueryBuilder("categoria")
+        ->andWhere("categoria.nome = :nome")
+        ->setParameter("nome",$nome)
+        ->getQuery();
+
+        $categoria = $query->getOneOrNullResult();
+
+        return $categoria ? $categoria : False;
+    }
+
 }

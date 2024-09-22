@@ -1,0 +1,42 @@
+.container-categoria {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #16c1aa;
+}
+
+.btn-primary {
+    background-color: #16c1aa;
+    width: 100%;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #139a88;
+}
+
+.form-label {
+    color: #333;
+    font-weight: bold;
+}
+
+.form-control:focus {
+    border-color: #16c1aa;
+    box-shadow: 0 0 5px rgba(22, 193, 170, 0.5);
+}
+
+.input-group-text {
+    background-color: #16c1aa;
+    color: white;
+    border: none;
+}
+
+.input-group-text i {
+    font-size: 1.2rem;
+}

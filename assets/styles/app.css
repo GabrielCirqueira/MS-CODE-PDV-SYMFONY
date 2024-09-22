@@ -1,6 +1,8 @@
 @import url(includes/login.css);
 @import url(includes/header.css);
 @import url(includes/home.css);
+@import url(includes/categoria.css);
+@import url(includes/tabela.css);
 
 body {
   background-color: rgb(255, 255, 255);

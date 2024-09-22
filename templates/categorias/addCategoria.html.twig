@@ -3,25 +3,43 @@
 {% block title %}Adicionar Categoria{% endblock %}
 
 {% block body %}
-<div class="container py-5 main">
-    <div class="mb-4">
-        <h1>Nova categoria</h1>
-    </div>
+<div class="container py-5">
+    <div class="container-categoria">
+        <div class="mb-4 text-center">
+            <h1><i class="fas fa-folder-plus"></i> Nova Categoria</h1>
+        </div>
 
-    <div class="w-50 mt-2">
-        <form method="POST" action="{{path('app_RegistrarCategoria')}}" >
+        <form method="POST" action="{{ path('app_RegistrarCategoria') }}">
             <div class="mb-3">
-                <label for="id" class="form-label">Id: </label>
-                <input type="email" class="form-control" id="id" disabled value="0">
+                <label for="id" class="form-label">ID:</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-id-badge"></i>
+                    </span>
+                    <input type="text" class="form-control" id="id" disabled value="0">
+                </div>
             </div>
+
             <div class="mb-3">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" name="nome-categoria" class="form-control" id="nome">
+                <label for="nome" class="form-label">Nome da Categoria:</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-tag"></i>
+                    </span>
+                    <input type="text" name="nome" class="form-control" id="nome" placeholder="Digite o nome da categoria" required>
+                </div>
             </div>
+
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('registarCategoria') }}">
-            <button type="submit" class="btn btn-primary">Salvar</button>
+
+            {% include 'flash.html.twig' %}
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+            </div>
         </form>
     </div>
 </div>
-
 {% endblock %}
