@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Categorias!{% endblock %}
+{% block title %}Categorias{% endblock %}
 
 {% block body %}
 <div class="container py-5 container-table">
@@ -12,6 +12,8 @@
             </a>
         </div>
     </div>
+
+    {% include 'flash.html.twig' %}
 
     <table class="table table-striped table-hover">
         <thead>
@@ -30,7 +32,7 @@
                         <a href="" class="btn btn-secondary btn-sm btn-action">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="" class="btn btn-danger btn-sm btn-action">
+                        <a href="{{ path('app_excluirCategoria',{'id': categoria.id,'nome': categoria.nome}) }}" class="btn btn-danger btn-sm btn-action">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>

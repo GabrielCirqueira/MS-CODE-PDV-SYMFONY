@@ -35,25 +35,30 @@
 {% endblock %}
  
 {% block menu %}
+
 <div class="offcanvas offcanvas-end" style="width: 250px;" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-    <div class="offcanvas-header bg-white text-dark">
-        <h5 id="offcanvasRightLabel" class="mb-0">Painel de Usuário</h5>
+    <div class="offcanvas-header bg-light text-dark border-bottom">
+        <h5 id="offcanvasRightLabel" class="mb-0"><i class="fas fa-user-cog me-2"></i>Painel de Usuário</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body p-3">
+
+    <div class="offcanvas-body p-3 d-flex flex-column">
+ 
         <div class="user-info text-center mb-4">
             <i class="fas fa-user-circle fa-4x mb-2 text-primary"></i>
-            <h6 class="mb-0">TESTE</h6>
-            <p class="text-muted mb-2">TESTE</p>
+            <h6 class="mb-0">{{ app.user.nome }}</h6>
+            <p class="text-muted mb-2">{{ app.user.email }}</p>
         </div>
-
+ 
         <div class="mt-auto">
-            <a href="{{path('app_logout')}}" class="btn btn-outline-danger w-100">
-                <i class="fas fa-sign-out-alt me-2"></i>Sair
+            <a href="{{ path('app_logout') }}" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center">
+                <i class="fas fa-sign-out-alt me-2"></i> Sair
             </a>
         </div>
     </div>
 </div>
+
+
 {% endblock %}
 
 

@@ -3,6 +3,10 @@
     text-align: center;
 }
 
+.card-text{
+  color: rgb(82, 82, 82);
+}
+
 .card {
     border: none;
     border-radius: 0.75rem;

@@ -9,6 +9,8 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   flex-direction: column;
+  font-weight: bold;
   min-height: 100vh;
+  color: rgb(82, 82, 82);
 }
 

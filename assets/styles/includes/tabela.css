@@ -29,7 +29,8 @@
 
 .table th, .table td {
     padding: 1rem;
-    text-align: left;
+    text-align: left;  
+    color: rgb(82, 82, 82);
     vertical-align: middle;
     border-top: 1px solid #dee2e6;
 }
