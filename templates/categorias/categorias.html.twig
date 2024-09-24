@@ -29,7 +29,7 @@
                     <td data-label="Id">{{ categoria.id }}</td>
                     <td data-label="Nome">{{ categoria.nome }}</td>
                     <td data-label="Ações" class="text-end">
-                        <a href="" class="btn btn-secondary btn-sm btn-action">
+                        <a href="{{ path('app_editarCategoria',{'id': categoria.id})}}" class="btn btn-secondary btn-sm btn-action">
                             <i class="fas fa-edit"></i>
                         </a>
                         <a href="{{ path('app_excluirCategoria',{'id': categoria.id,'nome': categoria.nome}) }}" class="btn btn-danger btn-sm btn-action">

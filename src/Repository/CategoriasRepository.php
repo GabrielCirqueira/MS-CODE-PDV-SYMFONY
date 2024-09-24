@@ -48,7 +48,18 @@ class CategoriasRepository extends ServiceEntityRepository
         }
 
         $this->entityManager->remove($categoria);
-        
+        $this->entityManager->flush();
+
+        return True;
+    }
+
+    public function editarCategoria($id,$nome): bool
+    {
+        $categoria = $this->find($id);
+
+        $categoria->setNome($nome);
+
+        $this->entityManager->persist($categoria);
         $this->entityManager->flush();
 
         return True;

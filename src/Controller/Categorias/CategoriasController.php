@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\VarDumper\VarDumper;
 
 class CategoriasController extends AbstractController
 {
@@ -17,6 +16,7 @@ class CategoriasController extends AbstractController
     public function index(CategoriasRepository $categoriasRepository): Response
     {
         $categorias = $categoriasRepository->findAll();
+
         return $this->render('categorias/categorias.html.twig',[
             "categorias" => $categorias
         ]);
@@ -25,8 +25,9 @@ class CategoriasController extends AbstractController
     #[Route(path: '/categorias/adicionar', name: 'app_addCategoria')]
     public function adicionarCategoria(): Response
     {
-        // $this->addFlash('success', 'Login realizado com sucesso!');
-        return $this->render('categorias/addCategoria.html.twig');
+        return $this->render('categorias/addCategoria.html.twig',[
+            "modo" => "adicionar"
+        ]);
     }
 
     #[Route(path: '/categorias/adicionar/registrar', name: 'app_RegistrarCategoria')]
@@ -42,6 +43,41 @@ class CategoriasController extends AbstractController
 
         $this->addFlash('success', "A categoria {$nome} foi Adicionada com Sucesso!");
         return $this->redirectToRoute("app_addCategoria");
+
+    }
+
+    #[Route(path: '/categorias/editar/{id}', name: 'app_editarCategoria')]
+    public function editarCategoria($id, CategoriasRepository $categoriasRepository): Response
+    {
+        $categoria = $categoriasRepository->find($id);
+
+        if($categoria == NULL){
+            $this->addFlash('danger', "Categoria Inexistente.");
+            return $this->redirectToRoute("app_categorias");
+        }
+
+        return $this->render('categorias/addCategoria.html.twig',[
+            "modo" => "editar",
+            "nome" => $categoria->getNome(),
+            "id" => $id
+        ]);
+    }
+
+    #[Route(path: '/categorias/registrar/editar', name: 'app_editarCategoriaRegistrar')]
+    public function registrarEditarCategoria(CategoriasRepository $categoriasRepository, Request $request): Response
+    {
+        $id = $request->request->get("id");
+        $nome = $request->request->get("nome");
+
+        $editar = $categoriasRepository->editarCategoria($id,$nome);
+
+        if($editar){
+            $this->addFlash('success', "Categoria Editada com sucesso.");
+            return $this->redirectToRoute("app_categorias");
+        }else{
+            $this->addFlash('danger', "Ocorreu um erro ao editar categoria.");
+            return $this->redirectToRoute("app_categorias");   
+        }
 
     }
 

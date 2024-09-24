@@ -6,17 +6,21 @@
 <div class="container py-5">
     <div class="container-categoria">
         <div class="mb-4 text-center">
+            {% if modo == "adicionar" %}
             <h1><i class="fas fa-folder-plus"></i> Nova Categoria</h1>
+            {% else %}
+            <h1><i class="fas fa-edit"></i> Editar Categoria</h1>
+            {% endif %}
         </div>
 
-        <form method="POST" action="{{ path('app_RegistrarCategoria') }}">
+        <form method="POST" action="{{ path(modo == 'adicionar' ? 'app_RegistrarCategoria' : 'app_editarCategoriaRegistrar') }}">
             <div class="mb-3">
                 <label for="id" class="form-label">ID:</label>
                 <div class="input-group">
                     <span class="input-group-text">
                         <i class="fas fa-id-badge"></i>
                     </span>
-                    <input type="text" class="form-control" id="id" disabled value="0">
+                    <input type="text" name="id" class="form-control" id="id" readonly value="{{modo == 'adicionar' ? '0' : id}}">
                 </div>
             </div>
 
@@ -26,7 +30,7 @@
                     <span class="input-group-text">
                         <i class="fas fa-tag"></i>
                     </span>
-                    <input type="text" name="nome" class="form-control" id="nome" placeholder="Digite o nome da categoria" required>
+                    <input type="text" value="{{modo == 'adicionar' ? '' : nome}}" name="nome" class="form-control" id="nome" placeholder="Digite o nome da categoria" required>
                 </div>
             </div>
 
