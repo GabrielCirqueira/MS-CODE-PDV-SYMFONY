@@ -25,7 +25,7 @@ class LoginController extends AbstractController
         UserPasswordHasherInterface $passwordHasher,
         TokenStorageInterface $tokenStorage,
         EventDispatcherInterface $eventDispatcher,
-        AuthenticationUtils $authenticationUtils ): Response
+        ): Response
     {
         $erro = null;
 
