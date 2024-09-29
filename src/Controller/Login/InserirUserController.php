@@ -23,7 +23,6 @@ class InserirUserController extends AbstractController
         $msg = "NADA";
         
         try {
-        
             $em->persist($user);
             $em->flush();
             $msg = "User SALVO COM SUCESSO";

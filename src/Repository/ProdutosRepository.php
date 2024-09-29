@@ -16,34 +16,34 @@ class ProdutosRepository extends ServiceEntityRepository
         parent::__construct($registry, Produtos::class);
     }
 
-    //    /**
-    //     * @return Produtos[] Returns an array of Produtos objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Produtos
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
     public function salvarProduto(Produtos $produtos) : void
     {
         $this->getEntityManager()->persist($produtos);
+        $this->getEntityManager()->flush();
+    }
+
+    public function diminuirEstoque($id): bool
+    {
+        $produto = $this->find($id);
+        
+        if($produto->getQuantidade() == 0){
+            return False;
+        }
+
+        $produto->setQuantidade($produto->getQuantidade() - 1);
+
+        $this->getEntityManager()->persist($produto);
+        $this->getEntityManager()->flush();
+
+        return True;
+    }
+
+    public function aumentarEstoque($id): void
+    {
+        $produto = $this->find($id);
+        $produto->setQuantidade($produto->getQuantidade() + 1);
+
+        $this->getEntityManager()->persist($produto);
         $this->getEntityManager()->flush();
     }
 }

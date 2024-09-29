@@ -49,6 +49,15 @@
     background-color: rgba(22, 193, 170, 0.15);
 }
 
+.table a{
+    color: white;
+}
+
+.table a:hover{
+    color: white;
+}
+
+
 .btn-action {
     margin: 0 0.25rem;
     font-size: 0.85rem;
