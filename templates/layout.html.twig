@@ -14,7 +14,7 @@
                     <a href="{{ path('app_home') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}">Início</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ app.request.attributes.get('_route') == 'app_vendas' ? 'active' : '' }}">Vendas</a>
+                    <a href="{{path('app_Vendas')}}" class="nav-link {{ app.request.attributes.get('_route') == 'app_Vendas' ? 'active' : '' }}">Vendas</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ path('app_produtos') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_produtos' ? 'active' : '' }}">Produtos</a>

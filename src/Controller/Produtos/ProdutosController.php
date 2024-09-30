@@ -5,6 +5,7 @@ namespace App\Controller\Produtos;
 use App\Entity\Produtos;
 use App\Repository\CategoriasRepository;
 use App\Repository\ProdutosRepository;
+use App\Repository\VendasRepository;
 use App\Service\ProdutoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,7 +65,7 @@ class ProdutosController extends AbstractController
     }
 
     #[Route('produtos/quantidade/diminuir/{id}', name: 'app_DiminuirQuantidadeProdutos')]
-    public function dimiuirQuantidade($id, ProdutosRepository $produtosRepository): Response
+    public function dimiuirQuantidade($id, ProdutosRepository $produtosRepository, VendasRepository $vendasRepository): Response
     {
         $diminuir = $produtosRepository->diminuirEstoque($id);
         $nome = $produtosRepository->find($id)->getNome();
@@ -74,18 +75,31 @@ class ProdutosController extends AbstractController
             return $this->redirectToRoute("app_produtos");
         }
 
+        $vendasRepository->inserir("O produto {$nome} teve uma venda e foi diminuido 1 do estoque.");
+
         $this->addFlash("success","O produto {$nome} foi diminuido 1 do estoque.");
         return $this->redirectToRoute("app_produtos");
     }
 
     #[Route('produtos/quantidade/aumentar/{id}', name: 'app_AumentarQuantidadeProdutos')]
-    public function aumentarQuantidade($id, ProdutosRepository $produtosRepository): Response
+    public function aumentarQuantidade($id, ProdutosRepository $produtosRepository, VendasRepository $vendasRepository): Response
     {
         $produtosRepository->aumentarEstoque($id);
         $nome = $produtosRepository->find($id)->getNome();
 
+        $vendasRepository->inserir("O produto {$nome} foi aumentado 1 no estoque.");
+
         $this->addFlash("success","O produto {$nome} foi aumentado 1 do estoque.");
         return $this->redirectToRoute("app_produtos");
+    }
+
+    #[Route('produtos/vendas', name: 'app_Vendas')]
+    public function vendas(VendasRepository $vendasRepository): Response
+    {
+        $vendas = $vendasRepository->getVendas();
+        return $this->render("vendas/vendas.html.twig",[
+            "vendas" => $vendas
+        ]);
     }
 
 }

@@ -30,8 +30,8 @@
             <td data-label="nome">{{ produto.nome }}</td>
             <td data-label="descricao">{{ produto.descricao }}</td>
             <td data-label="categoria">{{ produto.categoria }}</td>
-            <td data-label="valor">{{ produto.valor }}</td>
-            <td data-label="quantidade">{{ produto.quantidade }}</td>
+            <td data-label="valor">R$ {{ produto.valor }},00 </td>
+            <td data-label="quantidade">{{ produto.quantidade }} Disponiveis</td>
             <td>
               <a href="{{path('app_AumentarQuantidadeProdutos',{'id': produto.id})}}"class="btn btn-sm" style="background-color: #16c1aa;" ><i class="fas fa-plus"></i></a>
               <a href="{{path('app_DiminuirQuantidadeProdutos',{'id': produto.id})}}" class="btn btn-warning btn-sm"><i class="fas fa-minus"></i></a>
