@@ -46,4 +46,33 @@ class ProdutosRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($produto);
         $this->getEntityManager()->flush();
     }
+
+    public function excluirProduto($id): bool
+    {
+        $produto = $this->find($id);
+        
+        if($produto == NULL){
+            return false;
+        }
+
+        $this->getEntityManager()->remove($produto);
+        $this->getEntityManager()->flush();
+
+        return True;
+    }
+
+    public function editarProduto($id,$dados): bool
+    {
+        $produto = $this->find($id);
+        $produto->setNome($dados["nome"]);
+        $produto->setDescricao($dados["descricao"]);
+        $produto->setCategoria($dados["categoria"]);
+        $produto->setQuantidade($dados["quantidade"]);
+        $produto->setValor($dados["valor"]);
+
+        $this->getEntityManager()->persist($produto);
+        $this->getEntityManager()->flush();
+
+        return True;
+    }
 }

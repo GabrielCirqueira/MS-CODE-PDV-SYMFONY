@@ -78,7 +78,6 @@ class CategoriasController extends AbstractController
             $this->addFlash('danger', "Ocorreu um erro ao editar categoria.");
             return $this->redirectToRoute("app_categorias");   
         }
-
     }
 
     #[Route('/categorias/excluir/{id}/{nome}', 'app_excluirCategoria')]

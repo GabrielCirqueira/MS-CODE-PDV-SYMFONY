@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Adicionar Produto{% endblock %}
+{% block title %}{{modo == "adicionar" ? "Adicionar Produto" : "Editar Produto"}}{% endblock %}
 
 {% block body %}
 
@@ -10,24 +10,24 @@
   <div class="container-produtos">
 
     <div class="mb-4 text-center">
-      <h1><i class="fas fa-edit"></i> Novo Produto</h1>
+      <h1><i class="fas fa-edit"></i>{{modo == 'adicionar' ? 'Novo Produto' : 'Editar Produto'}}</h1>
     </div>
     {% include 'flash.html.twig' %}
 
     <div class="w-100 mt-2">
-      <form method="POST" action="{{ path('app_registrarProdutos') }}">
+      <form method="POST" action="{{ path(modo == 'adicionar' ? 'app_registrarProdutos' : 'app_editarProdutoRegistrar') }}">
         <div class="mb-3">
           <label for="nome" class="form-label">Nome:</label>
           <div class="input-group">
             <span class="input-group-text">
               <i class="fas fa-box"></i>
             </span>
-            <input type="text" class="form-control" id="nome" name="nome">
+            <input type="text" value="{{modo == 'adicionar' ? '' : nome}}" class="form-control" id="nome" name="nome">
           </div>
         </div>
         <div class="mb-3">
           <label for="descricao" class="form-label">Descrição:</label>
-          <textarea class="form-control" id="descricao" name="descricao" style="resize:none;" rows="5"></textarea>
+          <textarea class="form-control" id="descricao" name="descricao" style="resize:none;" rows="5">{{modo == 'adicionar' ? '' : descricao}}</textarea>
         </div>
 
 
@@ -41,7 +41,7 @@
               </span>
               <select name="categoria" class="form-select" id="categoriaId" aria-label="Default select example">
                 {% for categoria in categorias %}
-                <option value="{{categoria.nome}}">{{categoria.nome}}</option>
+                <option value="{{categoria.nome}}"  {{ categoria.nome == categoria ? 'selected' : '' }}>{{categoria.nome}}</option>
                 {% endfor %}
               </select>
             </div>
@@ -53,7 +53,7 @@
               <span class="input-group-text">
                 <i class="fas fa-boxes"></i>
               </span>
-              <input type="number" class="form-control" id="quantidade" name="quantidade">
+              <input type="number" value="{{modo == 'adicionar' ? '' : quantidade}}" class="form-control" id="quantidade" name="quantidade">
             </div>
           </div>
           <div class="mb-3 col-4">
@@ -62,12 +62,16 @@
               <span class="input-group-text">
                 <i class="fas fa-dollar-sign"></i>
               </span>
-            <input type="text" class="form-control" id="valor" name="valor">
+            <input type="text" value="{{modo == 'adicionar' ? '' : valor}}" class="form-control" id="valor" name="valor">
             </div>
           </div>
         </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('addProduto') }}">
-
+        
+        {% if modo == 'editar' %}
+          <input type="hidden" name="id" value="{{id}}" >
+        {% endif %}        
+        
         <button type="submit" class="btn btn-primary">Salvar</button>
       </form>
     </div>
