@@ -31,7 +31,8 @@ class ProdutosController extends AbstractController
     {
         $categorias = $categoriasRepository->findAll();
         return $this->render('produtos/addProduto.html.twig',[
-            'categorias' => $categorias
+            'categorias' => $categorias,
+            'modo' => "adicionar"
         ]);
     }
 
@@ -68,22 +69,54 @@ class ProdutosController extends AbstractController
     }
 
 
-    #[Route('produtos/quantidade/diminuir/{id}', name: 'app_DiminuirQuantidadeProdutos')]
-    public function dimiuirQuantidade($id, ProdutosRepository $produtosRepository, VendasRepository $vendasRepository): Response
+    #[Route('/produtos/vender/{id}', name: 'app_VenderProdutos')]
+    public function venderProduto($id, ProdutosRepository $produtosRepository): Response
+    {   
+        $produto = $produtosRepository->find($id);
+        return $this->render('vendas/vender.html.twig',[
+            "id"    => $id,
+            "nomeProduto" => $produto->getNome(),
+            "valorProduto" => $produto->getvalor(),
+            "categoriaProduto" => $produto->getCategoria(),
+        ]);
+    }
+ 
+
+    #[Route('/produtos/vender/registrar/{id}', name: 'app_vendaRegistrar')]
+    public function venderProdutoRegistrar($id, ProdutosRepository $produtosRepository, Request $request, VendasRepository $vendasRepository): Response
     {
         $diminuir = $produtosRepository->diminuirEstoque($id);
-        $nome = $produtosRepository->find($id)->getNome();
+        $nomeProduto = $produtosRepository->find($id)->getNome();
+        $nomeCliente = $request->request->get("nomeComprador");
 
         if(!$diminuir){
-            $this->addFlash("danger","O produto {$nome} não pode ser diminuido o estoque posi está com 0.");
+            $this->addFlash("danger","O produto {$nomeProduto} não pode ser diminuido o estoque pois está com 0.");
             return $this->redirectToRoute("app_produtos");
         }
 
-        $vendasRepository->inserir("O produto {$nome} teve uma venda e foi diminuido 1 do estoque.");
+        $vendasRepository->inserir("O cliente {$nomeCliente} comprou o produto {$nomeProduto} e foi diminuido 1 do estoque.");
 
-        $this->addFlash("success","O produto {$nome} foi diminuido 1 do estoque.");
+        $this->addFlash("success","O cliente {$nomeCliente} comprou o produto {$nomeProduto} com sucesso.");
         return $this->redirectToRoute("app_produtos");
     }
+
+
+    // #[Route('produtos/quantidade/diminuir/{id}', name: 'app_DiminuirQuantidadeProdutos')]
+    // public function dimiuirQuantidade($id, ProdutosRepository $produtosRepository, VendasRepository $vendasRepository): Response
+    // {
+    //     $diminuir = $produtosRepository->diminuirEstoque($id);
+    //     $nome = $produtosRepository->find($id)->getNome();
+
+    //     if(!$diminuir){
+    //         $this->addFlash("danger","O produto {$nome} não pode ser diminuido o estoque posi está com 0.");
+    //         return $this->redirectToRoute("app_produtos");
+    //     }
+
+    //     $vendasRepository->inserir("O produto {$nome} teve uma venda e foi diminuido 1 do estoque.");
+
+    //     $this->addFlash("success","O produto {$nome} foi diminuido 1 do estoque.");
+    //     return $this->redirectToRoute("app_produtos");
+    // }
 
 
     #[Route('produtos/quantidade/aumentar/{id}', name: 'app_AumentarQuantidadeProdutos')]
