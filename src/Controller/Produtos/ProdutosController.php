@@ -15,6 +15,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ProdutosController extends AbstractController
 {
+
+
     #[Route('/produtos', name: 'app_produtos')]
     public function index(ProdutosRepository $produtosRepository): Response
     {
@@ -117,7 +119,7 @@ class ProdutosController extends AbstractController
     //     $this->addFlash("success","O produto {$nome} foi diminuido 1 do estoque.");
     //     return $this->redirectToRoute("app_produtos");
     // }
-
+            
 
     #[Route('produtos/quantidade/aumentar/{id}', name: 'app_AumentarQuantidadeProdutos')]
     public function aumentarQuantidade($id, ProdutosRepository $produtosRepository, VendasRepository $vendasRepository): Response
@@ -156,8 +158,9 @@ class ProdutosController extends AbstractController
         return $this->redirectToRoute("app_produtos");
     }
 
+
     #[Route(path: '/produtos/editar/{id}', name: 'app_editarProduto')]
-    public function editarCategoria($id, ProdutosRepository $produtosRepository, CategoriasRepository $categoriasRepository): Response
+    public function editarProduto($id, ProdutosRepository $produtosRepository, CategoriasRepository $categoriasRepository): Response
     {
         $produto = $produtosRepository->find($id);
 
@@ -167,15 +170,11 @@ class ProdutosController extends AbstractController
         }
 
         $categorias = $categoriasRepository->findAll();
-
+ 
         return $this->render('produtos/addProduto.html.twig',[
             "categorias" => $categorias,
             "modo" => "editar",
-            "nome" => $produto->getNome(),
-            "descricao" => $produto->getDescricao(),
-            "categoria" => $produto->getCategoria(),
-            "quantidade" => $produto->getQuantidade(),
-            "valor" => $produto->getValor(),
+            "produto" => $produto,
             "id" => $id
         ]);
     }
@@ -212,5 +211,4 @@ class ProdutosController extends AbstractController
             return $this->redirectToRoute("app_produtos");   
         }
     }
-
 }
