@@ -38,7 +38,7 @@ class ProdutosController extends AbstractController
         ]);
     }
 
-
+ 
     #[Route('/produtos/adicionar', name: 'app_registrarProdutos', methods: "POST")]
     public function registrarProduto(Request $request, ProdutoService $produtoService): Response
     {

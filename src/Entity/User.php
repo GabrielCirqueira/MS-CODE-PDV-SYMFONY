@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +37,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $nome = null;
+
+    /**
+     * @var Collection<int, Carrinho>
+     */
+    #[ORM\OneToMany(targetEntity: Carrinho::class, mappedBy: 'usuario_id')]
+    private Collection $carrinhos;
+
+    public function __construct()
+    {
+        $this->carrinhos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +132,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNome(string $nome): static
     {
         $this->nome = $nome;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Carrinho>
+     */
+    public function getCarrinhos(): Collection
+    {
+        return $this->carrinhos;
+    }
+
+    public function addCarrinho(Carrinho $carrinho): static
+    {
+        if (!$this->carrinhos->contains($carrinho)) {
+            $this->carrinhos->add($carrinho);
+            $carrinho->setUsuarioId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarrinho(Carrinho $carrinho): static
+    {
+        if ($this->carrinhos->removeElement($carrinho)) {
+            // set the owning side to null (unless already changed)
+            if ($carrinho->getUsuarioId() === $this) {
+                $carrinho->setUsuarioId(null);
+            }
+        }
 
         return $this;
     }
