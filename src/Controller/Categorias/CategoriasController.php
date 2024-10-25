@@ -2,7 +2,7 @@
 
 namespace App\Controller\Categorias;
 
-use App\Repository\CategoriasRepository;
+use App\Repository\CategoriaRepository;
 use App\Service\CategoriaService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +13,7 @@ class CategoriasController extends AbstractController
 {
     
     #[Route(path: '/categorias', name: 'app_categorias')]
-    public function index(CategoriasRepository $categoriasRepository): Response
+    public function index(CategoriaRepository $categoriasRepository): Response
     {
         $categorias = $categoriasRepository->findAll();
 
@@ -47,7 +47,7 @@ class CategoriasController extends AbstractController
     }
 
     #[Route(path: '/categorias/editar/{id}', name: 'app_editarCategoria')]
-    public function editarCategoria($id, CategoriasRepository $categoriasRepository): Response
+    public function editarCategoria($id, CategoriaRepository $categoriasRepository): Response
     {
         $categoria = $categoriasRepository->find($id);
 
@@ -64,7 +64,7 @@ class CategoriasController extends AbstractController
     }
 
     #[Route(path: '/categorias/registrar/editar', name: 'app_editarCategoriaRegistrar')]
-    public function registrarEditarCategoria(CategoriasRepository $categoriasRepository, Request $request): Response
+    public function registrarEditarCategoria(CategoriaRepository $categoriasRepository, Request $request): Response
     {
         $id = $request->request->get("id");
         $nome = $request->request->get("nome");
@@ -81,7 +81,7 @@ class CategoriasController extends AbstractController
     }
 
     #[Route('/categorias/excluir/{id}/{nome}', 'app_excluirCategoria')]
-    public function excluirCategoria($id,$nome, CategoriasRepository $categoriasRepository): Response
+    public function excluirCategoria($id,$nome, CategoriaRepository $categoriasRepository): Response
     {
         $excluir = $categoriasRepository->excluirCategoria($id);
         

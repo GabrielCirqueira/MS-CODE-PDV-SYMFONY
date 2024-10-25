@@ -2,16 +2,14 @@
 
 namespace App\Service;
 
-use App\Entity\Categorias;
-use App\Entity\User;
-use App\Repository\CategoriasRepository;
-use App\Repository\UserRepository;
+use App\Entity\Categoria;
+use App\Repository\CategoriaRepository;
 
 class CategoriaService 
 {
     private $CategoriaRepository;
 
-    public function __construct(CategoriasRepository $CategoriaRepository)
+    public function __construct(CategoriaRepository $CategoriaRepository)
     {
         $this->CategoriaRepository = $CategoriaRepository;
     }
@@ -24,8 +22,10 @@ class CategoriaService
             return False;
         }
 
-        $categoria = new Categorias();
+        $categoria = new Categoria();
         $categoria->setNome($nome);
+        $categoria->setCriadoEm(new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')));
+        $categoria->setAtualizadoEm(new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')));
         
         $this->CategoriaRepository->salvarUsuario($categoria);
 
