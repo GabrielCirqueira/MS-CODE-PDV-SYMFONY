@@ -2,22 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\ClienteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ClienteRepository::class)]
+#[ORM\Entity]
 class Cliente
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $nome = null;
+    private string $nome;
 
     #[ORM\Column(length: 14)]
-    private ?string $cpf = null;
+    private string $cpf;
 
     #[ORM\OneToOne(mappedBy: 'cliente_id', cascade: ['persist', 'remove'])]
     private ?Carrinho $carrinho = null;

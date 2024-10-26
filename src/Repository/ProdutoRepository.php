@@ -11,33 +11,73 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProdutoRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $CategoriaRepository;
+    public function __construct(ManagerRegistry $registry, CategoriaRepository $categoriaRepository)
     {
         parent::__construct($registry, Produto::class);
+        $this->CategoriaRepository = $categoriaRepository;
     }
 
-    //    /**
-    //     * @return Produto[] Returns an array of Produto objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function salvarProduto(Produto $produto) : void
+    {
+        $this->getEntityManager()->persist($produto);
+        $this->getEntityManager()->flush();
+    }
 
-    //    public function findOneBySomeField($value): ?Produto
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function diminuirEstoque($id): bool
+    {
+        $produto = $this->find($id);
+        
+        if($produto->getQuantidade() == 0){
+            return False;
+        }
+
+        $produto->setQuantidade($produto->getQuantidade() - 1);
+
+        $this->getEntityManager()->persist($produto);
+        $this->getEntityManager()->flush();
+
+        return True;
+    }
+
+    public function aumentarEstoque($id): void
+    {
+        $produto = $this->find($id);
+        $produto->setQuantidade($produto->getQuantidade() + 1);
+
+        $this->getEntityManager()->persist($produto);
+        $this->getEntityManager()->flush();
+    }
+
+    public function excluirProduto($id): bool
+    {
+        $produto = $this->find($id);
+        
+        if($produto == NULL){
+            return false;
+        }
+
+        $this->getEntityManager()->remove($produto);
+        $this->getEntityManager()->flush();
+
+        return True;
+    }
+
+    public function editarProduto($id,$dados): bool
+    {
+        $produto = $this->find($id);
+        $categoria = $this->CategoriaRepository->find($dados["categoria"]);
+
+        $produto->setNome($dados["nome"]);
+        $produto->setCategoriaId($categoria);
+        $produto->setQuantidade($dados["quantidade"]);
+        $produto->setvalorUnitario($dados["valor"]);
+        $produto->setDescricao($dados["descricao"]);
+
+        $this->getEntityManager()->persist($produto);
+        $this->getEntityManager()->flush();
+
+        return True;
+    }
 }
+ 

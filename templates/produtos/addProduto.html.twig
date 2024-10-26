@@ -40,7 +40,7 @@
               </span>
               <select name="categoria" class="form-select" id="categoriaId" aria-label="Default select example">
                 {% for categoria in categorias %}
-                <option value="{{categoria.nome}}"  {{ modo == 'editar' and categoria.nome == produto.categoria ? 'selected' : '' }}>
+                <option value="{{categoria.id}}" {{ modo == 'editar' and categoria.nome == produto.categoriaId.nome ? 'selected' : '' }}>
                   {{categoria.nome}}
                 </option>
                 {% endfor %}
@@ -63,7 +63,7 @@
               <span class="input-group-text">
                 <i class="fas fa-dollar-sign"></i>
               </span>
-            <input type="text" value="{{modo == 'adicionar' ? '' : produto.valor}}" class="form-control" id="valor" name="valor">
+            <input type="number" value="{{modo == 'adicionar' ? '' : produto.valorUnitario}}" class="form-control" id="valor" name="valor">
             </div>
           </div>
         </div>

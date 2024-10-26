@@ -23,9 +23,7 @@ class CategoriaService
         }
 
         $categoria = new Categoria();
-        $categoria->setNome($nome);
-        $categoria->setCriadoEm(new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')));
-        $categoria->setAtualizadoEm(new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')));
+        $categoria->setNome($nome); 
         
         $this->CategoriaRepository->salvarUsuario($categoria);
 

@@ -8,34 +8,34 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CarrinhoRepository::class)]
+#[ORM\Entity]
 class Carrinho
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\OneToOne(inversedBy: 'carrinho', cascade: ['persist', 'remove'])]
-    private ?Cliente $cliente_id = null;
+    private Cliente $clienteId;
 
     #[ORM\ManyToOne(inversedBy: 'carrinhos')]
-    private ?User $usuario_id = null;
+    private User $usuarioId;
 
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    private string $status;
 
     #[ORM\Column]
-    private ?int $valor_total = null;
+    private int $valorTotal;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $criado_em = null;
+    private \DateTimeInterface $criadoEm;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $atualizado_em = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable: true)]
+    private ?\DateTimeInterface $atualizadoEm = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $finalizado_em = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable:true)]
+    private ?\DateTimeInterface $finalizadoEm = null;
 
     /**
      * @var Collection<int, Item>
@@ -55,24 +55,24 @@ class Carrinho
 
     public function getClienteId(): ?Cliente
     {
-        return $this->cliente_id;
+        return $this->clienteId;
     }
 
-    public function setClienteId(?Cliente $cliente_id): static
+    public function setClienteId(?Cliente $clienteId): static
     {
-        $this->cliente_id = $cliente_id;
+        $this->clienteId = $clienteId;
 
         return $this;
     }
 
     public function getUsuarioId(): ?User
     {
-        return $this->usuario_id;
+        return $this->usuarioId;
     }
 
-    public function setUsuarioId(?User $usuario_id): static
+    public function setUsuarioId(?User $usuarioId): static
     {
-        $this->usuario_id = $usuario_id;
+        $this->usuarioId = $usuarioId;
 
         return $this;
     }
@@ -91,48 +91,48 @@ class Carrinho
 
     public function getValorTotal(): ?int
     {
-        return $this->valor_total;
+        return $this->valorTotal;
     }
 
-    public function setValorTotal(int $valor_total): static
+    public function setValorTotal(int $valorTotal): static
     {
-        $this->valor_total = $valor_total;
+        $this->valorTotal = $valorTotal;
 
         return $this;
     }
 
     public function getCriadoEm(): ?\DateTimeInterface
     {
-        return $this->criado_em;
+        return $this->criadoEm;
     }
 
-    public function setCriadoEm(\DateTimeInterface $criado_em): static
+    public function setCriadoEm(\DateTimeInterface $criadoEm): static
     {
-        $this->criado_em = $criado_em;
+        $this->criadoEm = $criadoEm;
 
         return $this;
     }
 
     public function getAtualizadoEm(): ?\DateTimeInterface
     {
-        return $this->atualizado_em;
+        return $this->atualizadoEm;
     }
 
-    public function setAtualizadoEm(\DateTimeInterface $atualizado_em): static
+    public function setAtualizadoEm(\DateTimeInterface $atualizadoEm): static
     {
-        $this->atualizado_em = $atualizado_em;
+        $this->atualizadoEm = $atualizadoEm;
 
         return $this;
     }
 
     public function getFinalizadoEm(): ?\DateTimeInterface
     {
-        return $this->finalizado_em;
+        return $this->finalizadoEm;
     }
 
-    public function setFinalizadoEm(\DateTimeInterface $finalizado_em): static
+    public function setFinalizadoEm(\DateTimeInterface $finalizadoEm): static
     {
-        $this->finalizado_em = $finalizado_em;
+        $this->finalizadoEm = $finalizadoEm;
 
         return $this;
     }

@@ -6,22 +6,26 @@ use App\Repository\CategoriaRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategoriaRepository::class)]
+#[ORM\Entity]
 class Categoria
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $nome = null;
+    private string $nome;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $criado_em = null;
+    private \DateTimeInterface $criadoEm;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $atualizado_em = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable:true)]
+    private ?\DateTimeInterface $atualizadoEm = null;
+
+    public function __construct(){
+        $this->criadoEm = new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo'));
+    }
 
     public function getId(): ?int
     {
@@ -42,24 +46,24 @@ class Categoria
 
     public function getCriadoEm(): ?\DateTimeInterface
     {
-        return $this->criado_em;
+        return $this->criadoEm;
     }
 
-    public function setCriadoEm(\DateTimeInterface $criado_em): static
+    public function setCriadoEm(\DateTimeInterface $criadoEm): static
     {
-        $this->criado_em = $criado_em;
+        $this->criadoEm = $criadoEm;
 
         return $this;
     }
 
     public function getAtualizadoEm(): ?\DateTimeInterface
     {
-        return $this->atualizado_em;
+        return $this->atualizadoEm;
     }
 
-    public function setAtualizadoEm(\DateTimeInterface $atualizado_em): static
+    public function setAtualizadoEm(\DateTimeInterface $atualizadoEm): static
     {
-        $this->atualizado_em = $atualizado_em;
+        $this->atualizadoEm = $atualizadoEm;
 
         return $this;
     }
