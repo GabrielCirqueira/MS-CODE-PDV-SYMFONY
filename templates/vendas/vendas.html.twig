@@ -23,7 +23,7 @@
           <tr>
             <td data-label="nome">{{ venda.id }}</td>
             <td data-label="descricao">{{ venda.status }}</td>
-            <td data-label="valor">{{ venda.data|date("m/d/Y") }}</td>
+            <td data-label="valor">{{ venda.data|date("d/m/Y") }}</td>
             <td data-label="valor">{{ venda.data|date("H:i") }}</td>
           </tr>
         {% endfor %}

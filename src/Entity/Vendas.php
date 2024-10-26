@@ -2,23 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\VendasRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VendasRepository::class)]
+#[ORM\Entity]
 class Vendas
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    private string $status;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $data = null;
+    private \DateTimeInterface $data;
 
     public function getId(): ?int
     {

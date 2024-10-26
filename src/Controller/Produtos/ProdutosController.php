@@ -3,8 +3,8 @@
 namespace App\Controller\Produtos;
 
 use App\Entity\Produtos;
-use App\Repository\CategoriasRepository;
-use App\Repository\ProdutosRepository;
+use App\Repository\CategoriaRepository;
+use App\Repository\ProdutoRepository;
 use App\Repository\VendasRepository;
 use App\Service\ProdutoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,9 +18,9 @@ class ProdutosController extends AbstractController
 
 
     #[Route('/produtos', name: 'app_produtos')]
-    public function index(ProdutosRepository $produtosRepository): Response
+    public function index(ProdutoRepository $ProdutoRepository): Response
     {
-        $produtos = $produtosRepository->findAll();
+        $produtos = $ProdutoRepository->findAll();
         return $this->render('produtos/produtos.html.twig',[
             "modo" => "adicionar",
             "produtos" => $produtos,
@@ -29,16 +29,16 @@ class ProdutosController extends AbstractController
 
 
     #[Route('/produtos/adicionar', name: 'app_adicionarProdutos', methods: "GET")]
-    public function adicionarProduto(CategoriasRepository $categoriasRepository): Response
+    public function adicionarProduto(CategoriaRepository $CategoriaRepository): Response
     {
-        $categorias = $categoriasRepository->findAll();
+        $categorias = $CategoriaRepository->findAll();
         return $this->render('produtos/addProduto.html.twig',[
             'categorias' => $categorias,
             'modo' => "adicionar"
         ]);
     }
 
-
+ 
     #[Route('/produtos/adicionar', name: 'app_registrarProdutos', methods: "POST")]
     public function registrarProduto(Request $request, ProdutoService $produtoService): Response
     {
@@ -48,14 +48,14 @@ class ProdutosController extends AbstractController
         if(!$this->isCsrfTokenValid("addProduto",$token)){
             $this->addFlash("danger","Token CRSF inválido!");
             return $this->redirectToRoute("app_adicionarProdutos");
-        }
+        } 
 
         $dados = [
             "nome" => $request->request->get("nome"),
             "descricao" => $request->request->get("descricao"),
             "categoria" => $request->request->get("categoria"),
             "quantidade" => $request->request->get("quantidade"),
-            "valor" => $request->request->get("valor")
+            "valor" => ((int) $request->request->get("valor")) * 100
         ];
 
         $inserir = $produtoService->registrarProduto($dados);
@@ -72,23 +72,23 @@ class ProdutosController extends AbstractController
 
 
     #[Route('/produtos/vender/{id}', name: 'app_VenderProdutos')]
-    public function venderProduto($id, ProdutosRepository $produtosRepository): Response
+    public function venderProduto($id, ProdutoRepository $ProdutoRepository): Response
     {   
-        $produto = $produtosRepository->find($id);
+        $produto = $ProdutoRepository->find($id);
         return $this->render('vendas/vender.html.twig',[
             "id"    => $id,
             "nomeProduto" => $produto->getNome(),
-            "valorProduto" => $produto->getvalor(),
-            "categoriaProduto" => $produto->getCategoria(),
+            "valorProduto" => $produto->getValorUnitario(),
+            "categoriaProduto" => $produto->getCategoriaId(),
         ]);
     }
  
 
     #[Route('/produtos/vender/registrar/{id}', name: 'app_vendaRegistrar')]
-    public function venderProdutoRegistrar($id, ProdutosRepository $produtosRepository, Request $request, VendasRepository $vendasRepository): Response
+    public function venderProdutoRegistrar($id, ProdutoRepository $ProdutoRepository, Request $request, VendasRepository $vendasRepository): Response
     {
-        $diminuir = $produtosRepository->diminuirEstoque($id);
-        $nomeProduto = $produtosRepository->find($id)->getNome();
+        $diminuir = $ProdutoRepository->diminuirEstoque($id);
+        $nomeProduto = $ProdutoRepository->find($id)->getNome();
         $nomeCliente = $request->request->get("nomeComprador");
 
         if(!$diminuir){
@@ -104,10 +104,10 @@ class ProdutosController extends AbstractController
 
 
     // #[Route('produtos/quantidade/diminuir/{id}', name: 'app_DiminuirQuantidadeProdutos')]
-    // public function dimiuirQuantidade($id, ProdutosRepository $produtosRepository, VendasRepository $vendasRepository): Response
+    // public function dimiuirQuantidade($id, ProdutoRepository $ProdutoRepository, VendasRepository $vendasRepository): Response
     // {
-    //     $diminuir = $produtosRepository->diminuirEstoque($id);
-    //     $nome = $produtosRepository->find($id)->getNome();
+    //     $diminuir = $ProdutoRepository->diminuirEstoque($id);
+    //     $nome = $ProdutoRepository->find($id)->getNome();
 
     //     if(!$diminuir){
     //         $this->addFlash("danger","O produto {$nome} não pode ser diminuido o estoque posi está com 0.");
@@ -122,10 +122,10 @@ class ProdutosController extends AbstractController
             
 
     #[Route('produtos/quantidade/aumentar/{id}', name: 'app_AumentarQuantidadeProdutos')]
-    public function aumentarQuantidade($id, ProdutosRepository $produtosRepository, VendasRepository $vendasRepository): Response
+    public function aumentarQuantidade($id, ProdutoRepository $ProdutoRepository, VendasRepository $vendasRepository): Response
     {
-        $produtosRepository->aumentarEstoque($id);
-        $nome = $produtosRepository->find($id)->getNome();
+        $ProdutoRepository->aumentarEstoque($id);
+        $nome = $ProdutoRepository->find($id)->getNome();
 
         $vendasRepository->inserir("O produto {$nome} foi aumentado 1 no estoque.");
 
@@ -145,9 +145,9 @@ class ProdutosController extends AbstractController
 
 
     #[Route('produtos/excluir/{id}/{nome}', name: "app_ExcluirProduto")]
-    public function excuirProduto($id,$nome, ProdutosRepository $produtosRepository): Response
+    public function excuirProduto($id,$nome, ProdutoRepository $ProdutoRepository): Response
     {
-        $excluir = $produtosRepository->excluirProduto($id);
+        $excluir = $ProdutoRepository->excluirProduto($id);
         
         if(!$excluir){
             $this->addFlash('danger',"o Produto de id {$id} não existe!");
@@ -160,16 +160,16 @@ class ProdutosController extends AbstractController
 
 
     #[Route(path: '/produtos/editar/{id}', name: 'app_editarProduto')]
-    public function editarProduto($id, ProdutosRepository $produtosRepository, CategoriasRepository $categoriasRepository): Response
+    public function editarProduto($id, ProdutoRepository $ProdutoRepository, CategoriaRepository $CategoriaRepository): Response
     {
-        $produto = $produtosRepository->find($id);
+        $produto = $ProdutoRepository->find($id);
 
         if($produto == NULL){
             $this->addFlash('danger', "Produto Inexistente.");
             return $this->redirectToRoute("app_produtos");
         }
 
-        $categorias = $categoriasRepository->findAll();
+        $categorias = $CategoriaRepository->findAll();
  
         return $this->render('produtos/addProduto.html.twig',[
             "categorias" => $categorias,
@@ -181,7 +181,7 @@ class ProdutosController extends AbstractController
 
     
     #[Route(path: '/produtos/registrar/editar', name: 'app_editarProdutoRegistrar')]
-    public function registrarEditarCategoria(ProdutosRepository $produtosRepository, Request $request): Response
+    public function registrarEditarCategoria(ProdutoRepository $ProdutoRepository, Request $request): Response
     {
 
         $token = $request->request->get("_csrf_token");
@@ -198,10 +198,11 @@ class ProdutosController extends AbstractController
             "descricao" => $request->request->get("descricao"),
             "categoria" => $request->request->get("categoria"),
             "quantidade" => $request->request->get("quantidade"),
-            "valor" => $request->request->get("valor")
+            "valor" => ((int) $request->request->get("valor")) * 100
+
         ];
 
-        $editar = $produtosRepository->editarProduto($id,$dados);
+        $editar = $ProdutoRepository->editarProduto($id,$dados);
 
         if($editar){
             $this->addFlash('success', "produto {$dados['nome']} Editado com sucesso.");

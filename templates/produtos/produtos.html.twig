@@ -29,8 +29,8 @@
           <tr>
             <td data-label="nome">{{ produto.nome }}</td>
             <td data-label="descricao">{{ produto.descricao }}</td>
-            <td data-label="categoria">{{ produto.categoria }}</td>
-            <td data-label="valor">R$ {{ produto.valor }},00 </td>
+            <td data-label="categoria">{{ produto.categoriaId.nome }}</td>
+            <td data-label="valor">R$ {{ produto.valorUnitario }},00 </td>
             <td data-label="quantidade">{{ produto.quantidade }} Disponiveis</td>
             <td>
               <a href="{{path('app_VenderProdutos',{'id': produto.id})}}" class="btn btn-warning btn-sm">
