@@ -6,6 +6,7 @@ use App\Entity\Cliente;
 use App\Repository\ClienteRepository;
 use PhpParser\Builder\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ClienteController extends AbstractController
 {
     #[Route('/api/clientes', name: 'app_getClientes', methods: ['GET'])]
-    public function clientes(ClienteRepository $clienteRepository, SerializerInterface $serializer): JsonResponse
+    public function getClientes(ClienteRepository $clienteRepository, SerializerInterface $serializer): JsonResponse
     {
         try {
             $clientes = $clienteRepository->findAll();
@@ -28,6 +29,12 @@ class ClienteController extends AbstractController
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
+    }
+    #[Route("/clientes", name: "app_clientes", methods: ['GET'])]
+    public function clientes(ClienteRepository $clienteRepository): Response
+    {
+        $clientes = $clienteRepository->findAll();
+        return $this->render("cliente/clientes.html.twig",["clientes" => $clientes]);
     }
 
     #[Route("/clientes/adicionar", name: "app_adicionarCliente", methods: ['GET'])]
