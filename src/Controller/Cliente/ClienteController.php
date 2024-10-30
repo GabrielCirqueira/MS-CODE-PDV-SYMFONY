@@ -3,6 +3,7 @@
 namespace App\Controller\Cliente;
 
 use App\Repository\ClienteRepository;
+use PhpParser\Builder\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,5 +26,17 @@ class ClienteController extends AbstractController
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
+    }
+
+    #[Route("/clientes/adicionar", name: "app_adicionarCliente", methods: ['GET'])]
+    public function adicionarCliente(): Response
+    {
+        return $this->render("cliente/addCliente.html.twig",["modo" => "adicionar"]);
+    }
+    
+    #[Route("/clientes/adicionar", name: "app_RegistrarCliente", methods: ['POST'])]
+    public function registrarCliente(): Response
+    {
+        return new Response();
     }
 }
