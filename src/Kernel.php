@@ -9,6 +9,3 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 }
-
-
-

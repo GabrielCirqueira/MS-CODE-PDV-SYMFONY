@@ -1,0 +1,52 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{modo == "adicionar" ? "Adicionar Cliente" : "Editar Cliente"}}{% endblock %}
+
+{% block body %}
+
+<div class="container py-5 main">
+  <div class="container-produtos">
+
+    <div class="mb-4 text-center">
+      <h1><i class="fas fa-user-plus"></i>{{modo == 'adicionar' ? 'Novo Cliente' : 'Editar Cliente'}}</h1>
+    </div>
+    
+    {% include 'flash.html.twig' %}
+
+    <div class="w-100 mt-2">
+      <form method="POST" action="{{ path(modo == 'adicionar' ? 'app_RegistrarCliente' : 'app_editarClienteRegistrar') }}">
+        
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome do Cliente:</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-user"></i>
+            </span>
+            <input type="text" value="{{modo == 'adicionar' ? '' : cliente.nome}}" class="form-control" id="nome" name="nome">
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="cpf" class="form-label">CPF:</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-id-card"></i>
+            </span>
+            <input type="text" value="{{modo == 'adicionar' ? '' : cliente.cpf}}" class="form-control" id="cpf" name="cpf">
+          </div>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token(modo == 'editar' ? 'editarCliente' : 'addCliente') }}">
+
+        {% if modo == 'editar' %}
+          <input type="hidden" name="id" value="{{id}}">
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </form>
+    </div>
+    
+  </div>
+</div>
+
+{% endblock %}
