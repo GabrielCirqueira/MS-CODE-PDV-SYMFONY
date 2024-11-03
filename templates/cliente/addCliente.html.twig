@@ -14,7 +14,7 @@
     {% include 'flash.html.twig' %}
 
     <div class="w-100 mt-2">
-      <form method="POST" action="{{ path(modo == 'adicionar' ? 'app_RegistrarCliente' : 'app_editarClienteRegistrar') }}">
+      <form method="POST" action="{{ path(modo == 'adicionar' ? 'RegistrarCliente' : 'editarClienteRegistrar') }}">
         
         <div class="mb-3">
           <label for="nome" class="form-label">Nome do Cliente:</label>

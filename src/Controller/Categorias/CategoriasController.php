@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CategoriasController extends AbstractController
 {
     
-    #[Route(path: '/categorias', name: 'app_categorias')]
+    #[Route(path: '/categorias', name: 'categorias')]
     public function index(CategoriaRepository $categoriasRepository): Response
     {
         $categorias = $categoriasRepository->findAll();
@@ -22,7 +22,7 @@ class CategoriasController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/categorias/adicionar', name: 'app_addCategoria')]
+    #[Route(path: '/categorias/adicionar', name: 'addCategoria')]
     public function adicionarCategoria(): Response
     {
         return $this->render('categorias/addCategoria.html.twig',[
@@ -30,7 +30,7 @@ class CategoriasController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/categorias/adicionar/registrar', name: 'app_RegistrarCategoria')]
+    #[Route(path: '/categorias/adicionar/registrar', name: 'RegistrarCategoria')]
     public function registrarCategoria(CategoriaService $categoriaService,Request $request): Response
     {
         $nome = $request->request->get("nome");
@@ -38,22 +38,22 @@ class CategoriasController extends AbstractController
 
         if(!$inserir){
             $this->addFlash('danger', "A categoria {$nome} já existe.");
-            return $this->redirectToRoute("app_addCategoria");
+            return $this->redirectToRoute("addCategoria");
         }
 
         $this->addFlash('success', "A categoria {$nome} foi Adicionada com Sucesso!");
-        return $this->redirectToRoute("app_addCategoria");
+        return $this->redirectToRoute("addCategoria");
 
     }
 
-    #[Route(path: '/categorias/editar/{id}', name: 'app_editarCategoria')]
+    #[Route(path: '/categorias/editar/{id}', name: 'editarCategoria')]
     public function editarCategoria($id, CategoriaRepository $categoriasRepository): Response
     {
         $categoria = $categoriasRepository->find($id);
 
         if($categoria == NULL){
             $this->addFlash('danger', "Categoria Inexistente.");
-            return $this->redirectToRoute("app_categorias");
+            return $this->redirectToRoute("categorias");
         }
 
         return $this->render('categorias/addCategoria.html.twig',[
@@ -63,7 +63,7 @@ class CategoriasController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/categorias/registrar/editar', name: 'app_editarCategoriaRegistrar')]
+    #[Route(path: '/categorias/registrar/editar', name: 'editarCategoriaRegistrar')]
     public function registrarEditarCategoria(CategoriaRepository $categoriasRepository, Request $request): Response
     {
         $id = $request->request->get("id");
@@ -73,24 +73,24 @@ class CategoriasController extends AbstractController
 
         if($editar){
             $this->addFlash('success', "Categoria Editada com sucesso.");
-            return $this->redirectToRoute("app_categorias");
+            return $this->redirectToRoute("categorias");
         }else{
             $this->addFlash('danger', "Ocorreu um erro ao editar categoria.");
-            return $this->redirectToRoute("app_categorias");   
+            return $this->redirectToRoute("categorias");   
         }
     }
 
-    #[Route('/categorias/excluir/{id}/{nome}', 'app_excluirCategoria')]
+    #[Route('/categorias/excluir/{id}/{nome}', 'excluirCategoria')]
     public function excluirCategoria($id,$nome, CategoriaRepository $categoriasRepository): Response
     {
         $excluir = $categoriasRepository->excluirCategoria($id);
         
         if(!$excluir){
             $this->addFlash('danger',"A categoria de id {$id} não existe!");
-            return $this->redirectToRoute("app_categorias");
+            return $this->redirectToRoute("categorias");
         }
 
         $this->addFlash('success',"A categoria {$nome} foi excluida com sucesso!");
-        return $this->redirectToRoute("app_categorias");
+        return $this->redirectToRoute("categorias");
     }
 }

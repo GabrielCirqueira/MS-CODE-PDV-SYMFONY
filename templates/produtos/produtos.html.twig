@@ -8,7 +8,7 @@
     <div class="mb-4 d-flex flex-row justify-content-between">
       <h1>Produtos</h1>
       <div>
-        <a href="{{path('app_adicionarProdutos')}}" class="btn btn-primary"><i class="bi bi-plus"></i>Novo produto</a>
+        <a href="{{path('adicionarProdutos')}}" class="btn btn-primary"><i class="bi bi-plus"></i>Novo produto</a>
       </div>
     </div>
     {% include 'flash.html.twig' %}
@@ -33,13 +33,13 @@
             <td data-label="valor">R$ {{ produto.valorUnitario }},00 </td>
             <td data-label="quantidade">{{ produto.quantidade }} Disponiveis</td>
             <td>
-              <a href="{{path('app_VenderProdutos',{'id': produto.id})}}" class="btn btn-warning btn-sm">
+              <a href="{{path('VenderProdutos',{'id': produto.id})}}" class="btn btn-warning btn-sm">
                 Vender
               </a>
-              <a href="{{path('app_AumentarQuantidadeProdutos',{'id': produto.id})}}"class="btn btn-sm" style="background-color: #16c1aa;" ><i class="fas fa-plus"></i></a>
+              <a href="{{path('AumentarQuantidadeProdutos',{'id': produto.id})}}"class="btn btn-sm" style="background-color: #16c1aa;" ><i class="fas fa-plus"></i></a>
               
-              <a href="{{path('app_editarProduto',{'id': produto.id})}}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></a>
-              <a href="{{path('app_ExcluirProduto',{'id': produto.id, 'nome': produto.nome})}}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+              <a href="{{path('editarProduto',{'id': produto.id})}}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></a>
+              <a href="{{path('ExcluirProduto',{'id': produto.id, 'nome': produto.nome})}}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
             </td>
           </tr>
         {% endfor %}

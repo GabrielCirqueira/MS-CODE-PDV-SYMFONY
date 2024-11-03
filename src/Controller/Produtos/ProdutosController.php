@@ -17,7 +17,7 @@ class ProdutosController extends AbstractController
 {
 
 
-    #[Route('/produtos', name: 'app_produtos')]
+    #[Route('/produtos', name: 'produtos')]
     public function index(ProdutoRepository $ProdutoRepository): Response
     {
         $produtos = $ProdutoRepository->findAll();
@@ -28,7 +28,7 @@ class ProdutosController extends AbstractController
     }
 
 
-    #[Route('/produtos/adicionar', name: 'app_adicionarProdutos', methods: "GET")]
+    #[Route('/produtos/adicionar', name: 'adicionarProdutos', methods: "GET")]
     public function adicionarProduto(CategoriaRepository $CategoriaRepository): Response
     {
         $categorias = $CategoriaRepository->findAll();
@@ -39,7 +39,7 @@ class ProdutosController extends AbstractController
     }
 
  
-    #[Route('/produtos/adicionar', name: 'app_registrarProdutos', methods: "POST")]
+    #[Route('/produtos/adicionar', name: 'registrarProdutos', methods: "POST")]
     public function registrarProduto(Request $request, ProdutoService $produtoService): Response
     {
  
@@ -47,7 +47,7 @@ class ProdutosController extends AbstractController
 
         if(!$this->isCsrfTokenValid("addProduto",$token)){
             $this->addFlash("danger","Token CRSF inválido!");
-            return $this->redirectToRoute("app_adicionarProdutos");
+            return $this->redirectToRoute("adicionarProdutos");
         } 
 
         $dados = [
@@ -62,16 +62,16 @@ class ProdutosController extends AbstractController
 
         if(!$inserir){
             $this->addFlash("danger","Erro ao enviar formulário!");
-            return $this->redirectToRoute("app_adicionarProdutos");
+            return $this->redirectToRoute("adicionarProdutos");
         }
 
         $this->addFlash("success","Produto Adicionado com sucesso!");
-        return $this->redirectToRoute("app_adicionarProdutos");
+        return $this->redirectToRoute("adicionarProdutos");
 
     }
 
 
-    #[Route('/produtos/vender/{id}', name: 'app_VenderProdutos')]
+    #[Route('/produtos/vender/{id}', name: 'VenderProdutos')]
     public function venderProduto($id, ProdutoRepository $ProdutoRepository): Response
     {   
         $produto = $ProdutoRepository->find($id);
@@ -84,7 +84,7 @@ class ProdutosController extends AbstractController
     }
  
 
-    #[Route('/produtos/vender/registrar/{id}', name: 'app_vendaRegistrar')]
+    #[Route('/produtos/vender/registrar/{id}', name: 'vendaRegistrar')]
     public function venderProdutoRegistrar($id, ProdutoRepository $ProdutoRepository, Request $request, VendasRepository $vendasRepository): Response
     {
         $diminuir = $ProdutoRepository->diminuirEstoque($id);
@@ -93,17 +93,17 @@ class ProdutosController extends AbstractController
 
         if(!$diminuir){
             $this->addFlash("danger","O produto {$nomeProduto} não pode ser diminuido o estoque pois está com 0.");
-            return $this->redirectToRoute("app_produtos");
+            return $this->redirectToRoute("produtos");
         }
 
         $vendasRepository->inserir("O cliente {$nomeCliente} comprou o produto {$nomeProduto} e foi diminuido 1 do estoque.");
 
         $this->addFlash("success","O cliente {$nomeCliente} comprou o produto {$nomeProduto} com sucesso.");
-        return $this->redirectToRoute("app_produtos");
+        return $this->redirectToRoute("produtos");
     }
 
 
-    // #[Route('produtos/quantidade/diminuir/{id}', name: 'app_DiminuirQuantidadeProdutos')]
+    // #[Route('produtos/quantidade/diminuir/{id}', name: 'DiminuirQuantidadeProdutos')]
     // public function dimiuirQuantidade($id, ProdutoRepository $ProdutoRepository, VendasRepository $vendasRepository): Response
     // {
     //     $diminuir = $ProdutoRepository->diminuirEstoque($id);
@@ -111,17 +111,17 @@ class ProdutosController extends AbstractController
 
     //     if(!$diminuir){
     //         $this->addFlash("danger","O produto {$nome} não pode ser diminuido o estoque posi está com 0.");
-    //         return $this->redirectToRoute("app_produtos");
+    //         return $this->redirectToRoute("produtos");
     //     }
 
     //     $vendasRepository->inserir("O produto {$nome} teve uma venda e foi diminuido 1 do estoque.");
 
     //     $this->addFlash("success","O produto {$nome} foi diminuido 1 do estoque.");
-    //     return $this->redirectToRoute("app_produtos");
+    //     return $this->redirectToRoute("produtos");
     // }
             
 
-    #[Route('produtos/quantidade/aumentar/{id}', name: 'app_AumentarQuantidadeProdutos')]
+    #[Route('produtos/quantidade/aumentar/{id}', name: 'AumentarQuantidadeProdutos')]
     public function aumentarQuantidade($id, ProdutoRepository $ProdutoRepository, VendasRepository $vendasRepository): Response
     {
         $ProdutoRepository->aumentarEstoque($id);
@@ -130,11 +130,11 @@ class ProdutosController extends AbstractController
         $vendasRepository->inserir("O produto {$nome} foi aumentado 1 no estoque.");
 
         $this->addFlash("success","O produto {$nome} foi aumentado 1 do estoque.");
-        return $this->redirectToRoute("app_produtos");
+        return $this->redirectToRoute("produtos");
     }
 
 
-    #[Route('produtos/vendas', name: 'app_Vendas')]
+    #[Route('produtos/vendas', name: 'Vendas')]
     public function vendas(VendasRepository $vendasRepository): Response
     {
         $vendas = $vendasRepository->getVendas();
@@ -144,29 +144,29 @@ class ProdutosController extends AbstractController
     }
 
 
-    #[Route('produtos/excluir/{id}/{nome}', name: "app_ExcluirProduto")]
+    #[Route('produtos/excluir/{id}/{nome}', name: "ExcluirProduto")]
     public function excuirProduto($id,$nome, ProdutoRepository $ProdutoRepository): Response
     {
         $excluir = $ProdutoRepository->excluirProduto($id);
         
         if(!$excluir){
             $this->addFlash('danger',"o Produto de id {$id} não existe!");
-            return $this->redirectToRoute("app_produtos");
+            return $this->redirectToRoute("produtos");
         }
 
         $this->addFlash('success',"O produto {$nome} foi excluido com sucesso!");
-        return $this->redirectToRoute("app_produtos");
+        return $this->redirectToRoute("produtos");
     }
 
 
-    #[Route(path: '/produtos/editar/{id}', name: 'app_editarProduto')]
+    #[Route(path: '/produtos/editar/{id}', name: 'editarProduto')]
     public function editarProduto($id, ProdutoRepository $ProdutoRepository, CategoriaRepository $CategoriaRepository): Response
     {
         $produto = $ProdutoRepository->find($id);
 
         if($produto == NULL){
             $this->addFlash('danger', "Produto Inexistente.");
-            return $this->redirectToRoute("app_produtos");
+            return $this->redirectToRoute("produtos");
         }
 
         $categorias = $CategoriaRepository->findAll();
@@ -180,7 +180,7 @@ class ProdutosController extends AbstractController
     }
 
     
-    #[Route(path: '/produtos/registrar/editar', name: 'app_editarProdutoRegistrar')]
+    #[Route(path: '/produtos/registrar/editar', name: 'editarProdutoRegistrar')]
     public function registrarEditarCategoria(ProdutoRepository $ProdutoRepository, Request $request): Response
     {
 
@@ -188,7 +188,7 @@ class ProdutosController extends AbstractController
 
         if(!$this->isCsrfTokenValid("addProduto",$token)){
             $this->addFlash("danger","Token CRSF inválido!");
-            return $this->redirectToRoute("app_produtos");
+            return $this->redirectToRoute("produtos");
         }
 
         $id = $request->request->get("id");
@@ -206,10 +206,10 @@ class ProdutosController extends AbstractController
 
         if($editar){
             $this->addFlash('success', "produto {$dados['nome']} Editado com sucesso.");
-            return $this->redirectToRoute("app_produtos");
+            return $this->redirectToRoute("produtos");
         }else{
             $this->addFlash('danger', "Ocorreu um erro ao editar Produto.");
-            return $this->redirectToRoute("app_produtos");   
+            return $this->redirectToRoute("produtos");   
         }
     }
 }

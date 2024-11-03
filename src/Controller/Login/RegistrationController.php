@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegistrationController extends AbstractController
 
 {
-#[Route('/register', name: 'app_register')]
+#[Route('/register', name: 'register')]
     public function register(Request $request, UserService $userService): Response
     {
         if ($request->isMethod('POST')) {
@@ -28,7 +28,7 @@ class RegistrationController extends AbstractController
             if ($this->isCsrfTokenValid("registrar", $token)) {
                 $inserir = $userService->registarUsuario($dados);
                 if($inserir){
-                    return $this->redirectToRoute("app_login");
+                    return $this->redirectToRoute("login");
                 }
                 $error = "Este Email já está em uso!";
             }

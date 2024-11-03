@@ -13,7 +13,7 @@
             {% endif %}
         </div>
 
-        <form method="POST" action="{{ path(modo == 'adicionar' ? 'app_RegistrarCategoria' : 'app_editarCategoriaRegistrar') }}">
+        <form method="POST" action="{{ path(modo == 'adicionar' ? 'RegistrarCategoria' : 'editarCategoriaRegistrar') }}">
             <div class="mb-3">
                 <label for="id" class="form-label">ID:</label>
                 <div class="input-group">
