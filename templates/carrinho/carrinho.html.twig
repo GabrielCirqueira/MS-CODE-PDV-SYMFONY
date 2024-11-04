@@ -1,0 +1,82 @@
+  {% extends 'base.html.twig' %}
+
+{% block menu %}
+  <div class="container mt-5">
+    <!-- Título -->
+    <h1 class="titulo">Nova Venda</h1>
+
+    <!-- Informações principais da venda -->
+    <div class="row my-4">
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="flex">Total <div><img class="icon-size" src="../imgs/simbolo-do-dolar.png" alt=""></div>
+            </div>
+            <div>-</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="flex">Status <div><img class="icon-size" src="../imgs/forma-de-etiqueta-preta (1).png" alt=""></div>
+            </div>
+            <div>-</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="flex">Criação <div><img class="icon-size" src="../imgs/calendario.png" alt=""></div>
+            </div>
+            <div>-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Campo de busca de cliente com botão ao lado -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5>Cliente*</h5>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Buscar cliente por nome, CPF ou CNPJ...">
+          <button class="btn btn-success">Procurar Cliente</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela de produtos -->
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Estoque</th>
+          <th>Valor/Un.</th>
+          <th>Quantidade</th>
+          <th>Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td>teste 1</td>
+          <td>Categoria 1</td>
+          <td>50</td>
+          <td>R$ 10,00</td>
+          <td><div class="refres"><input type="number" name="" id=""></div></td>
+          <td>R$ 20,00</td>
+          <td><div><img  class="icon-size-table" src="../imgs/lixeira-de-reciclagem.png" alt=""></div></td>
+      </tr>
+
+        <tr class="background">
+          <td colspan="6" class="text-center">Por favor, selecione um cliente!</td>
+        </tr>
+      </tbody>
+    </table>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
