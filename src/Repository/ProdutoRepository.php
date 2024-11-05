@@ -79,5 +79,18 @@ class ProdutoRepository extends ServiceEntityRepository
 
         return True;
     }
+    
+    public function buscarProdutosAtivos(?string $nome = null): array
+{
+    $qb = $this->createQueryBuilder('p')
+               ->where('p.quantidade > 0'); 
+
+    if ($nome) {
+        $qb->andWhere('p.nome LIKE :nome')
+           ->setParameter('nome', "%$nome%");
+    }
+
+    return $qb->getQuery()->getResult();
+}
 }
  
