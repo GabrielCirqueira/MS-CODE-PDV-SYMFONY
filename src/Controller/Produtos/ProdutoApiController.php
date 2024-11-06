@@ -14,15 +14,8 @@ class ProdutoApiController extends AbstractController
     public function listarProdutos(Request $request, ProdutoRepository $produtoRepository): JsonResponse
     {
         $nome = $request->query->get('nome');
-        
         $produtos = $produtoRepository->buscarProdutosAtivos($nome);
 
-        $dados = array_map(fn($produto) => [
-            'nome' => $produto->getNome(),
-            'quantidade' => $produto->getQuantidade(),
-            'valorUnitario' => $produto->getValorUnitario(),
-        ], $produtos);
-
-        return $this->json($dados);
+        return $this->json($produtos);
     }
 }

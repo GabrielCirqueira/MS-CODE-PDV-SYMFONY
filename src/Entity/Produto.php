@@ -5,9 +5,10 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Nullable;
+use JsonSerializable;
 
 #[ORM\Entity]
-class Produto
+class Produto implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -141,5 +142,14 @@ class Produto
         $this->item = $item;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'nome' => $this->getNome(),
+            'quantidade' => $this->getQuantidade(),
+            'valorUnitario' => $this->getValorUnitario(),
+        ];
     }
 }
