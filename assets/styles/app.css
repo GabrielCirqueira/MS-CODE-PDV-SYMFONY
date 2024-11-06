@@ -3,6 +3,7 @@
 @import url(includes/home.css);
 @import url(includes/categoria.css);
 @import url(includes/tabela.css);
+@import url(includes/carrinho.css);
 
 body {
   background-color: rgb(255, 255, 255);
