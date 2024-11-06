@@ -4,6 +4,7 @@ namespace App\Controller\Cliente;
 
 use App\Entity\Cliente;
 use App\Service\ClienteService;
+use App\Service\ValidarCpfService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ class ClienteFormController extends AbstractController
     }
 
     #[Route("/clientes/adicionar", name: "RegistrarCliente", methods: ['POST'])]
-    public function registrarCliente(Request $request): Response
+    public function registrarCliente(Request $request,ValidarCpfService $validarCpfService): Response
     {
         $token = $request->request->get("_csrf_token");
 
@@ -29,6 +30,12 @@ class ClienteFormController extends AbstractController
         }
         
         $cliente = new Cliente();
+
+        if(!$validarCpfService->execute($request->request->get("cpf"))){
+            $this->addFlash("danger", "CPF invalido inválido!");
+            return $this->redirectToRoute("clientes");
+        }
+
         $cliente->setCpf((int) $request->request->get("cpf"));
         $cliente->setNome((string) $request->request->get("nome"));
 
