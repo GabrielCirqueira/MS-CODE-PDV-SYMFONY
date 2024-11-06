@@ -165,6 +165,14 @@ main{
   height: 20px;
 }
 
+.color-btn{
+  background: #16c1aa;
+  color: white;
+}
+
+  .color-btn:hover{
+  background: #139A88;
+  }
 
 
 
