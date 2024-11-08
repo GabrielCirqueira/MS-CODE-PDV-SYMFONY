@@ -25,6 +25,10 @@
                 <li class="nav-item">
                     <a href="{{ path('categorias') }}" class="nav-link {{ app.request.attributes.get('_route') == 'categorias' ? 'active' : '' }}">Categorias</a>
                 </li>
+
+                <li class="nav-item">
+                <a href="{{ path('app_carrinho') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_carrinho' ? 'active' : '' }}">Carrinho</a>
+                </li>
                 
                 <li class="nav-item">
                     <a data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight">
