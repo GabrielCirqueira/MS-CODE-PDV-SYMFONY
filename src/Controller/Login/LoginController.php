@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginController extends AbstractController
 {
-    #[Route(path: '/', name: 'app_login')]
+    #[Route(path: '/', name: 'login')]
     public function login(
         Request $request,
         UserRepository $userRepository,
@@ -46,18 +46,18 @@ class LoginController extends AbstractController
                         $event = new InteractiveLoginEvent($request, $token);
                         $eventDispatcher->dispatch($event); 
 
-                        return $this->redirectToRoute('app_home');
+                        return $this->redirectToRoute('home');
                     } else {
                         $this->addFlash("danger","Senha Inválida!");
-                        return $this->redirectToRoute("app_login");
+                        return $this->redirectToRoute("login");
                     }
                 } else { 
                     $this->addFlash("danger","Usuário não encontrado!");
-                    return $this->redirectToRoute("app_login");
+                    return $this->redirectToRoute("login");
                 }
             } else {
                 $this->addFlash("danger","Token CRSF inválido!");
-                return $this->redirectToRoute("app_login");
+                return $this->redirectToRoute("login");
             }
         }
 
@@ -66,7 +66,7 @@ class LoginController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: '/logout', name: 'logout')]
     public function logout(): void
     {
         throw new \LogicException(message: 'This method can be blank - it will be intercepted by the logout key on your firewall.');

@@ -6,12 +6,10 @@ use App\Entity\Categoria;
 use App\Repository\CategoriaRepository;
 
 class CategoriaService 
-{
-    private $CategoriaRepository;
+{ 
 
-    public function __construct(CategoriaRepository $CategoriaRepository)
+    public function __construct(private CategoriaRepository $CategoriaRepository)
     {
-        $this->CategoriaRepository = $CategoriaRepository;
     }
 
     public function registarCategoria($nome): bool

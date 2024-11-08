@@ -4,26 +4,26 @@
 <div class="border-bottom mb-2 bg-white shadow-sm header-custom">
     <div class="container">
         <header class="d-flex flex-wrap justify-content-between align-items-center py-3">
-            <a href="{{path('app_home')}}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <a href="{{path('home')}}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                 <img class="me-3 logo" src="{{asset('img/cart.png')}}" width="50" alt="Logotipo">
                 <span class="fs-4 fw-bold site-title">Ms Code - Estoque</span>
             </a>
 
             <ul class="nav">
                 <li class="nav-item">
-                    <a href="{{ path('app_home') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}">Início</a>
+                    <a href="{{ path('home') }}" class="nav-link {{ app.request.attributes.get('_route') == 'home' ? 'active' : '' }}">Início</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{path('app_Vendas')}}" class="nav-link {{ app.request.attributes.get('_route') == 'app_Vendas' ? 'active' : '' }}">Vendas</a>
+                    <a href="{{path('vendas')}}" class="nav-link {{ app.request.attributes.get('_route') == 'vendas' ? 'active' : '' }}">Vendas</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{path('app_clientes')}}" class="nav-link {{ app.request.attributes.get('_route') == 'app_clientes' ? 'active' : '' }}">Clientes</a>
+                    <a href="{{path('clientes')}}" class="nav-link {{ app.request.attributes.get('_route') == 'clientes' ? 'active' : '' }}">Clientes</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ path('app_produtos') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_produtos' ? 'active' : '' }}">Produtos</a>
+                    <a href="{{ path('produtos') }}" class="nav-link {{ app.request.attributes.get('_route') == 'produtos' ? 'active' : '' }}">Produtos</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ path('app_categorias') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_categorias' ? 'active' : '' }}">Categorias</a>
+                    <a href="{{ path('categorias') }}" class="nav-link {{ app.request.attributes.get('_route') == 'categorias' ? 'active' : '' }}">Categorias</a>
                 </li>
                 
                 <li class="nav-item">
@@ -54,7 +54,7 @@
         </div>
  
         <div class="mt-auto">
-            <a href="{{ path('app_logout') }}" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center">
+            <a href="{{ path('logout') }}" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center">
                 <i class="fas fa-sign-out-alt me-2"></i> Sair
             </a>
         </div>

@@ -7,7 +7,7 @@
     <div class="mb-4 d-flex justify-content-between align-items-center">
         <h1>Clientes</h1>
         <div>
-            <a href="{{ path('app_adicionarCliente') }}" class="btn btn-primary">
+            <a href="{{ path('adicionarCliente') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Novo Cliente
             </a>
         </div>
@@ -31,10 +31,10 @@
                     <td data-label="Nome">{{ cliente.nome }}</td>
                     <td data-label="Nome">{{ cliente.cpf }}</td>
                     <td data-label="Ações" class="text-end">
-                        <a href="{{ path('app_editarCliente',{'id' : cliente.id,}) }}" class="btn btn-secondary btn-sm btn-action">
+                        <a href="{{ path('editarCliente',{'id' : cliente.id,}) }}" class="btn btn-secondary btn-sm btn-action">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{{ path('app_excluirCliente',{'id' : cliente.id, 'nome' : cliente.nome}) }}" class="btn btn-danger btn-sm btn-action">
+                        <a href="{{ path('excluirCliente',{'id' : cliente.id, 'nome' : cliente.nome}) }}" class="btn btn-danger btn-sm btn-action">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
