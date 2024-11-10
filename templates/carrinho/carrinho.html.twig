@@ -1,78 +1,138 @@
-  {% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block menu %}
- <div class="container mt-5">
-    <!-- Título -->
-    <h1 class="titulo">Carrinho</h1>
+{% block body %}
+<div class="container cart-container mt-5">
+    <h1 class="titulo page-title">Carrinho</h1>
 
-    <!-- Informações principais da venda -->
-    <div class="row my-4">
-      <div class="col-md-4">
-        <div class="card text-center">
-          <div class="card-body">
-            <div class="flex">Total <div><img class="icon-size" src="../imgs/cifrao.png" alt=""></div>
+    <div class="row summary-cards my-4">
+        <div class="col-md-4">
+            <div class="card text-center card-summary">
+                <div class="card-body card-summary-body">
+                    <div class="flex summary-flex">Total 
+                        <div><img class="icon-size summary-icon" src="../imgs/cifrao.png" alt=""></div>
+                    </div>
+                    <div class="summary-dash">-</div>
+                </div>
             </div>
-            <div>-</div>
-          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card text-center">
-          <div class="card-body">
-            <div class="flex">Status <div><img class="icon-size" src="../imgs/forma-de-etiqueta-preta (1).png" alt=""></div>
+        <div class="col-md-4">
+            <div class="card text-center card-summary">
+                <div class="card-body card-summary-body">
+                    <div class="flex summary-flex">Status 
+                        <div><img class="icon-size summary-icon" src="../imgs/forma-de-etiqueta-preta (1).png" alt=""></div>
+                    </div>
+                    <div class="summary-dash">-</div>
+                </div>
             </div>
-            <div>-</div>
-          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card text-center">
-          <div class="card-body">
-            <div class="flex">Criação <div><img class="icon-size" src="../imgs/calendario.png" alt=""></div>
+        <div class="col-md-4">
+            <div class="card text-center card-summary">
+                <div class="card-body card-summary-body">
+                    <div class="flex summary-flex">Criação 
+                        <div><img class="icon-size summary-icon" src="../imgs/calendario.png" alt=""></div>
+                    </div>
+                    <div class="summary-dash">-</div>
+                </div>
             </div>
-            <div>-</div>
-          </div>
         </div>
-      </div>
     </div>
 
-    <!-- Campo de busca de cliente com botão ao lado -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <h5>Cliente*</h5>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Buscar cliente por nome, CPF ou CNPJ...">
-          <button class="btn color-btn">Procurar Cliente</button>
+    <div class="card mb-4 client-search-card">
+        <div class="card-body client-search-body">
+            <h5 class="client-label">Cliente*</h5>
+            <div class="input-group client-input-group">
+                <input type="text" class="form-control client-input" id="client-search-input" placeholder="Buscar cliente por nome, CPF ou CNPJ...">
+                <button class="btn color-btn search-button">Procurar Cliente</button>
+            </div>
+            <ul class="list-group" id="client-suggestions" style="display: none; position: absolute; z-index: 1000; width: 100%;">
+                <!-- Sugestões de clientes serão inseridas aqui -->
+            </ul>
         </div>
-      </div>
     </div>
 
-    <!-- Tabela de produtos -->
-    <table class="table table-bordered">
-      <thead class="table-light">
-        <tr>
-          <th class="text-center align-middle">Nome</th>
-          <th class="text-center align-middle">Categoria</th>
-          <th class="text-center align-middle">Estoque</th>
-          <th class="text-center align-middle">Valor/Un.</th>
-          <th class="text-center align-middle">Quantidade</th>
-          <th class="text-center align-middle">Total</th>
-          <th class="text-center align-middle"></th>
-        </tr>
-      </thead>
-      <tbody>
-
-        <tr>
-          <td class="text-center align-middle">teste 1</td>
-          <td class="text-center align-middle">Categoria 1</td>
-          <td class="text-center align-middle">50</td>
-          <td class="text-center align-middle">R$ 10,00</td>
-          <td class="text-center align-middle"><div class="refres"><input type="number" name="" id=""></div></td>
-          <td class="text-center align-middle">R$ 20,00</td>
-          <td class="text-center align-middle"><div><img  class="icon-size-table" src="../imgs/lixeira-de-reciclagem (1).png" alt=""></div></td>
-      </tr>
-      </tbody>
+    <table class="table table-bordered cart-table">
+        <thead class="table-light cart-table-head">
+            <tr>
+                <th class="text-center align-middle header-cell">Nome</th>
+                <th class="text-center align-middle header-cell">Categoria</th>
+                <th class="text-center align-middle header-cell">Estoque</th>
+                <th class="text-center align-middle header-cell">Valor/Un.</th>
+                <th class="text-center align-middle header-cell">Quantidade</th>
+                <th class="text-center align-middle header-cell">Total</th>
+                <th class="text-center align-middle header-cell"></th>
+            </tr>
+        </thead>
+        <tbody class="cart-table-body">
+            <tr>
+                <td class="text-center align-middle item-cell">teste 1</td>
+                <td class="text-center align-middle item-cell">Categoria 1</td>
+                <td class="text-center align-middle item-cell">50</td>
+                <td class="text-center align-middle item-cell">R$ 10,00</td>
+                <td class="text-center align-middle item-cell">
+                    <div class="quantity-wrapper refres">
+                        <input type="number" class="quantity-input" name="" id="">
+                    </div>
+                </td>
+                <td class="text-center align-middle item-cell">R$ 20,00</td>
+                <td class="text-center align-middle item-cell">
+                    <div><img class="icon-size-table delete-icon" src="../imgs/lixeira-de-reciclagem (1).png" alt=""></div>
+                </td>
+            </tr>
+        </tbody>
     </table>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const $clientSearchInput = $('#client-search-input');
+        const $clientSuggestions = $('#client-suggestions');
+
+        $clientSearchInput.on('input', function () {
+            const query = $(this).val().trim();
+            if (query.length < 1) {
+                $clientSuggestions.hide();
+                return;
+            }
+
+            $.ajax({
+                url: 'http://localhost:8000/api/clientes',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const filteredClients = data.filter(client => client.nome.toLowerCase().includes(query.toLowerCase()));
+                    
+                    $clientSuggestions.empty();
+
+                    if (filteredClients.length) {
+                        filteredClients.forEach(client => {
+                            $clientSuggestions.append(
+                                `<li class="list-group-item list-group-item-action" data-id="${client.id}">${client.nome}</li>`
+                            );
+                        });
+                        $clientSuggestions.show();
+                    } else {
+                        $clientSuggestions.hide();
+                    }
+                },
+                error: function () {
+                    console.error("Erro ao buscar clientes");
+                }
+            });
+        });
+
+        $clientSuggestions.on('click', '.list-group-item', function () {
+            const selectedClientName = $(this).text();
+            $clientSearchInput.val(selectedClientName);
+            $clientSuggestions.hide();
+        });
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.client-search-body').length) {
+                $clientSuggestions.hide();
+            }
+        });
+    });
+</script>
 {% endblock %}
