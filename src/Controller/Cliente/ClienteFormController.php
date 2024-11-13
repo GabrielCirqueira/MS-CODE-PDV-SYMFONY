@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ClienteFormController extends AbstractController
 {
-    private $clienteService;
+    private ClienteService $clienteService;
 
     public function __construct(ClienteService $clienteService)
     {

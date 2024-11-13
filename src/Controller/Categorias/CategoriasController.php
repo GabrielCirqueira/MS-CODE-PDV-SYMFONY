@@ -44,3 +44,4 @@ class CategoriasController extends AbstractController
         ]);
     }
 }
+

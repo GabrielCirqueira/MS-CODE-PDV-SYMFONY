@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ClienteController extends AbstractController
 {
-    private $clienteService;
+    private ClienteService $clienteService;
 
     public function __construct(ClienteService $clienteService)
     {
