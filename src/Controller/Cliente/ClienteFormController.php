@@ -33,7 +33,7 @@ class ClienteFormController extends AbstractController
 
         if(!$validarCpfService->execute($request->request->get("cpf"))){
             $this->addFlash("danger", "CPF invalido inválido!");
-            return $this->redirectToRoute("clientes");
+            return $this->redirectToRoute("adicionarCliente");
         }
 
         $cliente->setCpf((int) $request->request->get("cpf"));
