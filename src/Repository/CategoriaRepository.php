@@ -39,20 +39,6 @@ class CategoriaRepository extends ServiceEntityRepository
         return $categoria ? $categoria : False;
     }
 
-    public function excluirCategoria($id): bool
-    {
-        $categoria = $this->find($id);
-        
-        if($categoria == NULL){
-            return false;
-        }
-
-        $this->entityManager->remove($categoria);
-        $this->entityManager->flush();
-
-        return True;
-    }
-
     public function editarCategoria($id,$nome): bool
     {
         $categoria = $this->find($id);
