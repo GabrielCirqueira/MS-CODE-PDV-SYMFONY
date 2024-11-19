@@ -34,7 +34,6 @@ class ClienteFormController extends AbstractController
             $this->addFlash("danger", "CPF invalido inválido!");
             return $this->redirectToRoute("adicionarCliente");
         }
-
         
         $cliente = new Cliente();
 
@@ -47,6 +46,11 @@ class ClienteFormController extends AbstractController
         }
 
         $cliente->setCpf((int) $cpf);
+
+        if(is_numeric($request->request->get("nome"))){
+            $this->addFlash("danger", "O nome inserido contém apenas números!");
+            return $this->redirectToRoute("adicionarCliente"); 
+        }
 
         $cliente->setNome((string) $request->request->get("nome"));
 
@@ -69,7 +73,7 @@ class ClienteFormController extends AbstractController
         $id = $request->request->get("id");
 
         if(!$validarCpfService->execute($request->request->get("cpf"))){
-            $this->addFlash("danger", "CPF invalido inválido!");
+            $this->addFlash("danger", "CPF inválido!");
             return $this->redirectToRoute("editarCliente",["id" => $id]);
         }
 
@@ -78,10 +82,15 @@ class ClienteFormController extends AbstractController
 
         $cliente = $clienteRepository->buscarClienteCPF($cpf);
         if($cliente){
-            if(!$cliente->getId() == $id){
+            if(!($cliente->getId() == $id)){
                 $this->addFlash("danger", "CPF já cadastrado!");
                 return $this->redirectToRoute("editarCliente",["id" => $id]);
             }
+        }
+
+        if(is_numeric($request->request->get("nome"))){
+            $this->addFlash("danger", "O nome inserido contém apenas números!");
+            return $this->redirectToRoute("editarCliente",["id" => $id]);
         }
 
         $dados = [
