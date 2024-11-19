@@ -32,7 +32,7 @@
             <span class="input-group-text">
               <i class="fas fa-id-card"></i>
             </span>
-            <input type="text" value="{{modo == 'adicionar' ? '' : cliente.cpf}}" class="form-control" id="cpf" name="cpf">
+            <input type="text" value="{{modo == 'adicionar' ? '' : cliente.cpf}}" class="form-control" id="cpf" name="cpf" maxlength="14">
           </div>
         </div>
 
@@ -48,5 +48,22 @@
     
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cpfInput = document.getElementById('cpf');
+
+    cpfInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 11) value = value.slice(0, 11);
+      
+      const formatted = value.replace(/(\d{3})(\d)/, '$1.$2')
+                             .replace(/(\d{3})(\d)/, '$1.$2')
+                             .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+      
+      e.target.value = formatted;
+    });
+  });
+</script>
 
 {% endblock %}
