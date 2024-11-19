@@ -51,8 +51,15 @@ class ClienteFormController extends AbstractController
             $this->addFlash("danger", "O nome inserido contém apenas números!");
             return $this->redirectToRoute("adicionarCliente"); 
         }
+        $nome = trim((string) $request->request->get("nome"));
+        $nome = preg_replace('/\s+/', ' ', $nome); 
 
-        $cliente->setNome((string) $request->request->get("nome"));
+        if(empty($nome)){
+            $this->addFlash("danger", "O nome inserido está vazio!");
+            return $this->redirectToRoute("adicionarCliente"); 
+        }
+
+        $cliente->setNome((string) $nome);
 
         $this->clienteService->adicionarCliente($cliente);
 
@@ -93,8 +100,16 @@ class ClienteFormController extends AbstractController
             return $this->redirectToRoute("editarCliente",["id" => $id]);
         }
 
+        $nome = trim((string) $request->request->get("nome"));
+        $nome = preg_replace('/\s+/', ' ', $nome); 
+
+        if(empty($nome)){
+            $this->addFlash("danger", "O nome inserido está vazio!");
+            return $this->redirectToRoute("editarCliente",["id" => $id]);
+        }
+
         $dados = [
-            "nome" => $request->request->get("nome"),
+            "nome" => $nome,
             "cpf" => $cpf,
         ];
 
