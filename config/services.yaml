@@ -8,8 +8,8 @@ parameters:
 services:
     App\Service\ValidarCpfService:
         arguments:
-            $httpClient: '@http_client'
-            $token: '%env(TOKEN_VALIDAR_CPF)%'
+            - $httpClient: '@http_client'
+            - $token: '%env(TOKEN_VALIDAR_CPF)%'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

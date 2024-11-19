@@ -3,6 +3,7 @@
 namespace App\Controller\Cliente;
 
 use App\Entity\Cliente;
+use App\Repository\ClienteRepository;
 use App\Service\ClienteService;
 use App\Service\ValidarCpfService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +21,7 @@ class ClienteFormController extends AbstractController
     }
 
     #[Route("/clientes/adicionar", name: "RegistrarCliente", methods: ['POST'])]
-    public function registrarCliente(Request $request,ValidarCpfService $validarCpfService): Response
+    public function registrarCliente(Request $request,ValidarCpfService $validarCpfService, ClienteRepository $clienteRepository): Response
     {
         $token = $request->request->get("_csrf_token");
 
@@ -28,15 +29,25 @@ class ClienteFormController extends AbstractController
             $this->addFlash("danger", "Token CRSF inválido!");
             return $this->redirectToRoute("clientes");
         }
-        
-        $cliente = new Cliente();
 
         if(!$validarCpfService->execute($request->request->get("cpf"))){
             $this->addFlash("danger", "CPF invalido inválido!");
             return $this->redirectToRoute("adicionarCliente");
         }
 
-        $cliente->setCpf((int) $request->request->get("cpf"));
+        
+        $cliente = new Cliente();
+
+        $cpf = $request->request->get("cpf");
+        $cpf = str_replace(['.', '-'], '', $cpf);
+
+        if($clienteRepository->buscarClienteCPF($cpf)){
+            $this->addFlash("danger", "CPF já cadastrado!");
+            return $this->redirectToRoute("adicionarCliente");
+        }
+
+        $cliente->setCpf((int) $cpf);
+
         $cliente->setNome((string) $request->request->get("nome"));
 
         $this->clienteService->adicionarCliente($cliente);
@@ -46,7 +57,7 @@ class ClienteFormController extends AbstractController
     }
 
     #[Route(path: '/clientes/editar', name: 'editarClienteRegistrar', methods: ["POST"])]
-    public function editarClienteRegistrar(Request $request): Response
+    public function editarClienteRegistrar(Request $request,ValidarCpfService $validarCpfService, ClienteRepository $clienteRepository): Response
     {
         $token = $request->request->get("_csrf_token");
 
@@ -57,9 +68,25 @@ class ClienteFormController extends AbstractController
 
         $id = $request->request->get("id");
 
+        if(!$validarCpfService->execute($request->request->get("cpf"))){
+            $this->addFlash("danger", "CPF invalido inválido!");
+            return $this->redirectToRoute("editarCliente",["id" => $id]);
+        }
+
+        $cpf = $request->request->get("cpf");
+        $cpf = str_replace(['.', '-'], '', $cpf);
+
+        $cliente = $clienteRepository->buscarClienteCPF($cpf);
+        if($cliente){
+            if(!$cliente->getId() == $id){
+                $this->addFlash("danger", "CPF já cadastrado!");
+                return $this->redirectToRoute("editarCliente",["id" => $id]);
+            }
+        }
+
         $dados = [
             "nome" => $request->request->get("nome"),
-            "cpf" => $request->request->get("cpf"),
+            "cpf" => $cpf,
         ];
 
         $editar = $this->clienteService->editarCliente($id, $dados);
