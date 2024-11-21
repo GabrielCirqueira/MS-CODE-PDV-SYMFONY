@@ -3,6 +3,7 @@
 namespace App\Controller\Cliente;
 
 use App\Entity\Cliente;
+use App\Repository\ClienteRepository;
 use App\Service\ClienteService;
 use App\Service\ValidarCpfService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -82,7 +83,7 @@ class ClienteFormController extends AbstractController
     }
 
     #[Route(path: '/clientes/editar', name: 'editarClienteRegistrar', methods: ["POST"])]
-    public function editarClienteRegistrar(Request $request): Response
+    public function editarClienteRegistrar(Request $request,ValidarCpfService $validarCpfService, ClienteRepository $clienteRepository): Response
     {
         $token = $request->request->get("_csrf_token");
 
@@ -93,9 +94,38 @@ class ClienteFormController extends AbstractController
 
         $id = $request->request->get("id");
 
+        if(!$validarCpfService->execute($request->request->get("cpf"))){
+            $this->addFlash("danger", "CPF inválido!");
+            return $this->redirectToRoute("editarCliente",["id" => $id]);
+        }
+
+        $cpf = $request->request->get("cpf");
+        $cpf = str_replace(['.', '-'], '', $cpf);
+
+        $cliente = $clienteRepository->buscarClienteCPF($cpf);
+        if($cliente){
+            if(!($cliente->getId() == $id)){
+                $this->addFlash("danger", "CPF já cadastrado!");
+                return $this->redirectToRoute("editarCliente",["id" => $id]);
+            }
+        }
+
+        if(is_numeric($request->request->get("nome"))){
+            $this->addFlash("danger", "O nome inserido contém apenas números!");
+            return $this->redirectToRoute("editarCliente",["id" => $id]);
+        }
+
+        $nome = trim((string) $request->request->get("nome"));
+        $nome = preg_replace('/\s+/', ' ', $nome); 
+
+        if(empty($nome)){
+            $this->addFlash("danger", "O nome inserido está vazio!");
+            return $this->redirectToRoute("editarCliente",["id" => $id]);
+        }
+
         $dados = [
-            "nome" => $request->request->get("nome"),
-            "cpf" => $request->request->get("cpf"),
+            "nome" => $nome,
+            "cpf" => $cpf,
         ];
 
         $editar = $this->clienteService->editarCliente($id, $dados);
