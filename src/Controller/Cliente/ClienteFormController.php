@@ -94,44 +94,23 @@ class ClienteFormController extends AbstractController
 
         $id = $request->request->get("id");
 
-        if(!$validarCpfService->execute($request->request->get("cpf"))){
-            $this->addFlash("danger", "CPF inválido!");
-            return $this->redirectToRoute("editarCliente",["id" => $id]);
-        }
+        $nome = trim((string) $request->request->get("nome"));
+        $nome = preg_replace('/\s+/', ' ', $nome); 
 
-        $cpf = $request->request->get("cpf");
-        $cpf = str_replace(['.', '-'], '', $cpf);
-
-        $cliente = $clienteRepository->buscarClienteCPF($cpf);
-        if($cliente){
-            if(!($cliente->getId() == $id)){
-                $this->addFlash("danger", "CPF já cadastrado!");
-                return $this->redirectToRoute("editarCliente",["id" => $id]);
-            }
-        }
-
-        if(is_numeric($request->request->get("nome"))){
+        if(is_numeric($nome)){
             $this->addFlash("danger", "O nome inserido contém apenas números!");
             return $this->redirectToRoute("editarCliente",["id" => $id]);
         }
-
-        $nome = trim((string) $request->request->get("nome"));
-        $nome = preg_replace('/\s+/', ' ', $nome); 
 
         if(empty($nome)){
             $this->addFlash("danger", "O nome inserido está vazio!");
             return $this->redirectToRoute("editarCliente",["id" => $id]);
         }
 
-        $dados = [
-            "nome" => $nome,
-            "cpf" => $cpf,
-        ];
-
-        $editar = $this->clienteService->editarCliente($id, $dados);
+        $editar = $this->clienteService->editarCliente($id, $nome);
 
         if ($editar) {
-            $this->addFlash('success', "Cliente {$dados['nome']} Editado com sucesso.");
+            $this->addFlash('success', "Cliente {$nome} Editado com sucesso.");
             return $this->redirectToRoute("clientes");
         } else {
             $this->addFlash('danger', "Ocorreu um erro ao editar o Cliente.");
