@@ -22,20 +22,6 @@ class ClienteRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function excluir($id): bool
-    {
-        $cliente = $this->find($id);
-        
-        if($cliente == NULL){
-            return false;
-        }
-
-        $this->getEntityManager()->remove($cliente);
-        $this->getEntityManager()->flush();
-
-        return True;
-    }
-
     public function editar($id,$nome): bool
     {
         $cliente = $this->find($id);

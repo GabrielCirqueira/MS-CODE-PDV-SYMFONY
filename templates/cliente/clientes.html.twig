@@ -34,9 +34,6 @@
                         <a href="{{ path('editarCliente',{'id' : cliente.id,}) }}" class="btn btn-secondary btn-sm btn-action">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{{ path('excluirCliente',{'id' : cliente.id, 'nome' : cliente.nome}) }}" class="btn btn-danger btn-sm btn-action">
-                            <i class="fas fa-trash"></i>
-                        </a>
                     </td>
                 </tr>
             {% endfor %}

@@ -65,20 +65,6 @@ class ClienteFormController extends AbstractController
         return $this->redirectToRoute("adicionarCliente");
     }
 
-    #[Route('clientes/excluir/{id}/{nome}', name: "excluirCliente")]
-    public function excluirCliente($id, $nome): Response
-    {
-        $excluir = $this->clienteService->excluirCliente($id);
-        
-        if (!$excluir) {
-            $this->addFlash('danger', "O Cliente de id {$id} não existe!");
-            return $this->redirectToRoute("clientes");
-        }
-
-        $this->addFlash('success', "O Cliente {$nome} foi excluido com sucesso!");
-        return $this->redirectToRoute("clientes");
-    }
-
     #[Route(path: '/clientes/editar', name: 'editarClienteRegistrar', methods: ["POST"])]
     public function editarClienteRegistrar(Request $request,ValidarCpfService $validarCpfService, ClienteRepository $clienteRepository): Response
     {
