@@ -29,7 +29,7 @@
                 <tr>
                     <td data-label="Id">{{ cliente.id }}</td>
                     <td data-label="Nome">{{ cliente.nome }}</td>
-                    <td data-label="Nome">{{ cliente.cpf }}</td>
+                    <td data-label="CPF" class="cpf">{{ cliente.cpf }}</td>
                     <td data-label="Ações" class="text-end">
                         <a href="{{ path('editarCliente',{'id' : cliente.id,}) }}" class="btn btn-secondary btn-sm btn-action">
                             <i class="fas fa-edit"></i>
@@ -43,4 +43,15 @@
         </tbody>
     </table>
 </div>
+<script>
+    function formatCPF(cpf) {
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+    document.querySelectorAll('.cpf').forEach(cell => {
+        const rawCpf = cell.textContent.trim();
+        if (/^\d{11}$/.test(rawCpf)) {
+            cell.textContent = formatCPF(rawCpf);
+        }
+    });
+</script>
 {% endblock %}
