@@ -43,7 +43,7 @@ class ClienteFormController extends AbstractController
             return $this->redirectToRoute("adicionarCliente");
         }
 
-        $cliente->setCpf((int) $cpf);
+        $cliente->setCpf($cpf);
 
         if(is_numeric($request->request->get("nome"))){
             $this->addFlash("danger", "O nome inserido contém apenas números!");
