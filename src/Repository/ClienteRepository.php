@@ -36,12 +36,11 @@ class ClienteRepository extends ServiceEntityRepository
         return True;
     }
 
-    public function editar($id,$dados): bool
+    public function editar($id,$nome): bool
     {
         $cliente = $this->find($id);
 
-        $cliente->setNome($dados["nome"]);
-        $cliente->setCpf($dados["cpf"]);
+        $cliente->setNome($nome);
 
         $this->getEntityManager()->persist($cliente);
         $this->getEntityManager()->flush();
