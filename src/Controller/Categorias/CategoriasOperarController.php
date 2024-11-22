@@ -16,7 +16,7 @@ class CategoriasOperarController extends AbstractController
     {
         $nome = $request->request->get("nome");
 
-        if(empty(trim($nome))){
+        if(empty($nome)){
             $this->addFlash('danger', "O nome da categoria não pode estar vazio!");
             return $this->redirectToRoute('addCategoria');
         }
