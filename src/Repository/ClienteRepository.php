@@ -49,13 +49,12 @@ class ClienteRepository extends ServiceEntityRepository
         return True;
     }
 
-    public function buscarClienteCPF($cpf) : ?Cliente
+    public function buscarPorCpf($cpf): ?Cliente
     {
-        $query = $this->createQueryBuilder("cliente")
-        ->andWhere("cliente.cpf = :cpf")
-        ->setParameter("cpf",$cpf)
-        ->getQuery();
-       return $query->getOneOrNullResult();
+        return $this->createQueryBuilder("cliente")
+            ->andWhere("cliente.cpf = :cpf")
+            ->setParameter("cpf", $cpf)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
-
 }
