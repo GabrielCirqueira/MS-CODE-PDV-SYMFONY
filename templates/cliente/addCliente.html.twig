@@ -32,7 +32,7 @@
             <span class="input-group-text">
               <i class="fas fa-id-card"></i>
             </span>
-            <input type="text" value="{{modo == 'adicionar' ? '' : cliente.cpf}}" class="form-control" id="cpf" name="cpf" maxlength="14">
+            <input type="text" value="{{modo != 'adicionar' ? cliente.cpf}}" class="form-control" id="cpf" name="cpf" maxlength="14">
           </div>
         </div>
 
