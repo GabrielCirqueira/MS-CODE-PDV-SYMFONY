@@ -5,10 +5,7 @@
 {% block body %}
 
 <div class="container py-5 main">
-
-
   <div class="container-produtos">
-
     <div class="mb-4 text-center">
       <h1><i class="fas fa-edit"></i>{{modo == 'adicionar' ? 'Novo Produto' : 'Editar Produto'}}</h1>
     </div>
@@ -31,7 +28,6 @@
         </div>
 
         <div class="row">
-
           <div class="mb-3 col-4">
             <label for="categoriaId" class="form-label">Categoria:</label>
             <div class="input-group">
@@ -54,7 +50,7 @@
               <span class="input-group-text">
                 <i class="fas fa-boxes"></i>
               </span>
-              <input type="number" value="{{modo == 'adicionar' ? '' : produto.quantidade}}" class="form-control" id="quantidade" name="quantidade">
+              <input type="text" value="{{modo == 'adicionar' ? '' : produto.quantidade}}" class="form-control numeric-input" id="quantidade" name="quantidade">
             </div>
           </div>
           <div class="mb-3 col-4">
@@ -63,22 +59,30 @@
               <span class="input-group-text">
                 <i class="fas fa-dollar-sign"></i>
               </span>
-            <input type="number" value="{{modo == 'adicionar' ? '' : produto.valorUnitario}}" class="form-control" id="valor" name="valor">
+              <input type="text" value="{{modo == 'adicionar' ? '' : produto.valorUnitario}}" class="form-control numeric-input" id="valor" name="valor">
             </div>
           </div>
         </div>
-        
+
         {% if modo == 'editar' %}
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('editProduto') }}">
-          <input type="hidden" name="id" value="{{id}}">
-        {% else %}        
+        <input type="hidden" name="id" value="{{id}}">
+        {% else %}
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('addProduto') }}">
-        {% endif %}        
-        
+        {% endif %}
+
         <button type="submit" class="btn btn-primary">Salvar</button>
       </form>
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    $(".numeric-input").on("input", function () {
+      $(this).val($(this).val().replace(/[^0-9]/g, ""));
+    });
+  });
+</script>
 
 {% endblock %}
