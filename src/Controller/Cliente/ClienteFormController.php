@@ -30,22 +30,20 @@ class ClienteFormController extends AbstractController
             return $this->redirectToRoute("clientes");
         }
 
-        if(!$validarCpfService->execute($request->request->get("cpf"))){
+        $cpf = preg_replace('/\D/', '', $request->request->get("cpf"));
+        if(!$validarCpfService->execute($cpf)){
             $this->addFlash("danger", "CPF inválido!");
             return $this->redirectToRoute("adicionarCliente");
         }
         
         $cliente = new Cliente();
 
-        $cpf = $request->request->get("cpf");
-        $cpf = str_replace(['.', '-'], '', $cpf);
-
         if($clienteRepository->buscarClienteCPF($cpf)){
             $this->addFlash("danger", "CPF já cadastrado!");
             return $this->redirectToRoute("adicionarCliente");
         }
 
-        $cliente->setCpf((int) $cpf);
+        $cliente->setCpf($cpf);
 
         if(is_numeric($request->request->get("nome"))){
             $this->addFlash("danger", "O nome inserido contém apenas números!");

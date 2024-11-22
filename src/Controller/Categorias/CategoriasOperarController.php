@@ -15,6 +15,12 @@ class CategoriasOperarController extends AbstractController
     public function registrarCategoria(CategoriaService $categoriaService, Request $request): Response
     {
         $nome = $request->request->get("nome");
+
+        if(empty($nome)){
+            $this->addFlash('danger', "O nome da categoria não pode estar vazio!");
+            return $this->redirectToRoute('addCategoria');
+        }
+        
         $inserir = $categoriaService->registarCategoria($nome);
 
         if (!$inserir) {
@@ -32,6 +38,18 @@ class CategoriasOperarController extends AbstractController
         $id = $request->request->get("id");
         $nome = $request->request->get("nome");
 
+        if(empty(trim($nome))){
+            $this->addFlash('danger', "O nome da categoria não pode estar vazio!");
+            return $this->redirectToRoute('editarCategoria', compact('id'));
+        }
+
+        $consultarCategoria = $categoriasRepository->buscarCategoria($nome);
+
+        if($ConsultarCategoria){
+            $this->addFlash('danger', "A categoria {$nome} já existe!");
+            return $this->redirectToRoute('editarCategoria', ['id' => $id]);
+        }
+
         $editar = $categoriasRepository->editarCategoria($id, $nome);
 
         if ($editar) {
@@ -41,19 +59,5 @@ class CategoriasOperarController extends AbstractController
             $this->addFlash('danger', "Ocorreu um erro ao editar categoria.");
             return $this->redirectToRoute("categorias");
         }
-    }
-
-    #[Route('/categorias/excluir/{id}/{nome}', 'excluirCategoria')]
-    public function excluirCategoria($id, $nome, CategoriaRepository $categoriasRepository): Response
-    {
-        $excluir = $categoriasRepository->excluirCategoria($id);
-        
-        if (!$excluir) {
-            $this->addFlash('danger', "A categoria de id {$id} não existe!");
-            return $this->redirectToRoute("categorias");
-        }
-
-        $this->addFlash('success', "A categoria {$nome} foi excluída com sucesso!");
-        return $this->redirectToRoute("categorias");
     }
 }
