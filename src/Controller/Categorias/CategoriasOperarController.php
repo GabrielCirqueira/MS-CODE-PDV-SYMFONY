@@ -40,7 +40,7 @@ class CategoriasOperarController extends AbstractController
 
         if(empty(trim($nome))){
             $this->addFlash('danger', "O nome da categoria não pode estar vazio!");
-            return $this->redirectToRoute('editarCategoria', ['id' => $id]);
+            return $this->redirectToRoute('editarCategoria', compact('id'));
         }
 
         $ConsultarCategoria = $categoriasRepository->buscarCategoria($nome);
