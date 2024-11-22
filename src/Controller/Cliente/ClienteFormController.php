@@ -67,7 +67,6 @@ class ClienteFormController extends AbstractController
         return $this->redirectToRoute("adicionarCliente");
     }
 
-
     #[Route('clientes/excluir/{id}/{nome}', name: "excluirCliente")]
     public function excluirCliente($id, $nome): Response
     {
