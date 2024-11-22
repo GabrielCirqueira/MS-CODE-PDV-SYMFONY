@@ -67,10 +67,12 @@
             </div>
           </div>
         </div>
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('addProduto') }}">
         
         {% if modo == 'editar' %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('editProduto') }}">
           <input type="hidden" name="id" value="{{id}}">
+        {% else %}        
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('addProduto') }}">
         {% endif %}        
         
         <button type="submit" class="btn btn-primary">Salvar</button>
