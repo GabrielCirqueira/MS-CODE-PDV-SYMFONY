@@ -14,17 +14,7 @@
         </div>
 
         <form method="POST" action="{{ path(modo == 'adicionar' ? 'RegistrarCategoria' : 'editarCategoriaRegistrar') }}">
-            <div class="mb-3">
-                <label for="id" class="form-label">ID:</label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-id-badge"></i>
-                    </span>
-                    <input type="text" name="id" class="form-control" id="id" readonly value="{{modo == 'adicionar' ? '0' : id}}">
-                </div>
-
-            </div>
-
+           
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome da Categoria:</label>
                 <div class="input-group">
@@ -44,6 +34,8 @@
                     <i class="fas fa-save"></i> Salvar
                 </button>
             </div>
+            <input type="hidden" name="id" class="form-control" id="id" readonly value="{{modo == 'adicionar' ? '0' : id}}">
+
         </form>
     </div>
 </div>

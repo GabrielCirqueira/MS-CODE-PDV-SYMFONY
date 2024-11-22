@@ -29,9 +29,9 @@ class ClienteService
         return $this->clienteRepository->excluir($id);
     }
 
-    public function editarCliente(int $id, array $dados)
+    public function editarCliente(int $id, string $nome)
     {
-        return $this->clienteRepository->editar($id, $dados);
+        return $this->clienteRepository->editar($id, $nome);
     }
 
     public function buscarClientePorId(int $id): ?Cliente
