@@ -45,7 +45,7 @@ class CategoriasOperarController extends AbstractController
 
         $consultarCategoria = $categoriasRepository->buscarCategoria($nome);
 
-        if($ConsultarCategoria){
+        if($consultarCategoria){
             $this->addFlash('danger', "A categoria {$nome} já existe!");
             return $this->redirectToRoute('editarCategoria', ['id' => $id]);
         }
