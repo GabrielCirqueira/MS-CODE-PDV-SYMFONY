@@ -53,7 +53,7 @@ class ProdutosController extends AbstractController
     
         foreach ($dados as $campo => $valor) {
             if (empty($valor)) {
-                $this->addFlash("danger", "O campo '$campo' está vazio!");
+                $this->addFlash("danger", "O campo $campo está vazio!");
                 return $this->redirectToRoute("adicionarProdutos");
             }
         }
