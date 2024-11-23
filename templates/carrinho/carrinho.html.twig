@@ -43,7 +43,7 @@
             <div class="input-group client-input-group">
                 <input type="text" class="form-control client-input" id="client-search-input"
                     placeholder="Buscar cliente por nome, CPF ou CNPJ...">
-                <button class="btn color-btn search-button">Procurar Cliente</button>
+                <button id="button-procurar-cliente" class="btn color-btn search-button">Procurar Cliente</button>
             </div>
             <ul class="list-group" id="client-suggestions"
                 style="display: none; position: absolute; z-index: 1000; width: 100%;">
@@ -55,8 +55,9 @@
         <div class="card-body product-search-body">
             <h5 class="product-label">Produto*</h5>
             <div class="input-group product-input-group">
-                <input type="text" class="form-control product-input" id="product-search-input"
+                <input disabled type="text" class="form-control product-input" id="product-search-input"
                     placeholder="Buscar produto por nome, código ou categoria...">
+                <button id="button-inserir-produto" class="btn color-btn search-button">Inserir Produto</button>
             </div>
             <ul class="list-group" id="product-suggestions"
                 style="display: none; position: absolute; z-index: 1000; width: 100%;"></ul>
@@ -65,7 +66,7 @@
 
     <div class="card mb-4 cart-table-card">
         <div class="card-body">
-            <table class="table table-bordered cart-table">
+            <table class="table">
                 <thead class="table-light cart-table-head">
                     <tr>
                         <th class="text-center align-middle header-cell">Nome</th>
@@ -74,25 +75,19 @@
                         <th class="text-center align-middle header-cell">Valor/Un.</th>
                         <th class="text-center align-middle header-cell">Quantidade</th>
                         <th class="text-center align-middle header-cell">Total</th>
-                        <th class="text-center align-middle header-cell"></th>
                     </tr>
                 </thead>
                 <tbody class="cart-table-body">
                     <tr>
-                        <td class="text-center align-middle item-cell">teste 1</td>
+                        <td colspan="6" class="text-center" >Por favor, selecione um cliente!</td>
+                        {# <td class="text-center align-middle item-cell">teste 1</td>
                         <td class="text-center align-middle item-cell">Categoria 1</td>
                         <td class="text-center align-middle item-cell">50</td>
                         <td class="text-center align-middle item-cell">R$ 10,00</td>
                         <td class="text-center align-middle item-cell">
-                            <div class="quantity-wrapper refres">
-                                <input type="number" class="quantity-input" name="" id="">
-                            </div>
+                        <input type="number" value="1" class="quantity-input" name="" id="">
                         </td>
-                        <td class="text-center align-middle item-cell">R$ 20,00</td>
-                        <td class="text-center align-middle item-cell">
-                            <div><img class="icon-size-table delete-icon" src="../imgs/lixeira-de-reciclagem (1).png"
-                                    alt=""></div>
-                        </td>
+                        <td class="text-center align-middle item-cell">R$ 20,00</td> #}
                     </tr>
                 </tbody>
             </table>
@@ -103,9 +98,10 @@
 <script>
     $(document).ready(function () {
 
-        function configurarBusca(entradaId, sugestoesId, apiUrl) {
+        function configurarBusca(botaoId,entradaId, sugestoesId, apiUrl) {
             const $campoEntrada = $(`#${entradaId}`);
             const $listaSugestoes = $(`#${sugestoesId}`);
+            const $butao = $(`#${botaoId}`);
 
             $campoEntrada.on('input', function () {
                 const termo = $campoEntrada.val().trim();
@@ -142,6 +138,7 @@
             $listaSugestoes.on('click', '.list-group-item', function () {
                 const nomeSelecionado = $(this).text();
                 $campoEntrada.val(nomeSelecionado);
+                $butao.val($(this).data('id'));
                 $listaSugestoes.hide();
             });
 
@@ -152,8 +149,8 @@
             });
         }
 
-        configurarBusca('client-search-input', 'client-suggestions', 'api/clientes');
-        configurarBusca('product-search-input', 'product-suggestions', 'api/produtos');
+        configurarBusca('button-procurar-cliente','client-search-input', 'client-suggestions', 'api/clientes');
+        configurarBusca('button-inserir-produto','product-search-input', 'product-suggestions', 'api/produtos');
     });
 </script>
 
