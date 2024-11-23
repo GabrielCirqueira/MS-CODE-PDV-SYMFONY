@@ -42,23 +42,33 @@ class ProdutosController extends AbstractController
             $this->addFlash("danger", "Token CSRF inválido!");
             return $this->redirectToRoute("adicionarProdutos");
         }
-
+    
         $dados = [
-            "nome" => $request->request->get("nome"),
-            "descricao" => $request->request->get("descricao"),
-            "categoria" => $request->request->get("categoria"),
-            "quantidade" => $request->request->get("quantidade"),
-            "valor" => ((int) $request->request->get("valor")) * 100
+            "nome" => trim($request->request->get("nome", "")),
+            "descricao" => trim($request->request->get("descricao", "")),
+            "categoria" => trim($request->request->get("categoria", "")),
+            "quantidade" => trim($request->request->get("quantidade", "")),
+            "valor" => trim($request->request->get("valor", ""))
         ];
-
+    
+        foreach ($dados as $campo => $valor) {
+            if (empty($valor)) {
+                $this->addFlash("danger", "O campo '$campo' está vazio!");
+                return $this->redirectToRoute("adicionarProdutos");
+            }
+        }
+    
+        $dados['valor'] = (int) $dados['valor'] * 100;
+    
         $inserir = $produtoService->registrarProduto($dados);
-
+    
         if (!$inserir) {
             $this->addFlash("danger", "Erro ao enviar formulário!");
             return $this->redirectToRoute("adicionarProdutos");
         }
-
+    
         $this->addFlash("success", "Produto Adicionado com sucesso!");
         return $this->redirectToRoute("produtos");
     }
+    
 }
