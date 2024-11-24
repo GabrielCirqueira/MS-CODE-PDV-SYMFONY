@@ -43,7 +43,7 @@ class Carrinho
     #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'carrinhos')]
     private Collection $items;
 
-    public function __construct($cliente,$usuario,$status = "Aguardando pagamento",$valorTotal = 0)
+    public function __construct(Cliente $cliente,User $usuario,string $status = "Aguardando pagamento",int $valorTotal = null)
     {
         $this->cliente = $cliente;
         $this->usuario = $usuario;
