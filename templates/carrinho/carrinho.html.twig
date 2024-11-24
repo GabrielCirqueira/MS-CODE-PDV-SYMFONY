@@ -91,15 +91,15 @@
     $(document).ready(function () {
 
         function configurarBusca(botaoId,entradaId, sugestoesId, apiUrl) {
-            const $campoEntrada = $(`#${entradaId}`);
-            const $listaSugestoes = $(`#${sugestoesId}`);
-            const $butao = $(`#${botaoId}`);
+            var campoEntrada = $(`#${entradaId}`);
+            var listaSugestoes = $(`#${sugestoesId}`);
+            var butao = $(`#${botaoId}`);
 
-            $campoEntrada.on('input', function () {
-                const termo = $campoEntrada.val().trim();
+            campoEntrada.on('input', function () {
+                const termo = campoEntrada.val().trim();
 
                 if (termo.length < 1) {
-                    $listaSugestoes.hide();
+                    listaSugestoes.hide();
                     return;
                 }
 
@@ -107,18 +107,18 @@
                     url: apiUrl,
                     method: 'GET',
                     success: function (dados) {
-                        $listaSugestoes.empty();
+                        listaSugestoes.empty();
                         const resultados = dados.filter(function (item) {
                             return item.nome.toLowerCase().includes(termo.toLowerCase());
                         });
 
                         if (resultados.length > 0) {
                             resultados.forEach(function (item) {
-                                $listaSugestoes.append(`<li class="list-group-item" data-id="${item.id}">${item.nome}</li>`);
+                                listaSugestoes.append(`<li class="list-group-item" data-id="${item.id}">${item.nome}</li>`);
                             });
-                            $listaSugestoes.show();
+                            listaSugestoes.show();
                         } else {
-                            $listaSugestoes.hide();
+                            listaSugestoes.hide();
                         }
                     },
                     error: function () {
@@ -127,16 +127,16 @@
                 });
             });
 
-            $listaSugestoes.on('click', '.list-group-item', function () {
+            listaSugestoes.on('click', '.list-group-item', function () {
                 const nomeSelecionado = $(this).text();
-                $campoEntrada.val(nomeSelecionado);
-                $butao.val($(this).data('id'));
-                $listaSugestoes.hide();
+                campoEntrada.val(nomeSelecionado);
+                butao.val($(this).data('id'));
+                listaSugestoes.hide();
             });
 
             $(document).on('click', function (e) {
                 if (!$(e.target).closest(`#${entradaId}`).length && !$(e.target).closest(`#${sugestoesId}`).length) {
-                    $listaSugestoes.hide();
+                    listaSugestoes.hide();
                 }
             });
         }
@@ -198,7 +198,6 @@
         function formatarValorBR(valor) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
         }
-        
         
     });
 </script>
