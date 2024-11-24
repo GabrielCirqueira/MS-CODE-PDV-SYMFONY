@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Cliente;
+namespace App\Controller\Carrinho;
 
 use App\Entity\Carrinho;
 use App\Repository\ClienteRepository;
@@ -13,7 +13,7 @@ use App\Repository\CarrinhoRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class CriarClienteApiController extends AbstractController
+class CarrinhoApiController extends AbstractController
 {
 
     #[Route('/api/carrinho/{idCliente}', name: 'carrinhoApi')]
