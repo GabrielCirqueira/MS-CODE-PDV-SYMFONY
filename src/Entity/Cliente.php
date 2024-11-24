@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
 class Cliente
@@ -22,9 +24,13 @@ class Cliente
     #[Groups('cliente')]
     private string $cpf;
 
-    #[ORM\OneToOne(mappedBy: 'cliente', cascade: ['persist', 'remove'])]
-    private ?Carrinho $carrinho = null;
+    #[ORM\OneToMany(mappedBy: 'cliente', targetEntity: Carrinho::class, cascade: ['persist', 'remove'])]
+    private Collection $carrinhos;
 
+    public function __construct()
+    {
+        $this->carrinhos = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -54,24 +60,29 @@ class Cliente
         return $this;
     }
 
-    public function getCarrinho(): ?Carrinho
+    public function getCarrinhos(): Collection
     {
-        return $this->carrinho;
+        return $this->carrinhos;
     }
 
-    public function setCarrinho(?Carrinho $carrinho): static
+    public function addCarrinho(Carrinho $carrinho): static
     {
-        // unset the owning side of the relation if necessary
-        if ($carrinho === null && $this->carrinho !== null) {
-            $this->carrinho->setCliente(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($carrinho !== null && $carrinho->getCliente() !== $this) {
+        if (!$this->carrinhos->contains($carrinho)) {
+            $this->carrinhos[] = $carrinho;
             $carrinho->setCliente($this);
         }
 
-        $this->carrinho = $carrinho;
+        return $this;
+    }
+
+    public function removeCarrinho(Carrinho $carrinho): static
+    {
+        if ($this->carrinhos->contains($carrinho)) {
+            $this->carrinhos->removeElement($carrinho);
+            if ($carrinho->getCliente() === $this) {
+                $carrinho->setCliente(null);
+            }
+        }
 
         return $this;
     }

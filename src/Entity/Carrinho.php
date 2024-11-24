@@ -16,7 +16,7 @@ class Carrinho
     #[ORM\Column]
     private int $id;
 
-    #[ORM\OneToOne(inversedBy: 'carrinho', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'carrinho', cascade: ['persist', 'remove'])]
     private Cliente $cliente;
 
     #[ORM\ManyToOne(inversedBy: 'carrinhos')]
@@ -40,7 +40,7 @@ class Carrinho
     /**
      * @var Collection<int, Item>
      */
-    #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'carrinho_id')]
+    #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'carrinhos')]
     private Collection $items;
 
     public function __construct($cliente,$usuario,$status = "Aguardando pagamento",$valorTotal = 0)

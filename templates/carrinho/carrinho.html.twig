@@ -117,9 +117,9 @@
                                 listaSugestoes.append(`<li class="list-group-item" data-id="${item.id}">${item.nome}</li>`);
                             });
                             listaSugestoes.show();
-                        } else {
-                            listaSugestoes.hide();
+                            return;
                         }
+                        listaSugestoes.hide();
                     },
                     error: function () {
                         console.error("Erro ao buscar dados na API.");
