@@ -79,7 +79,7 @@
                 </thead>
                 <tbody class="cart-table-body">
                     <tr>
-                        <td colspan="6" class="text-center" >Por favor, selecione um cliente!</td>
+                        <td id="linha-mensagem-tabela" colspan="6" class="text-center" >Por favor, selecione um cliente!</td>
                         {# <td class="text-center align-middle item-cell">teste 1</td>
                         <td class="text-center align-middle item-cell">Categoria 1</td>
                         <td class="text-center align-middle item-cell">50</td>
@@ -159,8 +159,9 @@
                 url: '/api/carrinho/' + id,
                 type: 'POST',
                 success: function(resposta) {
-                    if (resposta.status === 'sucesso') {
-                        alert(resposta.message);
+                    if (resposta.status === 'criado' || resposta.status === "existente") {
+                        $('#product-search-input').removeAttr('disabled');
+                        $('#linha-mensagem-tabela').text('Esse cliente não tem produtos em seu carrinho, selecione um produto!');
                     } else {
                         alert(resposta.message);
                     }

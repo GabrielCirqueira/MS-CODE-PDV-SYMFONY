@@ -24,24 +24,23 @@ class CriarClienteApiController extends AbstractController
         Security $security
     ): JsonResponse
     {
-        $carrinhoBusca = $carrinhoRepository->findOneBy(["clienteId" => $idCliente]);
-
+        $cliente = $clienteRepository->find($idCliente);
+        $carrinhoBusca = $carrinhoRepository->findOneBy(['cliente' => $cliente]);
         if ($carrinhoBusca == null) {
 
             $usuario = $security->getUser();
-            $cliente = $clienteRepository->find($idCliente);
             $carrinho = new Carrinho($cliente, $usuario);
             $carrinhoRepository->salvarCarrinho($carrinho);
 
             return new JsonResponse([
-                'status' => 'sucesso',
+                'status' => 'criado',
                 'mensagem' => 'Carrinho criado com sucesso!',
             ], Response::HTTP_OK); 
         }
 
         return new JsonResponse([
-            'status' => 'error',
-            'message' => 'Carrinho já existe.',
-        ], Response::HTTP_CONFLICT);
+            'status' => 'existente',
+            'mensagem' => 'Carrinho já existe.',
+        ], Response::HTTP_OK);
     }
 }

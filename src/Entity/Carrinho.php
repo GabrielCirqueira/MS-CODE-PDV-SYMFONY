@@ -17,10 +17,10 @@ class Carrinho
     private int $id;
 
     #[ORM\OneToOne(inversedBy: 'carrinho', cascade: ['persist', 'remove'])]
-    private Cliente $clienteId;
+    private Cliente $cliente;
 
     #[ORM\ManyToOne(inversedBy: 'carrinhos')]
-    private User $usuarioId;
+    private User $usuario;
 
     #[ORM\Column(length: 255)]
     private string $status;
@@ -45,8 +45,8 @@ class Carrinho
 
     public function __construct($cliente,$usuario,$status = "Aguardando pagamento",$valorTotal = 0)
     {
-        $this->clienteId = $cliente;
-        $this->usuarioId = $usuario;
+        $this->cliente = $cliente;
+        $this->usuario = $usuario;
         $this->status = $status;
         $this->valorTotal = $valorTotal;
         $this->criadoEm = new \DateTimeImmutable();
@@ -58,26 +58,26 @@ class Carrinho
         return $this->id;
     }
 
-    public function getClienteId(): ?Cliente
+    public function getcliente(): ?Cliente
     {
-        return $this->clienteId;
+        return $this->cliente;
     }
 
-    public function setClienteId(?Cliente $clienteId): static
+    public function setcliente(?Cliente $cliente): static
     {
-        $this->clienteId = $clienteId;
+        $this->cliente = $cliente;
 
         return $this;
     }
 
-    public function getUsuarioId(): ?User
+    public function getusuario(): ?User
     {
-        return $this->usuarioId;
+        return $this->usuario;
     }
 
-    public function setUsuarioId(?User $usuarioId): static
+    public function setusuario(?User $usuario): static
     {
-        $this->usuarioId = $usuarioId;
+        $this->usuario = $usuario;
 
         return $this;
     }
