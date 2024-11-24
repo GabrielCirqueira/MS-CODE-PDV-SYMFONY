@@ -8,7 +8,7 @@
         <div class="col-md-4">
             <div class="card text-center card-summary">
                 <div class="card-body card-summary-body">
-                    <div class="flex summary-flex">Total 
+                    <div class="flex summary-flex">Total
                         <div><i class="fas fa-dollar-sign"></i></div>
                     </div>
                     <div class="summary-dash">-</div>
@@ -18,7 +18,7 @@
         <div class="col-md-4">
             <div class="card text-center card-summary">
                 <div class="card-body card-summary-body">
-                    <div class="flex summary-flex">Status 
+                    <div class="flex summary-flex">Status
                         <div><i class="fas fa-tag"></i></div>
                     </div>
                     <div class="summary-dash">-</div>
@@ -28,7 +28,7 @@
         <div class="col-md-4">
             <div class="card text-center card-summary">
                 <div class="card-body card-summary-body">
-                    <div class="flex summary-flex">Criação 
+                    <div class="flex summary-flex">Criação
                         <div><i class="fas fa-calendar"></i></div>
                     </div>
                     <div class="summary-dash">-</div>
@@ -41,97 +41,139 @@
         <div class="card-body client-search-body">
             <h5 class="client-label">Cliente*</h5>
             <div class="input-group client-input-group">
-                <input type="text" class="form-control client-input" id="client-search-input" placeholder="Buscar cliente por nome, CPF ou CNPJ...">
-                <button class="btn color-btn search-button">Procurar Cliente</button>
+                <input type="text" class="form-control client-input" id="client-search-input"
+                    placeholder="Buscar cliente por nome, CPF ou CNPJ...">
+                <button id="button-procurar-cliente" class="btn color-btn search-button">Procurar Cliente</button>
             </div>
-            <ul class="list-group" id="client-suggestions" style="display: none; position: absolute; z-index: 1000; width: 100%;">
+            <ul class="list-group" id="client-suggestions"
+                style="display: none; position: absolute; z-index: 1000; width: 100%;">
             </ul>
         </div>
     </div>
 
-    <table class="table table-bordered cart-table">
-        <thead class="table-light cart-table-head">
-            <tr>
-                <th class="text-center align-middle header-cell">Nome</th>
-                <th class="text-center align-middle header-cell">Categoria</th>
-                <th class="text-center align-middle header-cell">Estoque</th>
-                <th class="text-center align-middle header-cell">Valor/Un.</th>
-                <th class="text-center align-middle header-cell">Quantidade</th>
-                <th class="text-center align-middle header-cell">Total</th>
-                <th class="text-center align-middle header-cell"></th>
-            </tr>
-        </thead>
-        <tbody class="cart-table-body">
-            <tr>
-                <td class="text-center align-middle item-cell">teste 1</td>
-                <td class="text-center align-middle item-cell">Categoria 1</td>
-                <td class="text-center align-middle item-cell">50</td>
-                <td class="text-center align-middle item-cell">R$ 10,00</td>
-                <td class="text-center align-middle item-cell">
-                    <div class="quantity-wrapper refres">
-                        <input type="number" class="quantity-input" name="" id="">
-                    </div>
-                </td>
-                <td class="text-center align-middle item-cell">R$ 20,00</td>
-                <td class="text-center align-middle item-cell">
-                    <div><img class="icon-size-table delete-icon" src="../imgs/lixeira-de-reciclagem (1).png" alt=""></div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card mb-4 product-search-card">
+        <div class="card-body product-search-body">
+            <h5 class="product-label">Produto*</h5>
+            <div class="input-group product-input-group">
+                <input disabled type="text" class="form-control product-input" id="product-search-input"
+                    placeholder="Buscar produto por nome, código ou categoria...">
+                <button id="button-inserir-produto" class="btn color-btn search-button">Inserir Produto</button>
+            </div>
+            <ul class="list-group" id="product-suggestions"
+                style="display: none; position: absolute; z-index: 1000; width: 100%;"></ul>
+        </div>
+    </div>
+
+    <div class="card mb-4 cart-table-card">
+        <div class="card-body">
+            <table class="table">
+                <thead class="table-light cart-table-head">
+                    <tr>
+                        <th class="text-center align-middle header-cell">Nome</th>
+                        <th class="text-center align-middle header-cell">Categoria</th>
+                        <th class="text-center align-middle header-cell">Estoque</th>
+                        <th class="text-center align-middle header-cell">Valor/Un.</th>
+                        <th class="text-center align-middle header-cell">Quantidade</th>
+                        <th class="text-center align-middle header-cell">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="cart-table-body">
+                    <tr>
+                        <td id="linha-mensagem-tabela" colspan="6" class="text-center" >Por favor, selecione um cliente!</td>
+                        {# <td class="text-center align-middle item-cell">teste 1</td>
+                        <td class="text-center align-middle item-cell">Categoria 1</td>
+                        <td class="text-center align-middle item-cell">50</td>
+                        <td class="text-center align-middle item-cell">R$ 10,00</td>
+                        <td class="text-center align-middle item-cell">
+                        <input type="number" value="1" class="quantity-input" name="" id="">
+                        </td>
+                        <td class="text-center align-middle item-cell">R$ 20,00</td> #}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        const $clientSearchInput = $('#client-search-input');
-        const $clientSuggestions = $('#client-suggestions');
 
-        $clientSearchInput.on('input', function () {
-            const query = $(this).val().trim();
-            if (query.length < 1) {
-                $clientSuggestions.hide();
-                return;
-            }
+        function configurarBusca(botaoId,entradaId, sugestoesId, apiUrl) {
+            const $campoEntrada = $(`#${entradaId}`);
+            const $listaSugestoes = $(`#${sugestoesId}`);
+            const $butao = $(`#${botaoId}`);
 
-            $.ajax({
-                url: 'api/clientes',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    const filteredClients = data.filter(client => client.nome.toLowerCase().includes(query.toLowerCase()));
-                    
-                    $clientSuggestions.empty();
+            $campoEntrada.on('input', function () {
+                const termo = $campoEntrada.val().trim();
 
-                    if (filteredClients.length) {
-                        filteredClients.forEach(client => {
-                            $clientSuggestions.append(
-                                `<li class="list-group-item list-group-item-action" data-id="${client.id}">${client.nome}</li>`
-                            );
+                if (termo.length < 1) {
+                    $listaSugestoes.hide();
+                    return;
+                }
+
+                $.ajax({
+                    url: apiUrl,
+                    method: 'GET',
+                    success: function (dados) {
+                        $listaSugestoes.empty();
+                        const resultados = dados.filter(function (item) {
+                            return item.nome.toLowerCase().includes(termo.toLowerCase());
                         });
-                        $clientSuggestions.show();
+
+                        if (resultados.length > 0) {
+                            resultados.forEach(function (item) {
+                                $listaSugestoes.append(`<li class="list-group-item" data-id="${item.id}">${item.nome}</li>`);
+                            });
+                            $listaSugestoes.show();
+                        } else {
+                            $listaSugestoes.hide();
+                        }
+                    },
+                    error: function () {
+                        console.error("Erro ao buscar dados na API.");
+                    }
+                });
+            });
+
+            $listaSugestoes.on('click', '.list-group-item', function () {
+                const nomeSelecionado = $(this).text();
+                $campoEntrada.val(nomeSelecionado);
+                $butao.val($(this).data('id'));
+                $listaSugestoes.hide();
+            });
+
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest(`#${entradaId}`).length && !$(e.target).closest(`#${sugestoesId}`).length) {
+                    $listaSugestoes.hide();
+                }
+            });
+        }
+
+        configurarBusca('button-procurar-cliente','client-search-input', 'client-suggestions', 'api/clientes');
+        configurarBusca('button-inserir-produto','product-search-input', 'product-suggestions', 'api/produtos');
+
+        $('#button-procurar-cliente').click(function() {
+            var id = $(this).val();
+            
+            $.ajax({
+                url: '/api/carrinho/' + id,
+                type: 'POST',
+                success: function(resposta) {
+                    if (resposta.status === 'criado' || resposta.status === "existente") {
+                        $('#product-search-input').removeAttr('disabled');
+                        $('#linha-mensagem-tabela').text('Esse cliente não tem produtos em seu carrinho, selecione um produto!');
                     } else {
-                        $clientSuggestions.hide();
+                        alert(resposta.message);
                     }
                 },
                 error: function () {
-                    console.error("Erro ao buscar clientes");
+                    console.error("Erro ao buscar dados na API.");
                 }
             });
         });
-
-        $clientSuggestions.on('click', '.list-group-item', function () {
-            const selectedClientName = $(this).text();
-            $clientSearchInput.val(selectedClientName);
-            $clientSuggestions.hide();
-        });
-
-        $(document).on('click', function (e) {
-            if (!$(e.target).closest('.client-search-body').length) {
-                $clientSuggestions.hide();
-            }
-        });
+        
     });
 </script>
+
+
 {% endblock %}

@@ -6,7 +6,7 @@
 @import url(includes/carrinho.css);
 
 body {
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(247, 247, 247, 0.526);
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   flex-direction: column;

@@ -22,8 +22,8 @@ class Cliente
     #[Groups('cliente')]
     private string $cpf;
 
-    // #[ORM\OneToOne(mappedBy: 'cliente_id', cascade: ['persist', 'remove'])]
-    // private ?Carrinho $carrinho = null;
+    #[ORM\OneToOne(mappedBy: 'cliente', cascade: ['persist', 'remove'])]
+    private ?Carrinho $carrinho = null;
 
     public function getId(): ?int
     {
@@ -54,25 +54,25 @@ class Cliente
         return $this;
     }
 
-    // public function getCarrinho(): ?Carrinho
-    // {
-    //     return $this->carrinho;
-    // }
+    public function getCarrinho(): ?Carrinho
+    {
+        return $this->carrinho;
+    }
 
-    // public function setCarrinho(?Carrinho $carrinho): static
-    // {
-    //     // unset the owning side of the relation if necessary
-    //     if ($carrinho === null && $this->carrinho !== null) {
-    //         $this->carrinho->setClienteId(null);
-    //     }
+    public function setCarrinho(?Carrinho $carrinho): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($carrinho === null && $this->carrinho !== null) {
+            $this->carrinho->setCliente(null);
+        }
 
-    //     // set the owning side of the relation if necessary
-    //     if ($carrinho !== null && $carrinho->getClienteId() !== $this) {
-    //         $carrinho->setClienteId($this);
-    //     }
+        // set the owning side of the relation if necessary
+        if ($carrinho !== null && $carrinho->getCliente() !== $this) {
+            $carrinho->setCliente($this);
+        }
 
-    //     $this->carrinho = $carrinho;
+        $this->carrinho = $carrinho;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 }
