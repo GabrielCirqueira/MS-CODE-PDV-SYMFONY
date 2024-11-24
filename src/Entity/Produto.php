@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Nullable;
+use Symfony\Component\Serializer\Attribute\Groups;
 use JsonSerializable;
 
 #[ORM\Entity]
@@ -13,27 +13,35 @@ class Produto implements JsonSerializable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('produto')]
     private int $id;
 
     #[ORM\Column(length: 255)]
+    #[Groups('produto')]
     private string $nome;
     
     #[ORM\Column(length:255,nullable:true)]
+    #[Groups('produto')]
     private ?string $descricao = null;
 
     #[ORM\Column]
+    #[Groups('produto')]
     private int $quantidade;
 
     #[ORM\Column]
+    #[Groups('produto')]
     private int $valorUnitario;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups('produto')]
     private \DateTimeInterface $criadoEm;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups('produto')]
     private ?\DateTimeInterface $atualizadoEm = null;
 
     #[ORM\ManyToOne]
+    #[Groups('produto')]
     private Categoria $categoriaId;
 
     #[ORM\ManyToOne(inversedBy: 'produto_id')]
@@ -147,9 +155,14 @@ class Produto implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
+            'id' => $this->getId(),
             'nome' => $this->getNome(),
+            'descricao' => $this->getDescricao(),
             'quantidade' => $this->getQuantidade(),
             'valorUnitario' => $this->getValorUnitario(),
+            'criadoEm' => $this->getCriadoEm(),
+            'atualizadoEm' => $this->getAtualizadoEm(),
+            'categoria' => $this->getCategoriaId()->getNome(),
         ];
     }
 }
