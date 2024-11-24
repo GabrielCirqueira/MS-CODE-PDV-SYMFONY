@@ -80,14 +80,6 @@
                 <tbody class="cart-table-body">
                     <tr>
                         <td id="linha-mensagem-tabela" colspan="6" class="text-center" >Por favor, selecione um cliente!</td>
-                        {# <td class="text-center align-middle item-cell">teste 1</td>
-                        <td class="text-center align-middle item-cell">Categoria 1</td>
-                        <td class="text-center align-middle item-cell">50</td>
-                        <td class="text-center align-middle item-cell">R$ 10,00</td>
-                        <td class="text-center align-middle item-cell">
-                        <input type="number" value="1" class="quantity-input" name="" id="">
-                        </td>
-                        <td class="text-center align-middle item-cell">R$ 20,00</td> #}
                     </tr>
                 </tbody>
             </table>
@@ -171,6 +163,37 @@
                 }
             });
         });
+
+        $('#button-inserir-produto').click(function(){
+            var idProduto = $(this).val();
+        
+            $.ajax({
+                url: '/api/produtos/' + idProduto,
+                type: 'GET',
+                success: function(produto){
+                    $('#linha-mensagem-tabela').hide();
+        
+                    var novaLinha = '<tr>' +
+                        '<td class="text-center align-middle item-cell">' + produto.nome + '</td>' +
+                        '<td class="text-center align-middle item-cell">' + produto.categoria + '</td>' +
+                        '<td class="text-center align-middle item-cell">' + produto.quantidade + '</td>' +
+                        '<td class="text-center align-middle item-cell">R$ ' + formatarValorBR(produto.valorUnitario) + '</td>' +
+                        '<td class="text-center align-middle item-cell">' +
+                            '<input type="number" value="1" class="quantity-input" name="" id="">' +
+                        '</td>' +
+                        '<td class="text-center align-middle item-cell" id="total-produto">' + formatarValorBR(produto.valorUnitario) + '</td>' +
+                    '</tr>';
+        
+                    $('.cart-table-body').append(novaLinha);
+        
+                }
+            });
+        });
+        
+        function formatarValorBR(valor) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+        }
+        
         
     });
 </script>
