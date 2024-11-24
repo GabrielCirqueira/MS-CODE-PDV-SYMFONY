@@ -40,4 +40,11 @@ class CarrinhoRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function salvarCarrinho(Carrinho $carrinho) : void
+    {
+        $this->getEntityManager()->persist($carrinho);
+        $this->getEntityManager()->flush();
+    }
+
 }

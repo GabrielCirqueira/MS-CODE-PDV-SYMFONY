@@ -151,6 +151,26 @@
 
         configurarBusca('button-procurar-cliente','client-search-input', 'client-suggestions', 'api/clientes');
         configurarBusca('button-inserir-produto','product-search-input', 'product-suggestions', 'api/produtos');
+
+        $('#button-procurar-cliente').click(function() {
+            var id = $(this).val();
+            
+            $.ajax({
+                url: '/api/carrinho/' + id,
+                type: 'POST',
+                success: function(resposta) {
+                    if (resposta.status === 'sucesso') {
+                        alert(resposta.message);
+                    } else {
+                        alert(resposta.message);
+                    }
+                },
+                error: function () {
+                    console.error("Erro ao buscar dados na API.");
+                }
+            });
+        });
+        
     });
 </script>
 
