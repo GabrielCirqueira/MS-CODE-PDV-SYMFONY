@@ -58,12 +58,21 @@ class OperarController extends AbstractController
 
         $id = $request->request->get("id");
         $dados = [
-            "nome" => $request->request->get("nome"),
-            "descricao" => $request->request->get("descricao"),
-            "categoria" => $request->request->get("categoria"),
-            "quantidade" => $request->request->get("quantidade"),
-            "valor" => ((int) $request->request->get("valor")) * 100
+            "nome" => trim($request->request->get("nome", "")),
+            "descricao" => trim($request->request->get("descricao", "")),
+            "categoria" => trim($request->request->get("categoria", "")),
+            "quantidade" => trim($request->request->get("quantidade", "")),
+            "valor" => trim($request->request->get("valor", ""))
         ];
+    
+        foreach ($dados as $campo => $valor) {
+            if (empty($valor)) {
+                $this->addFlash("danger", "O campo $campo está vazio!");
+                return $this->redirectToRoute("editarProduto", compact('id'));
+            }
+        }
+    
+        $dados['valor'] = (int) $dados['valor'] * 100;
 
         $editar = $produtoRepository->editarProduto($id, $dados);
 
