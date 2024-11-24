@@ -166,31 +166,49 @@
 
         $('#button-inserir-produto').click(function(){
             var idProduto = $(this).val();
-        
+            
             $.ajax({
                 url: '/api/produtos/' + idProduto,
                 type: 'GET',
                 success: function(produto){
                     $('#linha-mensagem-tabela').hide();
         
-                    var novaLinha = '<tr>' +
-                        '<td class="text-center align-middle item-cell">' + produto.nome + '</td>' +
-                        '<td class="text-center align-middle item-cell">' + produto.categoria + '</td>' +
-                        '<td class="text-center align-middle item-cell">' + produto.quantidade + '</td>' +
-                        '<td class="text-center align-middle item-cell">R$ ' + formatarValorBR(produto.valorUnitario) + '</td>' +
-                        '<td class="text-center align-middle item-cell">' +
-                            '<input min="1" type="number" value="1" class="quantity-input" name="" id="">' +
-                        '</td>' +
-                        '<td class="text-center align-middle item-cell" id="total-produto">' + formatarValorBR(produto.valorUnitario) + '</td>' +
-                    '</tr>';
-        
-                    $('.cart-table-body').append(novaLinha);
-        
-                    $('.quantity-input').on('input', function() {
-                        var quantidade = $(this).val();
-                        var total = produto.valorUnitario * quantidade;
-                        $(this).closest('tr').find('#total-produto').text('R$ ' + formatarValorBR(total));
+                    var produtoExisteTBL = false;
+                    $('.cart-table-body tr').each(function(){
+                        var nomeProduto = $(this).find('td:eq(0)').text().trim();
+
+                        if (nomeProduto === produto.nome) {
+                            produtoExisteTBL = true;
+                            var quantidadeAtual = parseInt($(this).find('.quantity-input').val());
+                            var novaQuantidade = quantidadeAtual + 1;
+
+                            $(this).find('.quantity-input').val(novaQuantidade);
+                            var total = novaQuantidade * produto.valorUnitario;
+                            $(this).find('#total-produto').text(formatarValorBR(total));
+                            return false;
+                        }
                     });
+        
+                    if (!produtoExisteTBL) {
+                        var novaLinha = '<tr>' +
+                            '<td class="text-center align-middle item-cell">' + produto.nome + '</td>' +
+                            '<td class="text-center align-middle item-cell">' + produto.categoria + '</td>' +
+                            '<td class="text-center align-middle item-cell">' + produto.quantidade + '</td>' +
+                            '<td class="text-center align-middle item-cell">R$ ' + formatarValorBR(produto.valorUnitario) + '</td>' +
+                            '<td class="text-center align-middle item-cell">' +
+                                '<input min="1" type="number" value="1" class="quantity-input" name="" id="">' +
+                            '</td>' +
+                            '<td class="text-center align-middle item-cell" id="total-produto">' + formatarValorBR(produto.valorUnitario) + '</td>' +
+                        '</tr>';
+        
+                        $('.cart-table-body').append(novaLinha);
+                        
+                        $('.quantity-input').on('input', function() {
+                            var quantidade = $(this).val();
+                            var total = produto.valorUnitario * quantidade;
+                            $(this).closest('tr').find('#total-produto').text('R$ ' + formatarValorBR(total));
+                        });
+                    }
                 }
             });
         });
