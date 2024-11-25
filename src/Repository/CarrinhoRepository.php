@@ -20,6 +20,8 @@ class CarrinhoRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($carrinho);
         $this->getEntityManager()->flush();
+        
+        return $carrinho;
     }
 
 }
