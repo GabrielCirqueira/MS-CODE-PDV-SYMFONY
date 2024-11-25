@@ -38,7 +38,7 @@ class ClienteFormController extends AbstractController
         
         $cliente = new Cliente();
 
-        if($clienteRepository->buscarClienteCPF($cpf)){
+        if($clienteRepository->buscarPorCpf($cpf)){
             $this->addFlash("danger", "CPF já cadastrado!");
             return $this->redirectToRoute("adicionarCliente");
         }
