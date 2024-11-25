@@ -80,14 +80,6 @@
                 <tbody class="cart-table-body">
                     <tr>
                         <td id="linha-mensagem-tabela" colspan="6" class="text-center" >Por favor, selecione um cliente!</td>
-                        {# <td class="text-center align-middle item-cell">teste 1</td>
-                        <td class="text-center align-middle item-cell">Categoria 1</td>
-                        <td class="text-center align-middle item-cell">50</td>
-                        <td class="text-center align-middle item-cell">R$ 10,00</td>
-                        <td class="text-center align-middle item-cell">
-                        <input type="number" value="1" class="quantity-input" name="" id="">
-                        </td>
-                        <td class="text-center align-middle item-cell">R$ 20,00</td> #}
                     </tr>
                 </tbody>
             </table>
@@ -99,15 +91,15 @@
     $(document).ready(function () {
 
         function configurarBusca(botaoId,entradaId, sugestoesId, apiUrl) {
-            const $campoEntrada = $(`#${entradaId}`);
-            const $listaSugestoes = $(`#${sugestoesId}`);
-            const $butao = $(`#${botaoId}`);
+            const campoEntrada = $(`#${entradaId}`);
+            const listaSugestoes = $(`#${sugestoesId}`);
+            const butao = $(`#${botaoId}`);
 
-            $campoEntrada.on('input', function () {
-                const termo = $campoEntrada.val().trim();
+            campoEntrada.on('input', function () {
+                const termo = campoEntrada.val().trim();
 
                 if (termo.length < 1) {
-                    $listaSugestoes.hide();
+                    listaSugestoes.hide();
                     return;
                 }
 
@@ -115,19 +107,19 @@
                     url: apiUrl,
                     method: 'GET',
                     success: function (dados) {
-                        $listaSugestoes.empty();
+                        listaSugestoes.empty();
                         const resultados = dados.filter(function (item) {
                             return item.nome.toLowerCase().includes(termo.toLowerCase());
                         });
 
                         if (resultados.length > 0) {
                             resultados.forEach(function (item) {
-                                $listaSugestoes.append(`<li class="list-group-item" data-id="${item.id}">${item.nome}</li>`);
+                                listaSugestoes.append(`<li class="list-group-item" data-id="${item.id}">${item.nome}</li>`);
                             });
-                            $listaSugestoes.show();
-                        } else {
-                            $listaSugestoes.hide();
+                            listaSugestoes.show();
+                            return;
                         }
+                        listaSugestoes.hide();
                     },
                     error: function () {
                         console.error("Erro ao buscar dados na API.");
@@ -135,16 +127,16 @@
                 });
             });
 
-            $listaSugestoes.on('click', '.list-group-item', function () {
+            listaSugestoes.on('click', '.list-group-item', function () {
                 const nomeSelecionado = $(this).text();
-                $campoEntrada.val(nomeSelecionado);
-                $butao.val($(this).data('id'));
-                $listaSugestoes.hide();
+                campoEntrada.val(nomeSelecionado);
+                butao.val($(this).data('id'));
+                listaSugestoes.hide();
             });
 
             $(document).on('click', function (e) {
                 if (!$(e.target).closest(`#${entradaId}`).length && !$(e.target).closest(`#${sugestoesId}`).length) {
-                    $listaSugestoes.hide();
+                    listaSugestoes.hide();
                 }
             });
         }
@@ -171,6 +163,59 @@
                 }
             });
         });
+
+        $('#button-inserir-produto').click(function(){
+            var idProduto = $(this).val();
+            
+            $.ajax({
+                url: '/api/produtos/' + idProduto,
+                type: 'GET',
+                success: function(produto){
+                    $('#linha-mensagem-tabela').hide();
+        
+                    var produtoExisteTBL = false;
+                    $('.cart-table-body tr').each(function(){
+                        var nomeProduto = $(this).find('td:eq(0)').text().trim();
+
+                        if (nomeProduto === produto.nome) {
+                            produtoExisteTBL = true;
+                            var quantidadeAtual = parseInt($(this).find('.quantity-input').val());
+                            var novaQuantidade = quantidadeAtual + 1;
+
+                            $(this).find('.quantity-input').val(novaQuantidade);
+                            var total = novaQuantidade * produto.valorUnitario;
+                            $(this).find('#total-produto').text(formatarValorBR(total));
+                            return false;
+                        }
+                    });
+        
+                    if (!produtoExisteTBL) {
+                        var novaLinha = '<tr>' +
+                            '<td class="text-center align-middle item-cell">' + produto.nome + '</td>' +
+                            '<td class="text-center align-middle item-cell">' + produto.categoria + '</td>' +
+                            '<td class="text-center align-middle item-cell">' + produto.quantidade + '</td>' +
+                            '<td class="text-center align-middle item-cell">R$ ' + formatarValorBR(produto.valorUnitario) + '</td>' +
+                            '<td class="text-center align-middle item-cell">' +
+                                '<input min="1" type="number" value="1" class="quantity-input" name="" id="">' +
+                            '</td>' +
+                            '<td class="text-center align-middle item-cell" id="total-produto">' + formatarValorBR(produto.valorUnitario) + '</td>' +
+                        '</tr>';
+        
+                        $('.cart-table-body').append(novaLinha);
+                        
+                        $('.quantity-input').on('input', function() {
+                            var quantidade = $(this).val();
+                            var total = produto.valorUnitario * quantidade;
+                            $(this).closest('tr').find('#total-produto').text('R$ ' + formatarValorBR(total));
+                        });
+                    }
+                }
+            });
+        });
+        
+        function formatarValorBR(valor) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+        }
         
     });
 </script>
