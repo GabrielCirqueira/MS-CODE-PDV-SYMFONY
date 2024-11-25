@@ -16,7 +16,7 @@ class CarrinhoRepository extends ServiceEntityRepository
         parent::__construct($registry, Carrinho::class);
     }
 
-    public function salvar(Carrinho $carrinho) : void
+    public function salvar(Carrinho $carrinho): Carrinho
     {
         $this->getEntityManager()->persist($carrinho);
         $this->getEntityManager()->flush();
