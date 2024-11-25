@@ -30,7 +30,7 @@ class CarrinhoApiController extends AbstractController
 
             $usuario = $security->getUser();
             $carrinho = new Carrinho($cliente, $usuario);
-            $carrinhoRepository->salvarCarrinho($carrinho);
+            $carrinhoRepository->salvar($carrinho);
 
             return new JsonResponse([
                 'status' => 'criado',
