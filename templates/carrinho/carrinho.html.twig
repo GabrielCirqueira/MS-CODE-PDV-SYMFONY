@@ -91,9 +91,9 @@
     $(document).ready(function () {
 
         function configurarBusca(botaoId,entradaId, sugestoesId, apiUrl) {
-            var campoEntrada = $(`#${entradaId}`);
-            var listaSugestoes = $(`#${sugestoesId}`);
-            var butao = $(`#${botaoId}`);
+            const campoEntrada = $(`#${entradaId}`);
+            const listaSugestoes = $(`#${sugestoesId}`);
+            const butao = $(`#${botaoId}`);
 
             campoEntrada.on('input', function () {
                 const termo = campoEntrada.val().trim();
