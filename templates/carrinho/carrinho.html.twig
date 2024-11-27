@@ -2,6 +2,7 @@
 
 {% block body %}
 <div class="container cart-container mt-5">
+    {% include 'flash.html.twig' %}
     <h1 class="titulo page-title">Carrinho</h1>
 
     <div class="row summary-cards my-4">
@@ -88,7 +89,7 @@
 
 <script>
     $(document).ready(function () {
-
+        
         function configurarBusca(acao,botaoId,entradaId, sugestoesId, apiUrl) {
             const campoEntrada = $(`#${entradaId}`);
             const listaSugestoes = $(`#${sugestoesId}`);
@@ -139,8 +140,7 @@
                             if (resposta.status === 'criado' || resposta.status === "existente") {
                                 $('#product-search-input').removeAttr('disabled');
                                 $('#linha-mensagem-tabela').text('Esse cliente não tem produtos em seu carrinho, selecione um produto!');
-                            } else {
-                                alert(resposta.message);
+                                cliente = resposta.cliente;
                             }
                         },
                         error: function () {
@@ -152,26 +152,37 @@
                     $.ajax({
                         url: '/api/produtos/' + idElement,
                         type: 'GET',
-                        success: function(produto){
+                        success: function (produto) {
                             $('#linha-mensagem-tabela').hide();
-                
+                    
                             var produtoExisteTBL = false;
-                            $('.cart-table-body tr').each(function(){
+                    
+                            $('.cart-table-body tr').each(function () {
                                 var nomeProduto = $(this).find('td:eq(0)').text().trim();
-        
+                    
                                 if (nomeProduto === produto.nome) {
                                     produtoExisteTBL = true;
+                    
                                     var quantidadeAtual = parseInt($(this).find('.quantity-input').val());
                                     var novaQuantidade = quantidadeAtual + 1;
-        
+                    
                                     $(this).find('.quantity-input').val(novaQuantidade);
+                    
                                     var total = novaQuantidade * produto.valorUnitario;
                                     $(this).find('#total-produto').text(formatarValorBR(total));
+                    
+                                    produtosEnviar.forEach(function (item) {
+                                        if (item.id === produto.id) {
+                                            item.quantidade = novaQuantidade;
+                                        }
+                                    });
+                    
                                     return false;
                                 }
                             });
-                
+                    
                             if (!produtoExisteTBL) {
+
                                 var novaLinha = '<tr>' +
                                     '<td class="text-center align-middle item-cell">' + produto.nome + '</td>' +
                                     '<td class="text-center align-middle item-cell">' + produto.categoria + '</td>' +
@@ -182,19 +193,39 @@
                                     '</td>' +
                                     '<td class="text-center align-middle item-cell" id="total-produto">' + formatarValorBR(produto.valorUnitario) + '</td>' +
                                 '</tr>';
-                
+                    
                                 $('.cart-table-body').append(novaLinha);
-                                
-                                $('.quantity-input').on('input', function() {
-                                    var quantidade = $(this).val();
-                                    var total = produto.valorUnitario * quantidade;
+                    
+                                $('.quantity-input').on('input', function () {
+                                    var novaQuantidade = parseInt($(this).val());
+                                    if (isNaN(novaQuantidade) || novaQuantidade < 1) {
+                                        novaQuantidade = 1;
+                                        $(this).val(novaQuantidade);
+                                    }
+                    
+                                    var total = produto.valorUnitario * novaQuantidade;
                                     $(this).closest('tr').find('#total-produto').text('R$ ' + formatarValorBR(total));
+                    
+                                    produtosEnviar.forEach(function (item) {
+                                        if (item.id === produto.id) {
+                                            item.quantidade = novaQuantidade;
+                                        }
+                                    });
+                                });
+                    
+                                produtosEnviar.push({
+                                    id: produto.id,
+                                    nome: produto.nome,
+                                    quantidade: 1
                                 });
                             }
+                    
                         }
                     });
+                    
                     $('#product-search-input').val('');
                     return;
+                    
                 }
                 const nomeSelecionado = $(this).text();
                 campoEntrada.val(nomeSelecionado);
@@ -206,13 +237,33 @@
                 }
             });
         }
-
+        let cliente;
+        let produtosEnviar = [];
         configurarBusca('cliente','button-procurar-cliente','client-search-input', 'client-suggestions', 'api/clientes');
         configurarBusca('produto','button-inserir-produto','product-search-input', 'product-suggestions', 'api/produtos');
 
         function formatarValorBR(valor) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
         }
+
+        $("#button-finalizar-venda").click(function () {
+            
+            const arrayDadosEnviar = {
+                "cliente" : cliente,
+                "produtos" : produtosEnviar
+            };
+
+            $.ajax({
+                url: '/api/carrinho/adicionar/produtos',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ produtos: produtosEnviar }),
+                success: function (resposta) {
+                    location.reload();
+                },
+            });
+            
+        });
         
     });
 </script>

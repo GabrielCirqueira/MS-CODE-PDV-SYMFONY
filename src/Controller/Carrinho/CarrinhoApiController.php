@@ -33,15 +33,31 @@ class CarrinhoApiController extends AbstractController
             $carrinhoRepository->salvar($carrinho);
 
             return new JsonResponse([
+                'cliente' => [
+                    "id" => $cliente->getId(),
+                    "nome" => $cliente->getNome(),
+                ],
                 'status' => 'criado',
                 'mensagem' => 'Carrinho criado com sucesso!',
             ], Response::HTTP_OK); 
         }
 
         return new JsonResponse([
+            'cliente' => [
+                "id" => $cliente->getId(),
+                "nome" => $cliente->getNome(),
+            ],
             'status' => 'existente',
             'mensagem' => 'Carrinho já existe.',
         ], Response::HTTP_OK);
+    }
+
+    #[Route('/api/carrinho/adicionar/produtos', name: 'carrinhoInserirApi')]
+    public function inserirProdutosCarrinho(): Response
+    {
+        $this->addFlash("success", "O Carrinho foi inserido com sucesso.");
+
+        return new Response(Response::HTTP_OK);
     }
 }
 
