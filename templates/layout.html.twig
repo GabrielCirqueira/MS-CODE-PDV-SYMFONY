@@ -1,44 +1,57 @@
 {% extends 'base.html.twig' %}
 
 {% block header %}
-<div class="border-bottom mb-2 bg-white shadow-sm header-custom">
+ <div class="border-bottom mb-2 bg-white shadow-sm header-custom fixed-top fixed-custom">
     <div class="container">
-        <header class="d-flex flex-wrap justify-content-between align-items-center py-3">
-            <a href="{{path('home')}}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <img class="me-3 logo" src="{{asset('img/cart.png')}}" width="50" alt="Logotipo">
-                <span class="fs-4 fw-bold site-title">Ms Code - Estoque</span>
-            </a>
+      <header>
+  <nav class="navbar navbar-expand-lg justify-content-center">
+    <div class="container-fluid">
+      <!-- Logo -->
 
-            <ul class="nav">
-                <li class="nav-item">
+      <a href="{{path('home')}}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <img class="me-3 logo" src="{{asset('img/cart.png')}}" width="50" alt="Logotipo">
+        <span class="fs-4 fw-bold site-title">Ms Code - PDV</span>
+    </a>
+
+      <!-- Botão para expandir/colapsar o menu -->
+
+        <button class="menu-btn navbar-toggler button-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação" onclick="toggleMenu(this)">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  
+
+      <!-- Links do menu -->
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+     
+        <ul class="navbar-nav ms-auto navbar justify-content-center">
+          <li class="nav-item">
                     <a href="{{ path('home') }}" class="nav-link {{ app.request.attributes.get('_route') == 'home' ? 'active' : '' }}">Início</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{path('vendas')}}" class="nav-link {{ app.request.attributes.get('_route') == 'vendas' ? 'active' : '' }}">Vendas</a>
+                    <a href="{{path('clientes')}}" class="nav-link links {{ app.request.attributes.get('_route') == 'clientes' ? 'active' : '' }}">Clientes</a>
                 </li>
+              
                 <li class="nav-item">
-                    <a href="{{path('clientes')}}" class="nav-link {{ app.request.attributes.get('_route') == 'clientes' ? 'active' : '' }}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('produtos') }}" class="nav-link {{ app.request.attributes.get('_route') == 'produtos' ? 'active' : '' }}">Produtos</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('categorias') }}" class="nav-link {{ app.request.attributes.get('_route') == 'categorias' ? 'active' : '' }}">Categorias</a>
+                <a href="{{ path('carrinho') }}" class="nav-link links {{ app.request.attributes.get('_route') == 'carrinho' ? 'active' : '' }}">Carrinho</a>
                 </li>
 
-                <li class="nav-item">
-                <a href="{{ path('carrinho') }}" class="nav-link {{ app.request.attributes.get('_route') == 'carrinho' ? 'active' : '' }}">Carrinho</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight">
-                        <i class="fas fa-user-circle fa-2x user-icon"></i>
-                    </a>
-                </li>
-            </ul>
-        </header>
+                <li  data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight" class="nav-link links LogOut">
+                <a href=""></a  data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight" class="some">Log Out</li>
+        </ul>
+  <a data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight" class="some">
+        <i class="fas fa-user-circle fa-2x user-icon"></i>
+     </a>
+      </div>
+      
     </div>
+  </nav>
+</header>
 </div>
+</div>
+
 {% endblock %}
  
 {% block menu %}
@@ -64,6 +77,14 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleMenu(button) {
+      // Alterna a classe 'open' no botão e no menu
+      button.classList.toggle('open');
+      document.getElementById('menu').classList.toggle('open');
+    }
+</script>
 
 
 {% endblock %}

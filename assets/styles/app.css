@@ -4,6 +4,7 @@
 @import url(includes/categoria.css);
 @import url(includes/tabela.css);
 @import url(includes/carrinho.css);
+@import url(includes/button.css);
 
 body {
   background-color: rgba(247, 247, 247, 0.526);
@@ -15,3 +16,13 @@ body {
   color: rgb(82, 82, 82);
 }
 
+.container-margin{
+  margin-top: 120px;
+}
+
+
+@media (max-width: 768px) {
+   .container-margin{
+    margin-top: 80px;
+   }
+}
