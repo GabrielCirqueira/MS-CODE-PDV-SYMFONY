@@ -7,11 +7,11 @@ use App\Repository\ClienteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
-use App\Repository\ItemRepository;
 use App\Repository\CarrinhoRepository;
+use App\Service\AdicionarProdutosCarrinhoService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class CarrinhoApiController extends AbstractController
 {
@@ -25,7 +25,7 @@ class CarrinhoApiController extends AbstractController
     ): JsonResponse
     {
         $cliente = $clienteRepository->find($idCliente);
-        $carrinhoBusca = $carrinhoRepository->findOneBy(['cliente' => $cliente]);
+        $carrinhoBusca = $carrinhoRepository->buscar($cliente);
         if ($carrinhoBusca == null) {
 
             $usuario = $security->getUser();
@@ -33,31 +33,37 @@ class CarrinhoApiController extends AbstractController
             $carrinhoRepository->salvar($carrinho);
 
             return new JsonResponse([
-                'cliente' => [
-                    "id" => $cliente->getId(),
-                    "nome" => $cliente->getNome(),
-                ],
+                'carrinho' => $carrinho->getId(),
                 'status' => 'criado',
                 'mensagem' => 'Carrinho criado com sucesso!',
             ], Response::HTTP_OK); 
         }
 
         return new JsonResponse([
-            'cliente' => [
-                "id" => $cliente->getId(),
-                "nome" => $cliente->getNome(),
-            ],
+            'carrinho' => $carrinhoBusca,
             'status' => 'existente',
             'mensagem' => 'Carrinho já existe.',
         ], Response::HTTP_OK);
     }
 
-    #[Route('/api/carrinho/adicionar/produtos', name: 'carrinhoInserirApi')]
-    public function inserirProdutosCarrinho(): Response
-    {
-        $this->addFlash("success", "O Carrinho foi inserido com sucesso.");
+    #[Route('/api/carrinho/{idCarrinho}/adicionar/produtos', name: 'carrinhoInserirApi', methods: ['POST'])]
+    public function inserirProdutosCarrinho(
+        $idCarrinho,
+        Request $request,
+        AdicionarProdutosCarrinhoService $APCservice
+    ): Response {
+        $jsonData = $request->getContent();
+        $data = json_decode($jsonData, true);
 
-        return new Response(Response::HTTP_OK);
+        try {
+
+            $APCservice->execute(idCarrinho: $idCarrinho, dados: $data);
+            return $this->json(['mensagem' => 'Produtos adicionados com sucesso!'], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return $this->json(['erro' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
+    
 }
 

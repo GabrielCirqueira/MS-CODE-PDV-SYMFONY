@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\CarrinhoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -16,41 +15,40 @@ class Carrinho
     #[ORM\Column]
     private int $id;
 
-    #[ORM\ManyToOne(inversedBy: 'carrinho', cascade: ['persist', 'remove'])]
-    private Cliente $cliente;
+    #[ORM\ManyToOne(inversedBy: 'carrinhos', cascade: ['persist', 'remove'])]
+    private ?Cliente $cliente = null;
 
     #[ORM\ManyToOne(inversedBy: 'carrinhos')]
-    private User $usuario;
+    private ?User $usuario = null;
 
     #[ORM\Column(length: 255)]
     private string $status;
 
-    #[ORM\Column]
-    private int $valorTotal;
+    #[ORM\Column(nullable: true)]
+    private ?int $valorTotal = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private \DateTimeInterface $criadoEm;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $atualizadoEm = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable:true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $finalizadoEm = null;
 
     /**
      * @var Collection<int, Item>
      */
     #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'carrinhos')]
-    private Collection $items;
+    private Collection $itens;
 
-    public function __construct(Cliente $cliente,User $usuario,string $status = "Aguardando pagamento",int $valorTotal = 0)
-    {
+    public function __construct($cliente, $usuario)
+    {   
         $this->cliente = $cliente;
         $this->usuario = $usuario;
-        $this->status = $status;
-        $this->valorTotal = $valorTotal;
+        $this->status = "Pendente";
+        $this->itens = new ArrayCollection();
         $this->criadoEm = new \DateTimeImmutable();
-        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,24 +56,24 @@ class Carrinho
         return $this->id;
     }
 
-    public function getcliente(): ?Cliente
+    public function getCliente(): ?Cliente
     {
         return $this->cliente;
     }
 
-    public function setcliente(?Cliente $cliente): static
+    public function setCliente(?Cliente $cliente): static
     {
         $this->cliente = $cliente;
 
         return $this;
     }
 
-    public function getusuario(): ?User
+    public function getUsuario(): ?User
     {
         return $this->usuario;
     }
 
-    public function setusuario(?User $usuario): static
+    public function setUsuario(?User $usuario): static
     {
         $this->usuario = $usuario;
 
@@ -123,7 +121,7 @@ class Carrinho
         return $this->atualizadoEm;
     }
 
-    public function setAtualizadoEm(\DateTimeInterface $atualizadoEm): static
+    public function setAtualizadoEm(?\DateTimeInterface $atualizadoEm): static
     {
         $this->atualizadoEm = $atualizadoEm;
 
@@ -135,7 +133,7 @@ class Carrinho
         return $this->finalizadoEm;
     }
 
-    public function setFinalizadoEm(\DateTimeInterface $finalizadoEm): static
+    public function setFinalizadoEm(?\DateTimeInterface $finalizadoEm): static
     {
         $this->finalizadoEm = $finalizadoEm;
 
@@ -145,27 +143,9 @@ class Carrinho
     /**
      * @return Collection<int, Item>
      */
-    public function getItems(): Collection
+    public function getItens(): Collection
     {
-        return $this->items;
+        return $this->itens;
     }
 
-    public function addItem(Item $item): static
-    {
-        if (!$this->items->contains($item)) {
-            $this->items->add($item);
-            $item->addCarrinhoId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeItem(Item $item): static
-    {
-        if ($this->items->removeElement($item)) {
-            $item->removeCarrinhoId($this);
-        }
-
-        return $this;
-    }
 }

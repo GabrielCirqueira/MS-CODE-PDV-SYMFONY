@@ -140,7 +140,7 @@
                             if (resposta.status === 'criado' || resposta.status === "existente") {
                                 $('#product-search-input').removeAttr('disabled');
                                 $('#linha-mensagem-tabela').text('Esse cliente não tem produtos em seu carrinho, selecione um produto!');
-                                cliente = resposta.cliente;
+                                carrinho = resposta.carrinho;
                             }
                         },
                         error: function () {
@@ -215,7 +215,6 @@
                     
                                 produtosEnviar.push({
                                     id: produto.id,
-                                    nome: produto.nome,
                                     quantidade: 1
                                 });
                             }
@@ -249,24 +248,28 @@
         $("#button-finalizar-venda").click(function () {
             
             const arrayDadosEnviar = {
-                "cliente" : cliente,
+                "carrinhoId" : carrinho,
                 "produtos" : produtosEnviar
             };
 
+            console.log(arrayDadosEnviar);
+            
             $.ajax({
-                url: '/api/carrinho/adicionar/produtos',
+                url: '/api/carrinho/' + carrinho + '/adicionar/produtos',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ produtos: produtosEnviar }),
                 success: function (resposta) {
                     location.reload();
                 },
+                error: function (resposta){
+                console.log(resposta)
+            },
             });
-            
+             
         });
         
     });
 </script>
-
 
 {% endblock %}
