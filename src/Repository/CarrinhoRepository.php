@@ -26,21 +26,18 @@ class CarrinhoRepository extends ServiceEntityRepository
     }
 
     public function buscar(Cliente $cliente): ?int
-{
-    $query = $this->createQueryBuilder('carrinho')
-        ->select('carrinho.id')
-        ->where('carrinho.cliente = :cliente')
-        ->andWhere('carrinho.status != :status')
-        ->setParameter('cliente', $cliente)
-        ->setParameter('status', 'Concluído')
-        ->setMaxResults(1)
-        ->getQuery();
+    {
+        $query = $this->createQueryBuilder('carrinho')
+            ->select('carrinho.id')
+            ->where('carrinho.cliente = :cliente')
+            ->andWhere('carrinho.status != :status')
+            ->setParameter('cliente', $cliente)
+            ->setParameter('status', 'Concluído')
+            ->setMaxResults(1)
+            ->getQuery();
 
-    $resultado = $query->getOneOrNullResult();
+        $resultado = $query->getOneOrNullResult();
 
-    return $resultado ? (int) $resultado['id'] : null;
-}
-
-    
-
+        return $resultado ? (int) $resultado['id'] : null;
+    }
 }

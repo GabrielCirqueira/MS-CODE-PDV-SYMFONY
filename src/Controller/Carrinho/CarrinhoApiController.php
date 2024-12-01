@@ -54,10 +54,10 @@ class CarrinhoApiController extends AbstractController
     ): Response {
         $jsonData = $request->getContent();
         $data = json_decode($jsonData, true);
-
+        $produtos = $data["produtos"];
         try {
 
-            $APCservice->execute(idCarrinho: $idCarrinho, dados: $data);
+            $APCservice->execute(idCarrinho: $idCarrinho, produtos: $produtos);
             return $this->json(['mensagem' => 'Produtos adicionados com sucesso!'], Response::HTTP_OK);
 
         } catch (\Exception $e) {

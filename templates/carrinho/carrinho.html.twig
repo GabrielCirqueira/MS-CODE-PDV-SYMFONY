@@ -246,14 +246,7 @@
         }
 
         $("#button-finalizar-venda").click(function () {
-            
-            const arrayDadosEnviar = {
-                "carrinhoId" : carrinho,
-                "produtos" : produtosEnviar
-            };
 
-            console.log(arrayDadosEnviar);
-            
             $.ajax({
                 url: '/api/carrinho/' + carrinho + '/adicionar/produtos',
                 type: 'POST',
@@ -263,7 +256,7 @@
                     location.reload();
                 },
                 error: function (resposta){
-                console.log(resposta)
+            console.log(resposta)
             },
             });
              

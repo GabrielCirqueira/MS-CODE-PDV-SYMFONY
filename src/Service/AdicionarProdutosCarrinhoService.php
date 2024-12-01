@@ -23,14 +23,14 @@ class AdicionarProdutosCarrinhoService
         $this->itemRepository = $itemRepository;
     }
 
-    public function execute(int $idCarrinho, array $dados): void
+    public function execute(int $idCarrinho, array $produtos): void
     {
         $carrinho = $this->carrinhoRepository->find($idCarrinho);
 
         $valorCarrinho = $carrinho->getValorTotal();
 
-        foreach ($dados["produtos"] as $produtoData) {
-            $produto = $this->produtoRepository->find($produtoData['id']);
+        foreach ($produtos as $produtoData) {
+            $produto = $this->produtoRepository->find($produtoData["id"]);
 
             $itemExistente = $this->itemRepository->findOneBy([
                 'produto' => $produto,
