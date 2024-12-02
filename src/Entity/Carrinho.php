@@ -94,7 +94,7 @@ class Carrinho
 
     public function getValorTotal(): ?int
     {
-        return $this->valorTotal;
+        return $this->valorTotal / 100;
     }
 
     public function setValorTotal(int $valorTotal): static

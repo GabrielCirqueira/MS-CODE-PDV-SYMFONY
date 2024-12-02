@@ -163,7 +163,7 @@
                                             '<td class="text-center align-middle item-cell">' +
                                                 '<input max="' + item.estoque + '" min="1" type="number" value="' + item.quantidade + '" class="quantity-input"  data-id="' + item.produto_id + '">' +
                                             '</td>' +
-                                            '<td class="text-center align-middle item-cell" id="total-produto-' + item.produto_id + '">' + formatarValorBR((item.valorUnitario * item.quantidade) / 100) + '</td>' +
+                                            '<td class="text-center align-middle item-cell"  data-id="'+ item.produto_id +'">' + formatarValorBR((item.valorUnitario * item.quantidade) / 100) + '</td>' +
                                         '</tr>';
                                 
                                         $('.cart-table-body').append(novaLinha);
@@ -222,7 +222,7 @@
                                     '<td class="text-center align-middle item-cell">' +
                                         '<input max="'+ produto.quantidade + '" min="1" type="number" value="1" class="quantity-input" name="" data-id="'+ produto.id +'">' +
                                     '</td>' +
-                                    '<td class="text-center align-middle item-cell" id="total-produto">' + formatarValorBR(produto.valorUnitario) + '</td>' +
+                                    '<td class="text-center align-middle item-cell" data-id="'+ produto.id +'">' + formatarValorBR(produto.valorUnitario) + '</td>' +
                                 '</tr>';
                     
                                 $('.cart-table-body').append(novaLinha);
@@ -289,23 +289,14 @@
 
         $(document).on('input', '.quantity-input', function () {
             var Quantidade = parseInt($(this).val());
-            console.log(Quantidade)
             var idProduto = $(this).data('id');
-            console.log(idProduto)
-            var produto;
             
-            produtosEnviar.forEach(p => {
-                console.log(p)
-                if (p.id === idProduto) {
-                    produto = p;
-                    console.log("Trueee")
-                }
-            });
+            var produto = produtosEnviar.find(p => p.id === idProduto);
 
             produto.quantidade = Quantidade;
             var total = produto.valorUnitario * Quantidade;
 
-            $(this).closest('tr').find('#total-produto-' + idProduto).text(formatarValorBR(total));
+            $(this).closest('tr').find(`[data-id="${idProduto}"]`).text(formatarValorBR(total));
             atualizarResumo();
         });
         

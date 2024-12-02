@@ -27,7 +27,7 @@ class AdicionarProdutosCarrinhoService
     {
         $carrinho = $this->carrinhoRepository->find($idCarrinho);
 
-        $valorCarrinho = $carrinho->getValorTotal();
+        $valorCarrinho = 0;
 
         foreach ($produtos as $produtoData) {
             $produto = $this->produtoRepository->find($produtoData["id"]);
@@ -39,9 +39,9 @@ class AdicionarProdutosCarrinhoService
 
             if ($itemExistente) {
 
-                $novaQuantidade = $itemExistente->getQuantidade() + $produtoData['quantidade'];
+                $novaQuantidade = $produtoData['quantidade'];
                 $itemExistente->setQuantidade($novaQuantidade);
-                $itemExistente->setValor($novaQuantidade * $produto->getValorUnitario());
+                $itemExistente->setValor($novaQuantidade * $produto->getValorUnitario() * 100);
                 $this->itemRepository->salvar($itemExistente);
                 $valorCarrinho += $itemExistente->getValor();
 
@@ -49,7 +49,7 @@ class AdicionarProdutosCarrinhoService
 
                 $quantidade = $produtoData['quantidade'];
                 $valorUnitario = $produto->getValorUnitario();
-                $valorTotalItem = $quantidade * $valorUnitario;
+                $valorTotalItem = $quantidade * $valorUnitario * 100;
 
                 $item = new Item($produto, $carrinho, $quantidade, $valorTotalItem);
                 $this->itemRepository->salvar($item);
