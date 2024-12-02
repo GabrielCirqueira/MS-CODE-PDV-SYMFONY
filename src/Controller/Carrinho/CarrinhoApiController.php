@@ -53,7 +53,9 @@ class CarrinhoApiController extends AbstractController
             'carrinho' => $carrinhoBusca,
             'dadosCarrinho' => [
                 'status' => $carrinho->getStatus(),
-                'data'  => $carrinho->getAtualizadoEm()->format(format: "d-m-Y") ?? $carrinho->getCriadoEm()->format(format: "d-m-Y"),
+                'data' => $carrinho->getAtualizadoEm() 
+                    ? $carrinho->getAtualizadoEm()->format("d-m-Y") 
+                    : ($carrinho->getCriadoEm() ? $carrinho->getCriadoEm()->format("d-m-Y") : null),
                 'valor' => $carrinho->getValorTotal() ?? 0,
                 'itens' => $itens
             ],
@@ -72,10 +74,8 @@ class CarrinhoApiController extends AbstractController
         $data = json_decode($jsonData, true);
         $produtos = $data["produtos"];
         try {
-
             $APCservice->execute(idCarrinho: $idCarrinho, produtos: $produtos);
             return $this->json(['mensagem' => 'Produtos adicionados com sucesso!'], Response::HTTP_OK);
-
         } catch (\Exception $e) {
             return $this->json(['erro' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
