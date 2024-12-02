@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CarrinhoRepository;
+use App\Repository\ItemRepository;
 use App\Service\AdicionarProdutosCarrinhoService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,6 +22,7 @@ class CarrinhoApiController extends AbstractController
         $idCliente,
         ClienteRepository $clienteRepository,
         CarrinhoRepository $carrinhoRepository,
+        ItemRepository $itemRepository,
         Security $security
     ): JsonResponse
     {
@@ -38,12 +40,14 @@ class CarrinhoApiController extends AbstractController
                     'status' => 'Pendente',
                     'data'  => $carrinho->getCriadoEm()->format(format: "d-m-Y"),
                     'valor' => 0,
+                    'itens' => null
                 ],
                 'mensagem' => 'Carrinho criado com sucesso!',
             ], Response::HTTP_OK); 
         }
 
         $carrinho = $carrinhoRepository->find($carrinhoBusca);
+        $itens = $itemRepository->buscar($carrinho);
 
         return new JsonResponse([
             'carrinho' => $carrinhoBusca,
@@ -51,6 +55,7 @@ class CarrinhoApiController extends AbstractController
                 'status' => $carrinho->getStatus(),
                 'data'  => $carrinho->getAtualizadoEm()->format(format: "d-m-Y") ?? $carrinho->getCriadoEm()->format(format: "d-m-Y"),
                 'valor' => $carrinho->getValorTotal() ?? 0,
+                'itens' => $itens
             ],
             'status' => 'Aguardando Pagamento',
             'mensagem' => 'Carrinho já existe.',

@@ -150,6 +150,32 @@
                                 $("#ValorTotal").text(formatarValorBR(resposta.dadosCarrinho.valor))
                                 $("#DataCarrinho").text(resposta.dadosCarrinho.data)
                                 $("#StatusCarrinho").text(resposta.dadosCarrinho.status)
+
+                                if(resposta.dadosCarrinho.itens != null){
+                                    $('#linha-mensagem-tabela').hide();
+                                    resposta.dadosCarrinho.itens.forEach(function(item) {
+                                        $('#linha-mensagem-tabela').hide();
+                                        var novaLinha = '<tr>' +
+                                            '<td class="text-center align-middle item-cell">' + item.nome + '</td>' +
+                                            '<td class="text-center align-middle item-cell">' + item.categoria + '</td>' +
+                                            '<td class="text-center align-middle item-cell">' + item.estoque + '</td>' +
+                                            '<td class="text-center align-middle item-cell"> ' + formatarValorBR(item.valorUnitario / 100) + '</td>' +
+                                            '<td class="text-center align-middle item-cell">' +
+                                                '<input min="1" type="number" value="' + item.quantidade + '" class="quantity-input" data-id="' + item.produto_id + '">' +
+                                            '</td>' +
+                                            '<td class="text-center align-middle item-cell" id="total-produto-' + item.produto_id + '">' + formatarValorBR((item.valorUnitario * item.quantidade) / 100) + '</td>' +
+                                        '</tr>';
+                                
+                                        $('.cart-table-body').append(novaLinha);
+
+                                        produtosEnviar.push({
+                                            id: item.produto_id,
+                                            valorUnitario: item.valorUnitario / 100,
+                                            quantidade: item.quantidade
+                                        });
+                                    });
+                                    console.log(produtosEnviar);
+                                }
                         },
                         error: function () {
                             console.error("Erro ao buscar dados na API.");
@@ -189,36 +215,18 @@
                             });
                     
                             if (!produtoExisteTBL) {
-
                                 var novaLinha = '<tr>' +
                                     '<td class="text-center align-middle item-cell">' + produto.nome + '</td>' +
                                     '<td class="text-center align-middle item-cell">' + produto.categoria + '</td>' +
                                     '<td class="text-center align-middle item-cell">' + produto.quantidade + '</td>' +
-                                    '<td class="text-center align-middle item-cell">R$ ' + formatarValorBR(produto.valorUnitario) + '</td>' +
+                                    '<td class="text-center align-middle item-cell">' + formatarValorBR(produto.valorUnitario) + '</td>' +
                                     '<td class="text-center align-middle item-cell">' +
-                                        '<input min="1" type="number" value="1" class="quantity-input" name="" id="">' +
+                                        '<input min="1" type="number" value="1" class="quantity-input" name="" id="data-'+ produto.id +'">' +
                                     '</td>' +
                                     '<td class="text-center align-middle item-cell" id="total-produto">' + formatarValorBR(produto.valorUnitario) + '</td>' +
                                 '</tr>';
                     
                                 $('.cart-table-body').append(novaLinha);
-                    
-                                $('.quantity-input').on('input', function () {
-                                    var novaQuantidade = parseInt($(this).val());
-                                    if (isNaN(novaQuantidade) || novaQuantidade < 1) {
-                                        novaQuantidade = 1;
-                                        $(this).val(novaQuantidade);
-                                    }
-                                    var total = produto.valorUnitario * novaQuantidade;
-                                    $(this).closest('tr').find('#total-produto').text('R$ ' + formatarValorBR(total));
-                    
-                                    produtosEnviar.forEach(function (item) {
-                                        if (item.id === produto.id) {
-                                            item.quantidade = novaQuantidade;
-                                        }
-                                    });
-                                    atualizarResumo();
-                                });
                     
                                 produtosEnviar.push({
                                     id: produto.id,
@@ -279,6 +287,21 @@
 
             $('.summary-cards .card-summary').eq(0).find('.summary-dash').text(formatarValorBR(total));
         }
+
+        $(document).on('input', '.quantity-input', function () {
+            var Quantidade = parseInt($(this).val());
+            var novaQuantidade = Quantidade + 1;
+            $(this).val(novaQuantidade);
+
+            var idProduto = $(this).data('id');
+            var produto = produtosEnviar.find(p => p.id === idProduto);
+            produto.quantidade = novaQuantidade;
+            var total = produto.valorUnitario * novaQuantidade;
+
+            $(this).closest('tr').find('#total-produto-' + idProduto).text(formatarValorBR(total));
+            atualizarResumo();
+            
+        });
         
     });
 </script>
