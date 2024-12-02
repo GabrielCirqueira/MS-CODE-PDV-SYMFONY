@@ -98,6 +98,13 @@
             campoEntrada.on('input', function () {
                 const termo = campoEntrada.val().trim();
 
+                if (acao === 'cliente') {
+                    $('#product-search-input').attr('disabled', true);
+                    $('#linha-mensagem-tabela').text('Por favor, selecione um cliente!').show();
+                    $('.cart-table-body').html('<tr><td id="linha-mensagem-tabela" colspan="6" class="text-center">Por favor, selecione um cliente!</td></tr>');
+                    produtosEnviar = [];
+                }
+
                 if (termo.length < 1) {
                     listaSugestoes.hide();
                     return;
