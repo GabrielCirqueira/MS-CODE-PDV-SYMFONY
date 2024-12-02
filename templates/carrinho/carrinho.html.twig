@@ -12,7 +12,7 @@
                     <div class="flex summary-flex">Total
                         <div><i class="fas fa-dollar-sign"></i></div>
                     </div>
-                    <div class="summary-dash">-</div>
+                    <div id="ValorTotal" class="summary-dash">-</div>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
                     <div class="flex summary-flex">Status
                         <div><i class="fas fa-tag"></i></div>
                     </div>
-                    <div class="summary-dash">-</div>
+                    <div id="StatusCarrinho" class="summary-dash">-</div>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                     <div class="flex summary-flex">Criação
                         <div><i class="fas fa-calendar"></i></div>
                     </div>
-                    <div class="summary-dash">-</div>
+                    <div id="DataCarrinho" class="summary-dash">-</div>
                 </div>
             </div>
         </div>
@@ -144,11 +144,12 @@
                         url: '/api/carrinho/' + idElement,
                         type: 'POST',
                         success: function(resposta) {
-                            if (resposta.status === 'criado' || resposta.status === "existente") {
                                 $('#product-search-input').removeAttr('disabled');
                                 $('#linha-mensagem-tabela').text('Esse cliente não tem produtos em seu carrinho, selecione um produto!');
                                 carrinho = resposta.carrinho;
-                            }
+                                $("#ValorTotal").text(formatarValorBR(resposta.dadosCarrinho.valor))
+                                $("#DataCarrinho").text(resposta.dadosCarrinho.data)
+                                $("#StatusCarrinho").text(resposta.dadosCarrinho.status)
                         },
                         error: function () {
                             console.error("Erro ao buscar dados na API.");
@@ -174,7 +175,6 @@
                                     var novaQuantidade = quantidadeAtual + 1;
                     
                                     $(this).find('.quantity-input').val(novaQuantidade);
-                    
                                     var total = novaQuantidade * produto.valorUnitario;
                                     $(this).find('#total-produto').text(formatarValorBR(total));
                     
@@ -183,7 +183,7 @@
                                             item.quantidade = novaQuantidade;
                                         }
                                     });
-                    
+                                    atualizarResumo();
                                     return false;
                                 }
                             });
@@ -209,7 +209,6 @@
                                         novaQuantidade = 1;
                                         $(this).val(novaQuantidade);
                                     }
-                    
                                     var total = produto.valorUnitario * novaQuantidade;
                                     $(this).closest('tr').find('#total-produto').text('R$ ' + formatarValorBR(total));
                     
@@ -218,17 +217,19 @@
                                             item.quantidade = novaQuantidade;
                                         }
                                     });
+                                    atualizarResumo();
                                 });
                     
                                 produtosEnviar.push({
                                     id: produto.id,
+                                    valorUnitario: produto.valorUnitario,
                                     quantidade: 1
                                 });
+                                atualizarResumo();
                             }
-                    
                         }
                     });
-                    
+                
                     $('#product-search-input').val('');
                     return;
                     
@@ -268,6 +269,16 @@
             });
              
         });
+
+        function atualizarResumo() {
+
+            let total = 0;
+            produtosEnviar.forEach(produto => {
+                total += produto.quantidade * produto.valorUnitario;
+            });
+
+            $('.summary-cards .card-summary').eq(0).find('.summary-dash').text(formatarValorBR(total));
+        }
         
     });
 </script>

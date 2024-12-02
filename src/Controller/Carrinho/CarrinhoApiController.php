@@ -34,14 +34,25 @@ class CarrinhoApiController extends AbstractController
 
             return new JsonResponse([
                 'carrinho' => $carrinho->getId(),
-                'status' => 'criado',
+                'dadosCarrinho' => [
+                    'status' => 'Pendente',
+                    'data'  => $carrinho->getCriadoEm()->format(format: "d-m-Y"),
+                    'valor' => 0,
+                ],
                 'mensagem' => 'Carrinho criado com sucesso!',
             ], Response::HTTP_OK); 
         }
 
+        $carrinho = $carrinhoRepository->find($carrinhoBusca);
+
         return new JsonResponse([
             'carrinho' => $carrinhoBusca,
-            'status' => 'existente',
+            'dadosCarrinho' => [
+                'status' => $carrinho->getStatus(),
+                'data'  => $carrinho->getAtualizadoEm()->format(format: "d-m-Y") ?? $carrinho->getCriadoEm()->format(format: "d-m-Y"),
+                'valor' => $carrinho->getValorTotal() ?? 0,
+            ],
+            'status' => 'Aguardando Pagamento',
             'mensagem' => 'Carrinho já existe.',
         ], Response::HTTP_OK);
     }

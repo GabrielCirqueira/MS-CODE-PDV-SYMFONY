@@ -93,7 +93,7 @@ class Produto implements JsonSerializable
 
     public function getValorUnitario(): ?int
     {
-        return $this->valorUnitario;
+        return $this->valorUnitario / 100;
     }
 
     public function setValorUnitario(int $valorUnitario): static
