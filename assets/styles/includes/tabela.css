@@ -30,14 +30,14 @@
 .table th, .table td {
     padding: 1rem;
     text-align: left;  
-    color: rgb(82, 82, 82);
+    color: var(--cor-segundaria-font);
     vertical-align: middle;
     border-top: 1px solid #dee2e6;
 }
 
 .table thead th {
     background-color: #16c1aa;
-    color: #ffffff;
+    color: var(--cor-principal-font);
     border-bottom: 2px solid #16c1aa;
 }
 
@@ -50,11 +50,11 @@
 }
 
 .table a{
-    color: white;
+    color: var(--cor-principal-font);
 }
 
 .table a:hover{
-    color: white;
+    color: var(--cor-principal-font);
 }
 
 

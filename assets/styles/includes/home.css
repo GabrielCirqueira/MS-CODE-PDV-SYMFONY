@@ -4,7 +4,7 @@
 }
 
 .card-text{
-  color: rgb(82, 82, 82);
+  color: var(--cor-segundaria-font);
 }
 
 .card {
@@ -14,6 +14,11 @@
     transition: transform 0.2s ease;
 }
 
+.card-home{
+    min-height: 400px;
+    min-width: 100px;
+}
+
 .card-title {
     color: #16c1aa;
     font-size: 1.5rem;
@@ -21,17 +26,26 @@
 
 .btn-custom {
     background-color: #16c1aa;
-    color: white;
+    color: var(--cor-principal-font);
 }
 
 .btn-custom:hover {
     background-color: #139a88;
 }
 
+.respon{
+    gap: 80px;
+    flex-wrap: nowrap;
+}
 /* Responsividade */
 @media (max-width: 768px) {
     .main-container {
         padding: 80px;
+    }
+
+    .respon{
+        gap: 0px;
+        flex-wrap: wrap;
     }
 
     .card-title {

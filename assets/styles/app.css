@@ -26,3 +26,16 @@ body {
     margin-top: 80px;
    }
 }
+
+
+:root{
+--cor-principal-font: #fff;
+--cor-segundaria-font: #757575;
+--cor-terciaria-font: #16c1aa;
+--cor-quaternaria-font: #000;
+--cor-quinaria-font: #d3d3d36f;
+--cor-senario-font: #141414;
+--cor-principal-background: #ffffff;
+--cor-segundaria-background: #FAFAFA;
+--cor-tercearia-background: #16c1aa;             
+}

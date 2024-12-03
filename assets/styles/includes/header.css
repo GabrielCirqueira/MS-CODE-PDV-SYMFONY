@@ -1,5 +1,5 @@
 .header-custom {
-    background-color: #ffffff;
+    background-color: var(--cor-principal-background);
     border-color: #eaeaea;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .nav-link{
-    color: #757575;
+    color: var(--cor-segundaria-font);
     font-size: 1rem;
     margin: 0px 10px;
     border-radius: 5px;
@@ -71,6 +71,41 @@
 }
 
 
+.contener-buttom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.config-tittle{
+    margin: 0px;
+    padding: 0px;
+}
+
+.lua-crescente{
+
+    margin-left: 10px;
+    cursor: pointer;
+      transition: transform 0.3s ease;
+    
+}
+
+.lua-crescente > img{
+padding: 6px;
+border-radius: 50%;
+background-color: transparent;
+}
+
+.lua-crescente > img:hover{
+    padding: 6px;
+border-radius: 50%;
+background-color: #16161649;
+transition: 0.3s ease;
+}
+
+
+
+
 /* MENU LATERAL */
 
 
@@ -82,7 +117,7 @@
  
 .offcanvas-header {
     background-color: #16c1aa; 
-    color: white;
+    color: var(--cor-principal-font);
 }
  
 .user-info i {
@@ -91,12 +126,12 @@
 
 .user-info h6 {
     font-weight: bold;
-    color: #333;
+    color: var(--cor-quinaria-font);
 }
 
 .user-info p {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--cor-segundaria-font);
 }
  
 .user-menu a {
@@ -121,10 +156,10 @@
 
 .btn-outline-danger:hover {
     background-color: #dc3545;
-    color: #fff;
+    color: var(--cor-principal-font);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     .some{
         display: none;
     }

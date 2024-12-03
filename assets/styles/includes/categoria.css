@@ -17,7 +17,7 @@
 }
 
 h1 {
-    color: #16c1aa;
+    color: var(--cor-terciaria-font);
 }
 
 .btn-primary {
@@ -31,7 +31,7 @@ h1 {
 }
 
 .form-label {
-    color: #333;
+    color: var(--cor-quinaria-font);
     font-weight: bold;
 }
 
@@ -42,7 +42,7 @@ h1 {
 
 .input-group-text {
     background-color: #16c1aa;
-    color: white;
+    color: var(--cor-principal-font);
     border: none;
 }
 

@@ -18,12 +18,12 @@ th, td {
 
 th {
   background-color: #16c1aa;
-  color: white;
+  color: var(--cor-principal-font);
 }
 
 .page-title {
   font-size: 1.8rem;
-  color: rgb(128, 128, 128);
+  color: var(--cor-segundaria-font);
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -84,7 +84,7 @@ th {
 
 .search-button {
   background: #16C1AA;
-  color: white;
+  color: var(--cor-principal-font);
 }
 
 .search-button:hover {
@@ -187,3 +187,4 @@ th {
     font-weight: bold;
   }
 }
+

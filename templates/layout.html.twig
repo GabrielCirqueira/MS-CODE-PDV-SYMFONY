@@ -8,19 +8,22 @@
     <div class="container-fluid">
       <!-- Logo -->
 
-      <a href="{{path('home')}}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+      <a href="{{path('home')}}" class="d-flex align-items-center mb-md-0 me-md-auto text-dark text-decoration-none config-tittle">
         <img class="me-3 logo" src="{{asset('img/cart.png')}}" width="50" alt="Logotipo">
         <span class="fs-4 fw-bold site-title">Ms Code - PDV</span>
     </a>
 
-      <!-- Botão para expandir/colapsar o menu -->
 
-        <button class="menu-btn navbar-toggler button-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação" onclick="toggleMenu(this)">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
 
+      
+        
+
+            <button class="menu-btn navbar-toggler button-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação" onclick="toggleMenu(this)">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        
   
 
       <!-- Links do menu -->
@@ -44,8 +47,10 @@
   <a data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight" class="some">
         <i class="fas fa-user-circle fa-2x user-icon"></i>
      </a>
+
+     
       </div>
-      
+      <div class="lua-crescente"><img src="{{asset('img/lua-crescente (2).png')}}" alt=""></div>
     </div>
   </nav>
 </header>
