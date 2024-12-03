@@ -6,12 +6,12 @@
 } 
 
 .container-table h1 {
-    color: #16c1aa;
+    color: var(--cor-terciaria-font);
     font-weight: bold;
 }
 
 .btn-primary {
-    background-color: #16c1aa;
+    background-color: var(--cor-terciaria-backgroun);
     border: none;
 }
 
@@ -22,7 +22,7 @@
 .table {
     width: 100%;
     margin-bottom: 1rem;
-    background-color: #ffffff;
+    background-color: var(--cor-terciaria-background);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -36,17 +36,13 @@
 }
 
 .table thead th {
-    background-color: #16c1aa;
+    background-color: var(--cor-tercearia-background);
     color: var(--cor-principal-font);
-    border-bottom: 2px solid #16c1aa;
+    border-bottom: 2px solid --cor-quaternaria-font#16c1aa;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: rgba(22, 193, 170, 0.1);
-}
-
-.table-hover tbody tr:hover {
-    background-color: rgba(22, 193, 170, 0.15);
 }
 
 .table a{

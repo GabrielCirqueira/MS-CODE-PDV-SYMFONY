@@ -27,15 +27,26 @@ body {
    }
 }
 
+.card{
+background-color: var(--cor-principal-background);
+}
+
+.tema-card{
+background-color: var(--cor-principal-background);
+}
+
+.summary-dash{
+  color: var(--cor-quaternaria-font);
+}
 
 :root{
 --cor-principal-font: #fff;
---cor-segundaria-font: #757575;
+--cor-segundaria-font: #888888;
 --cor-terciaria-font: #16c1aa;
 --cor-quaternaria-font: #000;
---cor-quinaria-font: #d3d3d36f;
+--cor-quinaria-font: #777777ff;
 --cor-senario-font: #141414;
 --cor-principal-background: #ffffff;
 --cor-segundaria-background: #FAFAFA;
---cor-tercearia-background: #16c1aa;             
+--cor-terciaria-background: #16c1aa;             
 }

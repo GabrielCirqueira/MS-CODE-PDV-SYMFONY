@@ -15,17 +15,17 @@
 }
 
 .card-home{
-    min-height: 400px;
-    min-width: 100px;
+    min-height: 230;
+    min-width: 250;
 }
 
 .card-title {
-    color: #16c1aa;
+    color: var(--cor-segundaria-font);
     font-size: 1.5rem;
 }
 
 .btn-custom {
-    background-color: #16c1aa;
+    background-color: var(--cor-terciaria-background);
     color: var(--cor-principal-font);
 }
 

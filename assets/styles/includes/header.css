@@ -15,7 +15,7 @@
     
 }
 .site-title {
-    color: #16c1aa;
+    color: var(--cor-terciaria-font);
 }
 
 .logo {
@@ -41,14 +41,14 @@
 }
 
 .nav-link:hover, .nav-link.active {
-    color: #16c1aa;
+    color: var(--cor-terciaria-font);
     background-color: #d3d3d36f;
     padding: 10px 15px;
 }
 
 
 .user-icon {
-    color: #16c1aa;
+    color: var(--cor-terciaria-font);
   
     transition: color 0.3s ease, transform 0.3s ease;
 }
@@ -116,12 +116,12 @@ transition: 0.3s ease;
 }
  
 .offcanvas-header {
-    background-color: #16c1aa; 
+    background-color: var(--cor-terciaria-background); 
     color: var(--cor-principal-font);
 }
  
 .user-info i {
-    color: #16c1aa; 
+    color: var(--cor-terciaria-font); 
 }
 
 .user-info h6 {

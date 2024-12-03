@@ -1,5 +1,5 @@
 .container-categoria {
-    background-color: #f8f9fa;
+    background-color: var(--cor-primaria-background);
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 2rem;
@@ -8,7 +8,7 @@
 }
 
 .container-produtos {
-    background-color: #f8f9fa;
+    background-color: var(--cor-primaria-background);
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 2rem;
@@ -21,7 +21,7 @@ h1 {
 }
 
 .btn-primary {
-    background-color: #16c1aa;
+    background-color: var(--cor-tercearia-background);
     width: 100%;
     border: none;
 }
@@ -41,7 +41,7 @@ h1 {
 }
 
 .input-group-text {
-    background-color: #16c1aa;
+    background-color: var(--cor-tercearia-background);
     color: var(--cor-principal-font);
     border: none;
 }

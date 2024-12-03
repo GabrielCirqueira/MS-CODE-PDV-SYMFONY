@@ -17,7 +17,7 @@ th, td {
 }
 
 th {
-  background-color: #16c1aa;
+  background-color: var(--cor-tercearia-background);
   color: var(--cor-principal-font);
 }
 
@@ -83,7 +83,7 @@ th {
 }
 
 .search-button {
-  background: #16C1AA;
+  background: var(--cor-terciaria-background);
   color: var(--cor-principal-font);
 }
 
