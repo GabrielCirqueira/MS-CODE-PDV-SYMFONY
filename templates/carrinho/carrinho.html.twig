@@ -152,28 +152,7 @@
                                 $("#StatusCarrinho").text(resposta.dadosCarrinho.status)
 
                                 if(resposta.dadosCarrinho.itens != null){
-                                    $('#linha-mensagem-tabela').hide();
-                                    resposta.dadosCarrinho.itens.forEach(function(item) {
-                                        $('#linha-mensagem-tabela').hide();
-                                        var novaLinha = '<tr>' +
-                                            '<td class="text-center align-middle item-cell">' + item.nome + '</td>' +
-                                            '<td class="text-center align-middle item-cell">' + item.categoria + '</td>' +
-                                            '<td class="text-center align-middle item-cell">' + item.estoque + '</td>' +
-                                            '<td class="text-center align-middle item-cell"> ' + formatarValorBR(item.valorUnitario / 100) + '</td>' +
-                                            '<td class="text-center align-middle item-cell">' +
-                                                '<input max="' + item.estoque + '" min="1" type="number" value="' + item.quantidade + '" class="quantity-input"  data-id="' + item.produto_id + '">' +
-                                            '</td>' +
-                                            '<td class="text-center align-middle item-cell"  data-id="'+ item.produto_id +'">' + formatarValorBR((item.valorUnitario * item.quantidade) / 100) + '</td>' +
-                                        '</tr>';
-                                
-                                        $('.cart-table-body').append(novaLinha);
-
-                                        produtosEnviar.push({
-                                            id: item.produto_id,
-                                            valorUnitario: item.valorUnitario / 100,
-                                            quantidade: item.quantidade
-                                        });
-                                    });
+                                    window.location.href = "/carrinho/" + resposta.carrinho + "/aguardando/";
                                 }
                         },
                         error: function () {
