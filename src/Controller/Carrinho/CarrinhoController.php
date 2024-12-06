@@ -13,4 +13,10 @@ class CarrinhoController extends AbstractController
     {
         return $this->render('carrinho/carrinho.html.twig');
     }
+
+    #[Route(path: '/carrinho/{id}/aguardando', name: 'carrinhoAguardandoPagamento')]
+    public function aguardando($id): Response
+    {
+        return $this->render("carrinho/carrinhoAguardando.html.twig");
+    }
 }
