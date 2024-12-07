@@ -3,7 +3,7 @@
 {% block title %}Produtos{% endblock %} 
 
 {% block body %}
-
+<div class="container-margin tema-card"></div>
 <div class="container py-5 main container-table">
     <div class="mb-4 d-flex flex-row justify-content-between">
       <h1>Produtos</h1>
@@ -33,18 +33,16 @@
             <td data-label="valor">R$ {{ produto.valorUnitario }},00 </td>
             <td data-label="quantidade">{{ produto.quantidade }} Disponiveis</td>
             <td>
-              <a href="{{path('venderProduto',{'id': produto.id})}}" class="btn btn-warning btn-sm">
-                Vender
-              </a>
               <a href="{{path('aumentarQuantidadeProduto',{'id': produto.id})}}"class="btn btn-sm" style="background-color: #16c1aa;" ><i class="fas fa-plus"></i></a>
               
               <a href="{{path('editarProduto',{'id': produto.id})}}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></a>
-              <a href="{{path('excluirProduto',{'id': produto.id, 'nome': produto.nome})}}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+              
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
+</div>
 
 {% endblock %}

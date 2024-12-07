@@ -1,10 +1,21 @@
 .header-custom {
-    background-color: #ffffff;
+    background-color: var(--cor-principal-background);
     border-color: #eaeaea;
 }
 
+.button-toggle{
+ border: none;
+}
+
+
+.button-toggle:focus{
+    border:none;
+    outline: none;
+    box-shadow: none;
+    
+}
 .site-title {
-    color: #16c1aa;
+    color: var(--cor-terciaria-font);
 }
 
 .logo {
@@ -15,26 +26,30 @@
     transform: scale(1.05);
 }
 
-.nav-link {
-    color: #757575;
+.nav-link{
+    color: var(--cor-segundaria-font);
     font-size: 1rem;
-    margin: 0 0.5rem;
+    margin: 0px 10px;
     border-radius: 5px;
     font-weight: bold;
     transition: color 0.3s ease;
 }
 
-.nav-link:hover, .nav-link.active {
-    color: #16c1aa;
-    background-color: #d3d3d36f;
+.links{
+    margin: 10px;
+    padding: 10px;
 }
 
-.nav-item:last-child {
-    margin-left: 1rem;
+.nav-link:hover, .nav-link.active {
+    color: var(--cor-terciaria-font);
+    background-color: #d3d3d36f;
+    padding: 10px 15px;
 }
+
 
 .user-icon {
-    color: #16c1aa;
+    color: var(--cor-terciaria-font);
+  
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
@@ -43,17 +58,53 @@
     transform: scale(1.1);
 }
 
- 
-
-@media (max-width: 768px) {
-    .nav {
-        flex-direction: column;
-    }
-    
-    .nav-link {
-        margin: 0.5rem 0;
-    }
+.some{
+    display: block;
 }
+
+.LogOut{
+    color: red;
+    display: none;
+}
+.LogOut:hover{
+    color: rgb(80, 0, 0);
+}
+
+
+.contener-buttom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.config-tittle{
+    margin: 0px;
+    padding: 0px;
+}
+
+.lua-crescente{
+
+    margin-left: 10px;
+    cursor: pointer;
+      transition: transform 0.3s ease;
+    
+}
+
+.lua-crescente > img{
+padding: 6px;
+border-radius: 50%;
+background-color: transparent;
+}
+
+.lua-crescente > img:hover{
+    padding: 6px;
+border-radius: 50%;
+background-color: #16161649;
+transition: 0.3s ease;
+}
+
+
+
 
 /* MENU LATERAL */
 
@@ -65,22 +116,22 @@
 }
  
 .offcanvas-header {
-    background-color: #16c1aa; 
-    color: white;
+    background-color: var(--cor-terciaria-background); 
+    color: var(--cor-principal-font);
 }
  
 .user-info i {
-    color: #16c1aa; 
+    color: var(--cor-terciaria-font); 
 }
 
 .user-info h6 {
     font-weight: bold;
-    color: #333;
+    color: var(--cor-quinaria-font);
 }
 
 .user-info p {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--cor-segundaria-font);
 }
  
 .user-menu a {
@@ -105,5 +156,14 @@
 
 .btn-outline-danger:hover {
     background-color: #dc3545;
-    color: #fff;
+    color: var(--cor-principal-font);
+}
+
+@media (max-width: 991px) {
+    .some{
+        display: none;
+    }
+    .LogOut{
+        display: block;
+    }
 }

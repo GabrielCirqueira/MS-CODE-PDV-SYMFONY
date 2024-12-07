@@ -4,6 +4,7 @@
 @import url(includes/categoria.css);
 @import url(includes/tabela.css);
 @import url(includes/carrinho.css);
+@import url(includes/button.css);
 
 body {
   background-color: rgba(247, 247, 247, 0.526);
@@ -15,3 +16,37 @@ body {
   color: rgb(82, 82, 82);
 }
 
+.container-margin{
+  margin-top: 120px;
+}
+
+
+@media (max-width: 768px) {
+   .container-margin{
+    margin-top: 80px;
+   }
+}
+
+.card{
+background-color: var(--cor-principal-background);
+}
+
+.tema-card{
+background-color: var(--cor-principal-background);
+}
+
+.summary-dash{
+  color: var(--cor-quaternaria-font);
+}
+
+:root{
+--cor-principal-font: #fff;
+--cor-segundaria-font: #888888;
+--cor-terciaria-font: #16c1aa;
+--cor-quaternaria-font: #000;
+--cor-quinaria-font: #777777ff;
+--cor-senario-font: #141414;
+--cor-principal-background: #ffffff;
+--cor-segundaria-background: #FAFAFA;
+--cor-terciaria-background: #16c1aa;             
+}
