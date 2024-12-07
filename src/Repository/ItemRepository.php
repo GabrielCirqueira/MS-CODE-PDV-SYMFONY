@@ -2,13 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Carrinho;
 use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Item>
- */
 class ItemRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -16,28 +14,22 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
-    //    /**
-    //     * @return Item[] Returns an array of Item objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function salvar(Item $item): void
+    {
+        $em = $this->getEntityManager();
+        $em->persist($item);
+        $em->flush();
+    }
 
-    //    public function findOneBySomeField($value): ?Item
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function buscar(Carrinho $carrinho): array
+    {
+        $qb = $this->createQueryBuilder('i')
+            ->select('p.id AS produto_id','p.quantidade AS estoque', 'p.nome', 'i.quantidade', 'p.descricao', 'p.valorUnitario', 'c.nome AS categoria')
+            ->innerJoin('i.produto', 'p')
+            ->leftJoin('p.categoria', 'c')
+            ->where('i.carrinho = :carrinho')
+            ->setParameter('carrinho', $carrinho);
+    
+        return $qb->getQuery()->getArrayResult();
+    }
 }

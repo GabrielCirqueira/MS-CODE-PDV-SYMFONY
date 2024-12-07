@@ -15,24 +15,22 @@ class Item
     private int $id;
 
     #[ORM\Column]
-    private int $quatidade;
+    private int $quantidade;
 
-    /**
-     * @var Collection<int, Produto>
-     */
-    #[ORM\OneToMany(targetEntity: Produto::class, mappedBy: 'item')]
-    private Collection $produtoId;
+    #[ORM\Column]
+    private int $valor;
 
-    /**
-     * @var Collection<int, Carrinho>
-     */
-    #[ORM\ManyToMany(targetEntity: Carrinho::class, inversedBy: 'items')]
-    private Collection $carrinhoId;
+    #[ORM\ManyToOne]
+    private Produto $produto;
 
-    public function __construct()
-    {
-        $this->produtoId = new ArrayCollection();
-        $this->carrinhoId = new ArrayCollection();
+    #[ORM\ManyToOne]
+    private Carrinho $carrinho;
+    public function __construct(Produto $produto, Carrinho $carrinho, int $quantidade, int $valor)
+    {        
+        $this->setProduto($produto);
+        $this->setCarrinho($carrinho);
+        $this->setQuantidade($quantidade);
+        $this->setValor($valor);
     }
 
     public function getId(): ?int
@@ -40,14 +38,26 @@ class Item
         return $this->id;
     }
 
-    public function getQuatidade(): ?int
+    public function getQuantidade(): ?int
     {
-        return $this->quatidade;
+        return $this->quantidade;
     }
 
-    public function setQuatidade(int $quatidade): static
+    public function setQuantidade(int $quantidade): static
     {
-        $this->quatidade = $quatidade;
+        $this->quantidade = $quantidade;
+
+        return $this;
+    }
+
+    public function getValor(): ?int
+    {
+        return $this->valor;
+    }
+
+    public function setValor(int $valor): static
+    {
+        $this->valor = $valor;
 
         return $this;
     }
@@ -55,54 +65,30 @@ class Item
     /**
      * @return Collection<int, Produto>
      */
-    public function getProdutoId(): Collection
+    public function setProduto(Produto $produto): static
     {
-        return $this->produtoId;
-    }
-
-    public function addProdutoId(Produto $produtoId): static
-    {
-        if (!$this->produtoId->contains($produtoId)) {
-            $this->produtoId->add($produtoId);
-            $produtoId->setItem($this);
-        }
+        $this->produto = $produto;
 
         return $this;
     }
 
-    public function removeProdutoId(Produto $produtoId): static
+    public function getProduto(): Produto
     {
-        if ($this->produtoId->removeElement($produtoId)) {
-            // set the owning side to null (unless already changed)
-            if ($produtoId->getItem() === $this) {
-                $produtoId->setItem(null);
-            }
-        }
+        return $this->produto;
+    }
+
+    public function setCarrinho(Carrinho $carrinho): static
+    {
+        $this->carrinho = $carrinho;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Carrinho>
-     */
-    public function getCarrinhoId(): Collection
+    public function getCarrinho(): Carrinho
     {
-        return $this->carrinhoId;
+        return $this->carrinho;
     }
 
-    public function addCarrinhoId(Carrinho $carrinhoId): static
-    {
-        if (!$this->carrinhoId->contains($carrinhoId)) {
-            $this->carrinhoId->add($carrinhoId);
-        }
 
-        return $this;
-    }
 
-    public function removeCarrinhoId(Carrinho $carrinhoId): static
-    {
-        $this->carrinhoId->removeElement($carrinhoId);
-
-        return $this;
-    }
 }
