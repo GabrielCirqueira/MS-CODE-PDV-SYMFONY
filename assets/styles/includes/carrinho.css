@@ -1,8 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
 
+.table-container {
+  overflow-x: auto;
+  margin: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: var(--cor-tercearia-background);
+  color: var(--cor-principal-font);
+}
+
 .page-title {
   font-size: 1.8rem;
-  color: rgb(128, 128, 128);
+  color: var(--cor-segundaria-font);
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -62,8 +83,8 @@
 }
 
 .search-button {
-  background: #16C1AA;
-  color: white;
+  background: var(--cor-terciaria-background);
+  color: var(--cor-principal-font);
 }
 
 .search-button:hover {
@@ -118,8 +139,6 @@
   border-radius: 5px;
   background-color: #f9f9f9;
   transition: background-color 0.3s ease, border-color 0.3s ease;
-  -moz-appearance: textfield;  /* Para Firefox */
-  -webkit-appearance: none;    /* Para WebKit (Chrome, Safari) */
 }
 
 .quantity-input::-webkit-outer-spin-button,
@@ -133,3 +152,39 @@
   background-color: #e5f8f3;
   outline: none;
 }
+
+
+@media (max-width: 768px) {
+  table {
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    padding: 6px;
+  }
+}
+
+@media (max-width: 600px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  tr {
+    margin-bottom: 10px;
+  }
+
+  td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+}
+
