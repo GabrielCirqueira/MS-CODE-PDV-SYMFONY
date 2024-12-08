@@ -44,7 +44,7 @@ background-color: var(--cor-principal-background);
 --cor-segundaria-font: #888888;
 --cor-terciaria-font: #16c1aa;
 --cor-quaternaria-font: #000;
---cor-quinaria-font: #777777ff;
+--cor-quinaria-font: rgb(58, 58, 58);
 --cor-senario-font: #141414;
 --cor-principal-background: #ffffff;
 --cor-segundaria-background: #FAFAFA;

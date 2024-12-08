@@ -4,7 +4,7 @@
 }
 
 .card-text{
-  color: var(--cor-segundaria-font);
+  color: var(--cor-quinaria-font);
 }
 
 .card {
@@ -20,7 +20,7 @@
 }
 
 .card-title {
-    color: var(--cor-segundaria-font);
+    color: var(--cor-terciaria-font);
     font-size: 1.5rem;
 }
 
