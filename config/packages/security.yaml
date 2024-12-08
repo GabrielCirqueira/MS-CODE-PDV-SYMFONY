@@ -22,7 +22,8 @@ security:
                 # default_target_path: app_dashboard
                 # enable_csrf: true
             logout:
-                path: app_logout
+                path: logout
+                target: login
                 # where to redirect after logout
                 # target: app_any_route
 
