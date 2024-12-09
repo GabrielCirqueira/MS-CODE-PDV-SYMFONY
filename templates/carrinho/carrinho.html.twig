@@ -1,4 +1,5 @@
 {% extends 'layout.html.twig' %}
+{% block title %}Nova Venda{% endblock %} 
 
 {% block body %}
 <div class="container cart-container mt-5">
@@ -43,7 +44,7 @@
             <h5 class="client-label">Cliente*</h5>
             <div class="input-group client-input-group">
                 <input type="text" class="form-control client-input" id="client-search-input"
-                    placeholder="Buscar cliente por nome, CPF ou CNPJ...">
+                    placeholder="Buscar cliente por nome...">
             </div>
             <ul class="list-group" id="client-suggestions"
                 style="display: none; position: absolute; z-index: 1000; width: 100%;">
@@ -136,23 +137,24 @@
 
             listaSugestoes.on('click', '.list-group-item', function (event) {
                 const liElement = event.currentTarget;
-                const idElement = liElement.dataset.id;
+                const ID = liElement.dataset.id;
                 listaSugestoes.hide();
 
                 if(acao == "cliente"){
                     $.ajax({
-                        url: '/api/carrinho/' + idElement,
+                        url: '/api/carrinho/' + ID,
                         type: 'POST',
                         success: function(resposta) {
-                                $('#product-search-input').removeAttr('disabled');
-                                $('#linha-mensagem-tabela').text('Esse cliente não tem produtos em seu carrinho, selecione um produto!');
-                                carrinho = resposta.carrinho;
-                                $("#ValorTotal").text(formatarValorBR(resposta.dadosCarrinho.valor))
-                                $("#DataCarrinho").text(resposta.dadosCarrinho.data)
-                                $("#StatusCarrinho").text(resposta.dadosCarrinho.status)
-
-                                if(resposta.dadosCarrinho.itens != null){
+                            console.log(resposta.dadosCarrinho.itens);
+                                if(resposta.dadosCarrinho.itens != null && resposta.dadosCarrinho.itens.length > 0){
                                     window.location.href = "/carrinho/" + resposta.carrinho + "/aguardando/";
+                                }else{
+                                    $('#product-search-input').removeAttr('disabled');
+                                    $('#linha-mensagem-tabela').text('Esse cliente não tem produtos em seu carrinho, selecione um produto!');
+                                    carrinho = resposta.carrinho;
+                                    $("#ValorTotal").text(formatarValorBR(resposta.dadosCarrinho.valor))
+                                    $("#DataCarrinho").text(resposta.dadosCarrinho.data)
+                                    $("#StatusCarrinho").text(resposta.dadosCarrinho.status)
                                 }
                         },
                         error: function () {
@@ -162,7 +164,7 @@
                 }
                 else{
                     $.ajax({
-                        url: '/api/produtos/' + idElement,
+                        url: '/api/produtos/' + ID,
                         type: 'GET',
                         success: function (produto) {
                             $('#linha-mensagem-tabela').hide();
@@ -235,25 +237,24 @@
         configurarBusca('cliente','button-procurar-cliente','client-search-input', 'client-suggestions', 'api/clientes');
         configurarBusca('produto','button-inserir-produto','product-search-input', 'product-suggestions', 'api/produtos');
 
-        function formatarValorBR(valor) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
-        }
 
         $("#button-finalizar-venda").click(function () {
-
             $.ajax({
                 url: '/api/carrinho/' + carrinho + '/adicionar/produtos',
                 type: 'POST',
                 contentType: 'application/json',
+                dataType: 'json',
                 data: JSON.stringify({ produtos: produtosEnviar }),
-                success: function (resposta) {
-                    location.reload();
-                },
-                error: function (resposta){
-                console.log(resposta)
-            },
+            })
+            .done(function (resposta) {
+                console.log("Sucesso:", resposta);
+            })
+            .fail(function (xhr) {
+                console.error("Erro:", xhr.responseText);
+            })
+            .always(function () {
+                window.location.href = "/carrinho/" + carrinho + "/aguardando/";
             });
-             
         });
 
         function atualizarResumo() {

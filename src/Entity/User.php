@@ -43,9 +43,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Carrinho::class, mappedBy: 'usuario_id')]
     private Collection $carrinhos;
 
+    #[ORM\ManyToMany(targetEntity: Permissao::class, inversedBy: "users")]
+    #[ORM\JoinTable(name: "user_permissao")]
+    private Collection $permissoes;
+
+    #[ORM\Column]
+    private ?bool $ativo = null;
+
     public function __construct()
     {
         $this->carrinhos = new ArrayCollection();
+        $this->permissoes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,24 +151,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->carrinhos;
     }
 
-    public function addCarrinho(Carrinho $carrinho): static
+    /**
+     * @return Collection<int, Carrinho>
+     */
+    public function getPermissoes(): Collection
     {
-        if (!$this->carrinhos->contains($carrinho)) {
-            $this->carrinhos->add($carrinho);
-            $carrinho->setUsuarioId($this);
+        return $this->permissoes;
+    }
+
+
+    public function addPermissao(Permissao $permissao): self
+    {
+        if (!$this->permissoes->contains($permissao)) {
+            $this->permissoes->add($permissao);
         }
 
         return $this;
     }
 
-    public function removeCarrinho(Carrinho $carrinho): static
+    public function removePermissao(Permissao $permissao): self
     {
-        if ($this->carrinhos->removeElement($carrinho)) {
-            // set the owning side to null (unless already changed)
-            if ($carrinho->getUsuarioId() === $this) {
-                $carrinho->setUsuarioId(null);
-            }
-        }
+        $this->permissoes->removeElement($permissao);
+
+        return $this;
+    }
+
+    public function isAtivo(): ?bool
+    {
+        return $this->ativo;
+    }
+
+    public function setAtivo(bool $ativo): static
+    {
+        $this->ativo = $ativo;
 
         return $this;
     }

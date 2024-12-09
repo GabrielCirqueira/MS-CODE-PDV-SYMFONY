@@ -24,7 +24,7 @@ class ItemRepository extends ServiceEntityRepository
     public function buscar(Carrinho $carrinho): array
     {
         $qb = $this->createQueryBuilder('i')
-            ->select('p.id AS produto_id','p.quantidade AS estoque', 'p.nome', 'i.quantidade', 'p.descricao', 'p.valorUnitario', 'c.nome AS categoria')
+            ->select('p.id AS produto_id','p.quantidade AS estoque', 'p.nome', 'i.quantidade', 'i.valor', 'p.descricao', 'p.valorUnitario', 'c.nome AS categoria')
             ->innerJoin('i.produto', 'p')
             ->leftJoin('p.categoria', 'c')
             ->where('i.carrinho = :carrinho')

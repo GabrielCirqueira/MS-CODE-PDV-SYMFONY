@@ -4,41 +4,149 @@
 <div class="border-bottom mb-2 bg-white shadow-sm header-custom">
     <div class="container">
         <header class="d-flex flex-wrap justify-content-between align-items-center py-3">
-            <a href="{{path('home')}}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <img class="me-3 logo" src="{{asset('img/cart.png')}}" width="50" alt="Logotipo">
+            <a href="{{ path('home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <img class="me-3 logo" src="{{ asset('img/cart.png') }}" width="50" alt="Logotipo">
                 <span class="fs-4 fw-bold site-title">Ms Code - Estoque</span>
             </a>
 
             <ul class="nav">
-                <li class="nav-item">
-                    <a href="{{ path('home') }}" class="nav-link {{ app.request.attributes.get('_route') == 'home' ? 'active' : '' }}">Início</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{path('vendas')}}" class="nav-link {{ app.request.attributes.get('_route') == 'vendas' ? 'active' : '' }}">Vendas</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{path('clientes')}}" class="nav-link {{ app.request.attributes.get('_route') == 'clientes' ? 'active' : '' }}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('produtos') }}" class="nav-link {{ app.request.attributes.get('_route') == 'produtos' ? 'active' : '' }}">Produtos</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('categorias') }}" class="nav-link {{ app.request.attributes.get('_route') == 'categorias' ? 'active' : '' }}">Categorias</a>
-                </li>
-
-                <li class="nav-item">
-                <a href="{{ path('carrinho') }}" class="nav-link {{ app.request.attributes.get('_route') == 'carrinho' ? 'active' : '' }}">Carrinho</a>
-                </li>
-                
+                {% set temPermissaoProdutos = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'Adicionar-Produtos' or permissao.nome == 'Ver-Produtos' %}
+                        {% set temPermissaoProdutos = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoProdutos %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownProdutos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Produtos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownProdutos">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'Adicionar-Produtos' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarProdutos') }}">Adicionar Produto</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'Ver-Produtos' %}
+                                    <li><a class="dropdown-item" href="{{ path('produtos') }}">Listar Produtos</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoCategorias = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'Adicionar-Categoria' or permissao.nome == 'Ver-Categorias' %}
+                        {% set temPermissaoCategorias = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoCategorias %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownCategorias">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'Adicionar-Categoria' %}
+                                    <li><a class="dropdown-item" href="{{ path('addCategoria') }}">Adicionar Categoria</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'Ver-Categorias' %}
+                                    <li><a class="dropdown-item" href="{{ path('categorias') }}">Listar Categorias</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoClientes = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'adicionar-cliente' or permissao.nome == 'ver-clientes' %}
+                        {% set temPermissaoClientes = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoClientes %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownClientes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Clientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownClientes">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'adicionar-cliente' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarCliente') }}">Adicionar Cliente</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'ver-clientes' %}
+                                    <li><a class="dropdown-item" href="{{ path('clientes') }}">Listar Clientes</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoVendas = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'nova-venda' or permissao.nome == 'listar-vendas' %}
+                        {% set temPermissaoVendas = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoVendas %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownVendas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Vendas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownVendas">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'nova-venda' %}
+                                    <li><a class="dropdown-item" href="{{ path('carrinho') }}">Nova Venda</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'listar-vendas' %}
+                                    <li><a class="dropdown-item" href="{{ path('carrinhosListar') }}">Listar Vendas</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoSistema = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'criar-usuario' or permissao.nome == 'ver-usuarios' %}
+                        {% set temPermissaoSistema = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoSistema %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownSistema" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sistema
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownSistema">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'criar-usuario' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarUsuario') }}">Cadastrar Usuários</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'ver-usuarios' %}
+                                    <li><a class="dropdown-item" href="{{ path('usuariosListar')}}">Gerenciar Usuários</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
                 <li class="nav-item">
                     <a data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight">
                         <i class="fas fa-user-circle fa-2x user-icon"></i>
                     </a>
                 </li>
             </ul>
+            
+            
         </header>
     </div>
 </div>
+
 {% endblock %}
  
 {% block menu %}
@@ -53,7 +161,7 @@
  
         <div class="user-info text-center mb-4">
             <i class="fas fa-user-circle fa-4x mb-2 text-primary"></i>
-            <h6 class="mb-0">{{ app.user.nome }}</h6>
+            <h6 class="mb-0">{{ app.user.nome }}</h6> 
             <p class="text-muted mb-2">{{ app.user.email }}</p>
         </div>
  
@@ -66,8 +174,7 @@
 </div>
 
 
-{% endblock %}
-
+{% endblock %} 
 
 {% block footer%}
 <!-- <footer class="bg-dark text-white text-center py-3 mt-auto">

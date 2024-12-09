@@ -27,6 +27,9 @@ class Cliente
     #[ORM\OneToMany(mappedBy: 'cliente', targetEntity: Carrinho::class, cascade: ['persist', 'remove'])]
     private Collection $carrinhos;
 
+    #[ORM\Column]
+    private ?bool $ativo = null;
+
     public function __construct()
     {
         $this->carrinhos = new ArrayCollection();
@@ -83,6 +86,18 @@ class Cliente
                 $carrinho->setCliente(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isAtivo(): ?bool
+    {
+        return $this->ativo;
+    }
+
+    public function setAtivo(bool $ativo): static
+    {
+        $this->ativo = $ativo;
 
         return $this;
     }

@@ -3,16 +3,16 @@
 namespace App\Controller\Carrinho;
 
 use App\Entity\Carrinho;
-use App\Repository\ClienteRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CarrinhoRepository;
+use App\Repository\ClienteRepository;
 use App\Repository\ItemRepository;
 use App\Service\AdicionarProdutosCarrinhoService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CarrinhoApiController extends AbstractController
 {
@@ -24,8 +24,7 @@ class CarrinhoApiController extends AbstractController
         CarrinhoRepository $carrinhoRepository,
         ItemRepository $itemRepository,
         Security $security
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $cliente = $clienteRepository->find($idCliente);
         $carrinhoBusca = $carrinhoRepository->buscar($cliente);
         if ($carrinhoBusca == null) {
@@ -38,12 +37,12 @@ class CarrinhoApiController extends AbstractController
                 'carrinho' => $carrinho->getId(),
                 'dadosCarrinho' => [
                     'status' => 'Pendente',
-                    'data'  => $carrinho->getCriadoEm()->format(format: "d-m-Y"),
+                    'data' => $carrinho->getCriadoEm()->format(format: "d-m-Y"),
                     'valor' => 0,
-                    'itens' => null
+                    'itens' => null,
                 ],
                 'mensagem' => 'Carrinho criado com sucesso!',
-            ], Response::HTTP_OK); 
+            ], Response::HTTP_OK);
         }
 
         $carrinho = $carrinhoRepository->find($carrinhoBusca);
@@ -53,11 +52,11 @@ class CarrinhoApiController extends AbstractController
             'carrinho' => $carrinhoBusca,
             'dadosCarrinho' => [
                 'status' => $carrinho->getStatus(),
-                'data' => $carrinho->getAtualizadoEm() 
-                    ? $carrinho->getAtualizadoEm()->format("d-m-Y") 
-                    : ($carrinho->getCriadoEm() ? $carrinho->getCriadoEm()->format("d-m-Y") : null),
+                'data' => $carrinho->getAtualizadoEm()
+                ? $carrinho->getAtualizadoEm()->format("d-m-Y")
+                : ($carrinho->getCriadoEm() ? $carrinho->getCriadoEm()->format("d-m-Y") : null),
                 'valor' => $carrinho->getValorTotal() ?? 0,
-                'itens' => $itens
+                'itens' => $itens,
             ],
             'status' => 'Aguardando Pagamento',
             'mensagem' => 'Carrinho já existe.',
@@ -73,13 +72,50 @@ class CarrinhoApiController extends AbstractController
         $jsonData = $request->getContent();
         $data = json_decode($jsonData, true);
         $produtos = $data["produtos"];
+
         try {
             $APCservice->execute(idCarrinho: $idCarrinho, produtos: $produtos);
-            return $this->json(['mensagem' => 'Produtos adicionados com sucesso!'], Response::HTTP_OK);
+
+            return $this->json(['mensagem' => 'Produtos adicionados com sucesso!'], Response::HTTP_OK, ['Content-Type' => 'application/json']);
         } catch (\Exception $e) {
-            return $this->json(['erro' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            return $this->json([
+                'erro' => $e->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
-    
-}
 
+    #[Route('/api/carrinho/{id}/finalizar', name: 'finalizarCarrinho')]
+    public function finalizarCarrinho($id, CarrinhoRepository $carrinhoRepository): Response
+    {
+        $carrinho = $carrinhoRepository->find($id);
+        $carrinho->setStatus(Carrinho::STATUS_FINALIZADO);
+        $carrinho->setFinalizadoEm();
+        $carrinhoRepository->salvar($carrinho);
+        return $this->json([
+            'mensagem' => 'Carrinho finalizado com sucesso!',
+            'carrinho' => [
+                "status" => $carrinho->getStatus(),
+                "dataFinalizado" => $carrinho->getFinalizadoEm()->format("d/m/Y"),
+            ],
+
+        ], Response::HTTP_OK);
+    }
+
+    #[Route('/api/carrinho/{id}/cancelar', name: 'cancelarCarrinho')]
+    public function cancelarCarrinho($id, CarrinhoRepository $carrinhoRepository): Response
+    {
+        $carrinho = $carrinhoRepository->find($id);
+        $carrinho->setStatus(Carrinho::STATUS_CANCELADO);
+        $carrinho->setFinalizadoEm();
+        $carrinhoRepository->salvar($carrinho);
+        return $this->json([
+            'mensagem' => 'Carrinho cancelado com sucesso!',
+            'carrinho' => [
+                "status" => $carrinho->getStatus(),
+                "dataFinalizado" => $carrinho->getFinalizadoEm()->format("d/m/Y"),
+            ],
+
+        ], Response::HTTP_OK);
+    }
+
+}

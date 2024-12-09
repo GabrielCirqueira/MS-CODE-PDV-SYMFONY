@@ -1,0 +1,21 @@
+<div class="modal fade" id="{{ id }}" tabindex="-1" aria-labelledby="{{ id }}Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="{{ id }}Label">{{ title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ text }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="popup-close btn {{ confirmar ? 'btn-primary' : 'btn-secondary' }} " data-bs-dismiss="modal" aria-label="Close" >{{ confirmar ? confirmar : 'Cancelar' }}</button>
+                {% for button in buttons %}
+                <button id="{{ button.id }}" class="btn btn-{{ button.class }}" onclick="{{ button.action }}">
+                    {{ button.label }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

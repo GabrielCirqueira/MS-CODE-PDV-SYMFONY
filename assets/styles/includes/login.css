@@ -1,3 +1,5 @@
+@import url(variaveis.css);
+
 .form-signin {
     max-width: 330px;
     padding: 1rem; 
@@ -22,14 +24,14 @@
   
   .container-login{
     button {
-      background-color: #16c1aa;
+      background-color: var(--primary-color);
       font-size: 18px;
       border: none;
       font-weight: bold;
     }
   
     button:hover {
-      background-color: #15ad99;
+      background-color: var(--primary-color-hover);
     }
   
     img{
@@ -65,7 +67,7 @@
     input[type="password"]:focus,
     input[type="text"]:focus{
       background-color: #e7e7e727;
-      border-bottom: 2px solid #15ad99;
+      border-bottom: 2px solid var(--primary-color);
     }
   
     .form-signin {

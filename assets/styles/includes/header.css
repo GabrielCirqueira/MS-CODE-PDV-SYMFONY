@@ -1,10 +1,12 @@
+@import url(variaveis.css);
+
 .header-custom {
     background-color: #ffffff;
     border-color: #eaeaea;
 }
 
 .site-title {
-    color: #16c1aa;
+    color: var(--primary-color);
 }
 
 .logo {
@@ -25,7 +27,7 @@
 }
 
 .nav-link:hover, .nav-link.active {
-    color: #16c1aa;
+    color: var(--primary-color);
     background-color: #d3d3d36f;
 }
 
@@ -34,12 +36,12 @@
 }
 
 .user-icon {
-    color: #16c1aa;
+    color: var(--primary-color);
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .user-icon:hover {
-    color: #0fa78f;
+    color: var(--primary-color-hover);
     transform: scale(1.1);
 }
 
@@ -65,12 +67,12 @@
 }
  
 .offcanvas-header {
-    background-color: #16c1aa; 
+    background-color: var(--primary-color); 
     color: white;
 }
  
 .user-info i {
-    color: #16c1aa; 
+    color: var(--primary-color); 
 }
 
 .user-info h6 {

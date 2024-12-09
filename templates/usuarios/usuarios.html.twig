@@ -1,21 +1,20 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Clientes{% endblock %}
+{% block title %}Usuários{% endblock %}
 
 {% block body %}
 <div class="container py-5 container-table">
     <div class="mb-4 d-flex justify-content-between align-items-center">
-        <h1>Clientes</h1>
+        <h1>Usuários</h1>
         <div>
-            <a href="{{ path('adicionarCliente') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Novo Cliente
+            <a href="{{ path('adicionarUsuario') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Novo Usuário
             </a>
         </div>
     </div>
 
     {% include 'flash.html.twig' %}
 
-    <!-- Filtros -->
     <div class="filter-section mb-4">
         <div class="d-flex flex-wrap gap-3 align-items-end">
             <div class="filter-wrapper w-100 w-md-30">
@@ -23,14 +22,14 @@
                     <i class="fas fa-user"></i> Filtrar por Nome
                 </label>
                 <input type="text" id="filterNome" class="form-control filter-input"
-                    placeholder="Digite o nome do cliente">
+                    placeholder="Digite o nome do usuário">
             </div>
             <div class="filter-wrapper w-100 w-md-30">
-                <label for="filterCpf" class="form-label styled-label">
-                    <i class="fas fa-id-card"></i> Filtrar por CPF
+                <label for="filterEmail" class="form-label styled-label">
+                    <i class="fas fa-envelope"></i> Filtrar por E-mail
                 </label>
-                <input type="text" id="filterCpf" class="form-control filter-input"
-                    placeholder="Digite o CPF do cliente">
+                <input type="text" id="filterEmail" class="form-control filter-input"
+                    placeholder="Digite o e-mail do usuário">
             </div>
             <div class="filter-wrapper w-100 w-md-30">
                 <label for="filterStatus" class="form-label styled-label">
@@ -45,36 +44,35 @@
         </div>
     </div>
 
-    <!-- Tabela de Clientes -->
     <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th class="titulo-tabela" scope="col">Id</th>
                 <th class="titulo-tabela" scope="col">Nome</th>
+                <th class="titulo-tabela" scope="col">E-mail</th>
                 <th class="titulo-tabela" scope="col">Status</th>
-                <th class="titulo-tabela" scope="col">CPF</th>
                 <th class="titulo-tabela text-end" scope="col">Ações</th>
             </tr>
         </thead>
-        <tbody id="clientesTable">
-            {% for cliente in clientes %}
+        <tbody id="usuariosTable">
+            {% for usuario in usuarios %}
                 <tr>
-                    <td data-label="Id">{{ cliente.id }}</td>
-                    <td data-label="Nome">{{ cliente.nome }}</td>
+                    <td data-label="Id">{{ usuario.id }}</td>
+                    <td data-label="Nome">{{ usuario.nome }}</td>
+                    <td data-label="E-mail">{{ usuario.email }}</td>
                     <td data-label="Status">
-                        <span data-status="{{ cliente.ativo == 0 ? '0' : '1' }}" class="badge {{ cliente.ativo == 0 ? 'bg-danger' : 'bg-success' }}">
-                            {{ cliente.ativo == 0 ? 'Inativo' : 'Ativo' }}
+                        <span data-status="{{ usuario.ativo == 0 ? '0' : '1' }}" class="badge {{ usuario.ativo == 0 ? 'bg-danger' : 'bg-success' }}">
+                            {{ usuario.ativo == 0 ? 'Inativo' : 'Ativo' }}
                         </span>
                     </td>
-                    <td data-label="CPF" class="cpf">{{ cliente.cpf }}</td>
                     <td data-label="Ações" class="text-end">
-                        <button id="btnAtivar-{{cliente.id}}" data-id="{{cliente.id}}" value="{{ cliente.nome }}" class="btn-ativar btn btn-success btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#PPstatusAlterarAtivar">
+                        <button id="btnAtivar-{{usuario.id}}" data-id="{{usuario.id}}" value="{{ usuario.nome }}" class="btn-ativar btn btn-success btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#PPstatusAlterarAtivar">
                             <i class="fas fa-check-circle"></i>
                         </button>
-                        <button id="btnInativar-{{cliente.id}}" data-id="{{cliente.id}}" value="{{ cliente.nome }}" class="btn-inativar btn btn-danger btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#PPstatusAlterar">
+                        <button id="btnInativar-{{usuario.id}}" data-id="{{usuario.id}}" value="{{ usuario.nome }}" class="btn-inativar btn btn-danger btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#PPstatusAlterar">
                             <i class="fas fa-ban"></i>
                         </button>
-                        <a href="{{ path('editarCliente', {'id': cliente.id}) }}" class="btn btn-secondary btn-sm btn-action">
+                        <a href="{{ path('editarUsuario', {'id': usuario.id}) }}" class="btn btn-secondary btn-sm btn-action">
                             <i class="fas fa-edit"></i>
                         </a>
                     </td>
@@ -92,7 +90,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Tem certeza que deseja inativar o cliente <span id="nomePP"></span> ? </p>
+                <p>Tem certeza que deseja inativar o usuário <span id="nomePP"></span>?</p>
             </div>
             <div class="modal-footer">
                 <button class="popup-close btn btn-secondary " data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
@@ -104,7 +102,6 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="PPstatusAlterarAtivar" tabindex="-1" aria-labelledby="PPstatusAlterarAtivarLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -113,7 +110,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Tem certeza que deseja ativar o cliente <span id="nomePPativar"></span> ? </p>
+                <p>Tem certeza que deseja ativar o usuário <span id="nomePPativar"></span>?</p>
             </div>
             <div class="modal-footer">
                 <button class="popup-close btn btn-secondary " data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
@@ -129,31 +126,27 @@
     $(".btn-inativar").click(function () {
         var nome = $(this).val();
         $("#nomePP").text(nome);
-        
         var id = $(this).data('id');
-        
-        var novaUrl = "clientes/inativar/" + id;
+        var novaUrl = "usuarios/inativar/" + id;
         $("#ConfirmarInativar").attr("href", novaUrl);
     });
 
     $(".btn-ativar").click(function () {
         var nome = $(this).val();
         $("#nomePPativar").text(nome);
-        
         var id = $(this).data('id');
-        
-        var novaUrl = "clientes/ativar/" + id;
+        var novaUrl = "usuarios/ativar/" + id;
         $("#ConfirmarAtivar").attr("href", novaUrl);
     });
 
     $(document).ready(function () {
         function verificarLinhasVisiveis() {
-            let linhasVisiveis = $('#clientesTable tr:visible').length;
+            let linhasVisiveis = $('#usuariosTable tr:visible').length;
             let mensagemSemRegistros = $('#mensagemSemRegistros');
 
             if (linhasVisiveis === 0) {
                 if (mensagemSemRegistros.length === 0) {
-                    $('#clientesTable').append(
+                    $('#usuariosTable').append(
                         `<tr id="mensagemSemRegistros">
                             <td colspan="5" class="text-center text-muted">Nenhum registro encontrado.</td>
                         </tr>`
@@ -166,23 +159,23 @@
 
         $('#filterNome').on('input', function () {
             let nome = $(this).val().toLowerCase();
-            $('#clientesTable tr').filter(function () {
+            $('#usuariosTable tr').filter(function () {
                 $(this).toggle($(this).find('td:nth-child(2)').text().toLowerCase().indexOf(nome) > -1);
             });
             verificarLinhasVisiveis();
         });
 
-        $('#filterCpf').on('input', function () {
-            let cpf = $(this).val().toLowerCase();
-            $('#clientesTable tr').filter(function () {
-                $(this).toggle($(this).find('td:nth-child(4)').text().toLowerCase().indexOf(cpf) > -1);
+        $('#filterEmail').on('input', function () {
+            let email = $(this).val().toLowerCase();
+            $('#usuariosTable tr').filter(function () {
+                $(this).toggle($(this).find('td:nth-child(3)').text().toLowerCase().indexOf(email) > -1);
             });
             verificarLinhasVisiveis();
         });
 
         $('#filterStatus').on('change', function () {
             let statusUl = $(this).val();
-            $('#clientesTable tr').each(function () {
+            $('#usuariosTable tr').each(function () {
                 let statusTd = $(this).find('span[data-status]').data('status');
                 $(this).toggle(statusUl === "" || statusTd == statusUl);
             });
@@ -190,5 +183,4 @@
         });
     });
 </script>
-
 {% endblock %}

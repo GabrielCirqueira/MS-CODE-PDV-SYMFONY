@@ -44,6 +44,9 @@ class Produto implements JsonSerializable
     #[Groups('produto')]
     private ?Categoria $categoria = null;
 
+    #[ORM\Column]
+    private ?bool $ativo = null;
+
 
     public function __construct()
     {
@@ -152,5 +155,17 @@ class Produto implements JsonSerializable
             'atualizadoEm' => $this->getAtualizadoEm(),
             'categoria' => $this->getCategoria()?->getNome(),
         ];
+    }
+
+    public function isAtivo(): ?bool
+    {
+        return $this->ativo;
+    }
+
+    public function setAtivo(bool $ativo): static
+    {
+        $this->ativo = $ativo;
+
+        return $this;
     }
 }

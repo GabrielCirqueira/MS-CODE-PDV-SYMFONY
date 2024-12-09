@@ -2,11 +2,8 @@
 
 namespace App\Controller\Produtos;
 
-use App\Entity\Produtos;
 use App\Repository\CategoriaRepository;
 use App\Repository\ProdutoRepository;
-use App\Repository\VendasRepository;
-use App\Service\ProdutoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,5 +81,40 @@ class OperarController extends AbstractController
 
         return $this->redirectToRoute("produtos");
     }
+
+    #[Route(path: '/produtos/inativar/{id}', name: 'inativarProduto')]
+    public function inativar($id, ProdutoRepository $produtoRepository): Response
+    {
+        $Produto = $produtoRepository->find($id);
+
+        if (!$Produto) {
+            $this->addFlash('error', "Usuário não encontrado.");
+            return $this->redirectToRoute("produtos");
+        }
+
+        $Produto->setAtivo(false);
+        $produtoRepository->salvarProduto($Produto);
+
+        $this->addFlash('success', "Usuário {$Produto->getNome()} foi inativado com sucesso.");
+        return $this->redirectToRoute("produtos");
+    }
+
+    #[Route(path: '/produtos/ativar/{id}', name: 'ativarProduto')]
+    public function ativar($id, ProdutoRepository $produtoRepository): Response
+    {
+        $Produto = $produtoRepository->find($id);
+
+        if (!$Produto) {
+            $this->addFlash('error', "Usuário não encontrado.");
+            return $this->redirectToRoute("produtos");
+        }
+
+        $Produto->setAtivo(true);
+        $produtoRepository->salvarProduto($Produto);
+
+        $this->addFlash('success', "Usuário {$Produto->getNome()} foi ativado com sucesso.");
+        return $this->redirectToRoute("produtos");
+    }
+
 
 }

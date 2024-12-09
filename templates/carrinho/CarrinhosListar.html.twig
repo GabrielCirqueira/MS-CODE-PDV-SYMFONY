@@ -1,0 +1,135 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Lista de vendas{% endblock %} 
+
+{% block body %}
+<div class="container my-4">
+    <div class="filter-section">
+        <h1 class="text-center mb-5 fw-bold">Listagem de Carrinhos</h1>
+
+        <div class="d-flex flex-wrap gap-3 align-items-end">
+            <div class="filter-wrapper w-100 w-md-30">
+                <label for="filterNome" class="form-label styled-label">
+                    <i class="fas fa-user"></i> Filtrar por Nome
+                </label>
+                <input type="text" id="filterNome" class="form-control filter-input"
+                    placeholder="Digite o nome do cliente">
+            </div>
+            <div class="filter-wrapper w-100 w-md-30">
+                <label for="filterCpf" class="form-label styled-label">
+                    <i class="fas fa-id-card"></i> Filtrar por CPF
+                </label>
+                <input type="text" id="filterCpf" class="form-control filter-input"
+                    placeholder="Digite o CPF do cliente">
+            </div>
+            <div class="filter-wrapper w-100 w-md-30">
+                <label for="filterStatus" class="form-label styled-label">
+                    <i class="fas fa-filter"></i> Filtrar por Status
+                </label>
+                <select id="filterStatus" class="form-select filter-select">
+                    <option value="">Todos os Status</option>
+                    <option value="Aguardando Pagamento">Aguardando Pagamento</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Finalizado">Finalizado</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover mt-4">
+        <thead class="table-light styled-table-head">
+            <tr>
+                <th class="text-center align-middle">Nome Cliente</th>
+                <th class="text-center align-middle">CPF Cliente</th>
+                <th class="text-center align-middle">Status</th>
+                <th class="text-center align-middle">Data de Criação</th>
+                <th class="text-center align-middle">Valor Total</th>
+                <th class="text-center align-middle">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="carrinhoTable">
+            {% for carrinho in carrinhos %}
+            <tr>
+                <td class="text-center align-middle">{{ carrinho.cliente.nome }}</td>
+                <td class="text-center align-middle cpf">{{ carrinho.cliente.cpf }}</td>
+                <td class="text-center align-middle">
+                    <span data-status="{{ carrinho.status }}" class="badge 
+                        {% if carrinho.status == 'Aguardando Pagamento' %} bg-warning
+                        {% elseif carrinho.status == 'Pendente' %} bg-secondary
+                        {% elseif carrinho.status == 'Finalizado' %} bg-success
+                        {% elseif carrinho.status == 'Cancelado' %} bg-danger
+                        {% endif %}
+                    ">
+                        {{ carrinho.status }}
+                    </span>
+                </td>
+                <td class="text-center align-middle">{{ carrinho.criadoEm|date('Y-m-d') }}</td>
+                <td class="text-center align-middle valor-total" data-valor="{{ carrinho.valorTotal }}">{{ carrinho.valorTotal }}</td>
+                <td class="text-center align-middle">
+                    {% if carrinho.status != 'Pendente' %}
+                    <a href="{{ path('carrinhoAguardandoPagamento',{'id': carrinho.id})}}" class="btn btn-sm btn-primary btn-view-cart">
+                        <i class="fas fa-shopping-cart"></i> Ver Carrinho
+                    </a>
+                    {% else %}
+                    <button class="btn btn-sm btn-dark btn-view-cart-disabled" disabled>
+                        <i class="fas fa-shopping-cart"></i> Ver Carrinho
+                    </button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('[data-valor]').each(function () {
+            let valor = parseFloat($(this).data('valor'));
+                $(this).text(formatarValorBR(valor));
+        });
+        function verificarLinhasVisiveis() {
+            let linhasVisiveis = $('#carrinhoTable tr:visible').length;
+            let mensagemSemRegistros = $('#mensagemSemRegistros');
+    
+            if (linhasVisiveis === 0) {
+                if (mensagemSemRegistros.length === 0) {
+                    $('#carrinhoTable').append(
+                        `<tr id="mensagemSemRegistros">
+                            <td colspan="6" class="text-center text-muted">Nenhum registro encontrado.</td>
+                        </tr>`
+                    );
+                }
+            } else {
+                mensagemSemRegistros.remove();
+            }
+        }
+    
+        $('#filterNome').on('input', function () {
+            let nome = $(this).val().toLowerCase();
+            $('#carrinhoTable tr').filter(function () {
+                $(this).toggle($(this).find('td:first').text().toLowerCase().indexOf(nome) > -1);
+            });
+            verificarLinhasVisiveis();
+        });
+    
+        $('#filterCpf').on('input', function () {
+            let cpf = $(this).val().toLowerCase();
+            $('#carrinhoTable tr').filter(function () {
+                $(this).toggle($(this).find('td:nth-child(2)').text().toLowerCase().indexOf(cpf) > -1);
+            });
+            verificarLinhasVisiveis();
+        });
+    
+        $('#filterStatus').on('change', function () {
+            let statusUl = $(this).val();
+            $('#carrinhoTable tr').each(function () {
+                let statusTd = $(this).find('span[data-status]').data('status');
+                $(this).toggle(statusUl === "" || statusTd === statusUl);
+            });
+            verificarLinhasVisiveis();
+        });
+    });
+    
+</script>
+{% endblock %}

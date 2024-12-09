@@ -38,6 +38,12 @@ class LoginController extends AbstractController
                 $usuario = $userRepository->buscarEmailUser($email);
 
                 if ($usuario) {
+
+                    if (!$usuario->isAtivo()) {
+                        $this->addFlash("danger", "Usuário inativo. Por favor, entre em contato com o administrador.");
+                        return $this->redirectToRoute("login");
+                    }
+                    
                     $senha = $request->request->get("senha");
                     if ($passwordHasher->isPasswordValid($usuario, $senha)) {
                         
@@ -70,5 +76,11 @@ class LoginController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException(message: 'This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route(path: '/acesso/negado', name: 'erroAcesso')]
+    public function error(): Response
+    {
+        return $this->render('Login/error.html.twig');
     }
 }

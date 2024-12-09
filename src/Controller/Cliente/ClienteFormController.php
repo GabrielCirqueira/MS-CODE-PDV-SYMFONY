@@ -100,4 +100,29 @@ class ClienteFormController extends AbstractController
             return $this->redirectToRoute("clientes");
         }
     }
+
+
+    #[Route(path: '/clientes/inativar/{id}', name: 'inativarCliente')]
+    public function inativar($id, ClienteRepository $clienteRepository): Response
+    {
+        $cliente = $clienteRepository->find($id);
+        $cliente->setAtivo(False);
+        $clienteRepository->salvar($cliente);
+
+        $this->addFlash('success', "cliente {$cliente->getNome()} foi Inativado com sucesso.");
+        return $this->redirectToRoute("clientes");
+
+    }
+
+    #[Route(path: '/clientes/ativar/{id}', name: 'ativarCliente')]
+    public function ativar($id, ClienteRepository $clienteRepository): Response
+    {
+        $cliente = $clienteRepository->find($id);
+        $cliente->setAtivo(True);
+        $clienteRepository->salvar($cliente);
+
+        $this->addFlash('success', "cliente {$cliente->getNome()} foi ativado com sucesso.");
+        return $this->redirectToRoute("clientes");
+
+    }
 }

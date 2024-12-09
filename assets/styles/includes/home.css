@@ -1,3 +1,5 @@
+@import url(variaveis.css);
+
 .main-container {
     padding: 2rem;
     text-align: center;
@@ -15,20 +17,19 @@
 }
 
 .card-title {
-    color: #16c1aa;
-    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.3rem;
 }
 
 .btn-custom {
-    background-color: #16c1aa;
+    background-color: var(--primary-color);
     color: white;
 }
 
 .btn-custom:hover {
-    background-color: #139a88;
+    background-color: var(--primary-color-hover);
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .main-container {
         padding: 1rem;

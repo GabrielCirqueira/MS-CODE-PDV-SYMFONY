@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Carrinho
 {
+    public const STATUS_PENDENTE = 'Pendente';
+    public const STATUS_AGUARDANDO = 'Aguardando Pagamento';
+    public const STATUS_FINALIZADO = 'Finalizado';
+    public const STATUS_CANCELADO = 'Cancelado';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -133,8 +138,9 @@ class Carrinho
         return $this->finalizadoEm;
     }
 
-    public function setFinalizadoEm(?\DateTimeInterface $finalizadoEm): static
+    public function setFinalizadoEm(): static
     {
+        $finalizadoEm = new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo'));
         $this->finalizadoEm = $finalizadoEm;
 
         return $this;
