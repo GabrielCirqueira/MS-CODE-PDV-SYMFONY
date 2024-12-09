@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Repository\CarrinhoRepository;
 use App\Repository\ProdutoRepository;
 use App\Repository\ItemRepository;
+use App\Entity\Produto;
 use App\Entity\Item;
 
 class AdicionarProdutosCarrinhoService
@@ -50,6 +51,9 @@ class AdicionarProdutosCarrinhoService
                 $quantidade = $produtoData['quantidade'];
                 $valorUnitario = $produto->getValorUnitario();
                 $valorTotalItem = $quantidade * $valorUnitario * 100;
+                $quantidadeProduto = $produto->getQuantidade();
+                $produto->setQuantidade($quantidadeProduto - $quantidade);
+                $this->produtoRepository->salvarProduto($produto);
 
                 $item = new Item($produto, $carrinho, $quantidade, $valorTotalItem);
                 $this->itemRepository->salvar($item);

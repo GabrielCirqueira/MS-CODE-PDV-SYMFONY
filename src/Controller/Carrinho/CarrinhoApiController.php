@@ -4,6 +4,7 @@ namespace App\Controller\Carrinho;
 
 use App\Entity\Carrinho;
 use App\Repository\CarrinhoRepository;
+use App\Repository\ProdutoRepository;
 use App\Repository\ClienteRepository;
 use App\Repository\ItemRepository;
 use App\Service\AdicionarProdutosCarrinhoService;
@@ -102,20 +103,32 @@ class CarrinhoApiController extends AbstractController
     }
 
     #[Route('/api/carrinho/{id}/cancelar', name: 'cancelarCarrinho')]
-    public function cancelarCarrinho($id, CarrinhoRepository $carrinhoRepository): Response
+    public function cancelarCarrinho($id, CarrinhoRepository $carrinhoRepository, ItemRepository $itemRepository, ProdutoRepository $produtoRepository): Response
     {
         $carrinho = $carrinhoRepository->find($id);
+        
+        $itens = $itemRepository->findBy(['carrinho' => $carrinho]);
+
+        foreach ($itens as $item) {
+            $produto = $produtoRepository->find($item->getProduto()->getId());
+            $quantidadeOriginal = $produto->getQuantidade();
+
+            $quantidadeRestaurada = $quantidadeOriginal + $item->getQuantidade();
+            
+            $produto->setQuantidade($quantidadeRestaurada);
+            $produtoRepository->salvarProduto($produto);
+        }
+
         $carrinho->setStatus(Carrinho::STATUS_CANCELADO);
-        $carrinho->setFinalizadoEm();
+        $carrinho->setFinalizadoEm(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
         $carrinhoRepository->salvar($carrinho);
+
         return $this->json([
             'mensagem' => 'Carrinho cancelado com sucesso!',
             'carrinho' => [
                 "status" => $carrinho->getStatus(),
                 "dataFinalizado" => $carrinho->getFinalizadoEm()->format("d/m/Y"),
             ],
-
         ], Response::HTTP_OK);
     }
-
 }

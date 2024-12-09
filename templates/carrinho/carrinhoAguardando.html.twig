@@ -78,7 +78,7 @@
                             <td class="text-center align-middle">{{ produto.categoria }}</td>
                             <td class="text-center align-middle">R$ {{ produto.valorUnitario }}</td>
                             <td class="text-center align-middle">{{ produto.quantidade }}</td>
-                            <td class="text-center align-middle">R$ {{ produto.valor / 100 }}</td>
+                            <td data-valor="{{ produto.valor / 100}}" class="text-center align-middle">R$ {{ produto.valor / 100 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -147,9 +147,13 @@
         buttons: []
         } %}
     <script>
+        function formatarValorBR(valor) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+        }
+                
         $('[data-valor]').each(function () {
             let valor = parseFloat($(this).data('valor'));
-            // $(this).text(formatarValorBR(valor));
+            $(this).text(formatarValorBR(valor));
         });
 
         $("#confirmarFinalizarCarrinho").click(function () {

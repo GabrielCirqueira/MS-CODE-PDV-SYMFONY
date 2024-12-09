@@ -69,7 +69,7 @@ class ProdutoRepository extends ServiceEntityRepository
         $categoria = $this->CategoriaRepository->find($dados["categoria"]);
 
         $produto->setNome($dados["nome"]);
-        $produto->setCategoriaId($categoria);
+        $produto->setCategoria($categoria);
         $produto->setQuantidade($dados["quantidade"]);
         $produto->setvalorUnitario($dados["valor"]);
         $produto->setDescricao($dados["descricao"]);

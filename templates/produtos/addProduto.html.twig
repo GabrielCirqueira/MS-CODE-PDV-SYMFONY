@@ -36,7 +36,7 @@
               </span>
               <select name="categoria" class="form-select" id="categoriaId" aria-label="Default select example">
                 {% for categoria in categorias %}
-                <option value="{{categoria.id}}" {{ modo == 'editar' and categoria.nome == produto.categoriaId.nome ? 'selected' : '' }}>
+                <option value="{{categoria.id}}" {{ modo == 'editar' and categoria.nome == produto.categoria.nome ? 'selected' : '' }}>
                   {{categoria.nome}}
                 </option>
                 {% endfor %}
@@ -59,7 +59,7 @@
               <span class="input-group-text">
                 <i class="fas fa-dollar-sign"></i>
               </span>
-              <input type="text" value="{{modo == 'adicionar' ? '' : produto.valorUnitario}}" class="form-control numeric-input" id="valor" name="valor">
+              <input data-valor="{{modo == 'adicionar' ? '' : produto.valorUnitario}}"  type="text" value="{{modo == 'adicionar' ? '' : produto.valorUnitario}}" class="form-control numeric-input" id="valor" name="valor">
             </div>
           </div>
         </div>
@@ -81,6 +81,14 @@
   $(document).ready(function () {
     $(".numeric-input").on("input", function () {
       $(this).val($(this).val().replace(/[^0-9]/g, ""));
+    });
+
+    $("#valor").on("input", function () {
+      let valor = $(this).val().replace(/\D/g, '');
+      if (valor) {
+        valor = (parseInt(valor, 10) / 100).toFixed(2);
+        $(this).val(formatarValorBR(valor));
+      }
     });
   });
 </script>
