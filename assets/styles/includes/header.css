@@ -129,7 +129,7 @@
 
 .nav-link:hover {
     color: #ffffff;
-    background-color: #16c1aa;
+    background-color: var(--primary-color);
 }
 
 .dropdown-menu {
@@ -148,6 +148,6 @@
 }
 
 .dropdown-item:hover {
-    background-color: #16c1aa;
+    background-color: var(--primary-color);
     color: #ffffff;
 }

@@ -86,7 +86,6 @@
                 <button id="btnInativar-{{produto.id}}" data-id="{{produto.id}}" value="{{ produto.nome }}" class="btn-inativar btn btn-danger btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#PPstatusAlterar">
                     <i class="fas fa-ban"></i>
                 </button>
-                    <a href="{{ path('aumentarQuantidadeProduto', { 'id': produto.id }) }}" class="btn btn-sm" style="background-color: #16c1aa;"><i class="fas fa-plus"></i></a>
                     <a href="{{ path('editarProduto', { 'id': produto.id }) }}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>

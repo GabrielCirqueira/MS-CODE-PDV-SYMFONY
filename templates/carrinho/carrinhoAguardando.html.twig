@@ -76,7 +76,7 @@
                         <tr>
                             <td class="text-center align-middle">{{ produto.nome }}</td>
                             <td class="text-center align-middle">{{ produto.categoria }}</td>
-                            <td class="text-center align-middle">R$ {{ produto.valorUnitario }}</td>
+                            <td data-valor="{{ produto.valorUnitario / 100}}"  class="text-center align-middle">R$ {{ produto.valorUnitario }}</td>
                             <td class="text-center align-middle">{{ produto.quantidade }}</td>
                             <td data-valor="{{ produto.valor / 100}}" class="text-center align-middle">R$ {{ produto.valor / 100 }}</td>
                         </tr>
@@ -134,9 +134,7 @@
     title: 'Sucesso!',
     confirmar: 'Confirmar',
     text: 'Você finalizou o carrinho de ' ~ carrinho.cliente.nome ~ ' com sucesso!',
-    buttons: [
-    { id: 'buttonStatusSucesso', class: 'primary', label: 'Confirmar', action: '' }
-    ]
+    buttons: []
     } %}
 
     {% include 'popup.html.twig' with {

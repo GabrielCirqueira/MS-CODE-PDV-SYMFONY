@@ -30,14 +30,17 @@ class CarrinhoRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('carrinho')
             ->select('carrinho.id')
             ->where('carrinho.cliente = :cliente')
-            ->andWhere('carrinho.status != :status')
+            ->andWhere('carrinho.status != :statusConcluido')
+            ->andWhere('carrinho.status != :statusCancelado')
             ->setParameter('cliente', $cliente)
-            ->setParameter('status', 'Concluído')
+            ->setParameter('statusConcluido', 'Finalizado')
+            ->setParameter('statusCancelado', 'Cancelado')
             ->setMaxResults(1)
             ->getQuery();
-
+    
         $resultado = $query->getOneOrNullResult();
-
+    
         return $resultado ? (int) $resultado['id'] : null;
     }
+    
 }

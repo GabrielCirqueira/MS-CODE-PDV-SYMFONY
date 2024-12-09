@@ -146,7 +146,7 @@
                         type: 'POST',
                         success: function(resposta) {
                             console.log(resposta.dadosCarrinho.itens);
-                                if(resposta.dadosCarrinho.itens != null && resposta.dadosCarrinho.itens.length > 0){
+                                if(resposta.dadosCarrinho.itens != null && resposta.dadosCarrinho.itens.length > 0 && resposta.dadosCarrinho.status != "Cancelado"){
                                     window.location.href = "/carrinho/" + resposta.carrinho + "/aguardando/";
                                 }else{
                                     $('#product-search-input').removeAttr('disabled');
@@ -270,6 +270,24 @@
         $(document).on('input', '.quantity-input', function () {
             var Quantidade = parseInt($(this).val());
             var idProduto = $(this).data('id');
+            var maxQuantity = parseInt($(this).attr('max'));
+            var value = parseInt($(this).val());
+
+            if (value > maxQuantity) {
+                $(this).val(maxQuantity);
+                var produto = produtosEnviar.find(p => p.id === idProduto);
+
+                produto.quantidade = maxQuantity;
+                var total = produto.valorUnitario * maxQuantity;
+
+                $(this).closest('tr').find(`[data-id="${idProduto}"]`).text(formatarValorBR(total));
+                atualizarResumo();
+                return;
+            }
+
+            if (value < 1) {
+                $(this).val(1);
+            }
             
             var produto = produtosEnviar.find(p => p.id === idProduto);
 
