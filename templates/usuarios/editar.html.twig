@@ -61,7 +61,7 @@
                       <input name="permissoes[]" id="perm-{{ permissao.id }}" type="checkbox"
                              value="{{ permissao.id }}" class="custom-checkbox-button"
                              {% if permissao.id in usuario.permissoes|map(p => p.id) %}checked{% endif %}>
-                      <label for="perm-{{ permissao.id }}">{{ permissao.nome }}</label>
+                      <label for="perm-{{ permissao.id }}">{{ permissao.nome | replace({'-' : ' '}) | title }}</label>
                     {% endfor %}
                   </div>
                 </div>

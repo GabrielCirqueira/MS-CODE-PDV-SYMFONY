@@ -60,7 +60,7 @@
                     {% for permissao in permissoesDoGrupo %}
                       <input name="permissoes[]" id="perm-{{ permissao.id }}" type="checkbox"
                              value="{{ permissao.id }}" class="custom-checkbox-button">
-                      <label for="perm-{{ permissao.id }}">{{ permissao.nome }}</label>
+                      <label for="perm-{{ permissao.id }}">{{ permissao.nome | replace({'-' : ' '}) | title }}</label>
                     {% endfor %}
                   </div>
                 </div>

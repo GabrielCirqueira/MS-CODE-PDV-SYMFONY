@@ -118,3 +118,71 @@
         width: 100%;
     }
 }
+
+/**************************
+ * Estilos do Offcanvas *
+ **************************/
+
+/* Layout base */
+.user-panel {
+    width: 280px;
+    border-left: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+/* Cabeçalho */
+.user-panel .offcanvas-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* User Info */
+.user-info {
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-info .user-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.user-info .user-email {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Navigation Links */
+.user-links .nav-link {
+    color: #495057;
+    font-size: 0.95rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+}
+
+.user-links .nav-link i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.user-links .nav-link:hover {
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+.logout-section .btn {
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+}
+
+@media (max-width: 768px) {
+    .user-panel {
+        width: 100%;
+    }
+}

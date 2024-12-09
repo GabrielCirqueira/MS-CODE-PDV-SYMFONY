@@ -51,14 +51,13 @@
     background-color: rgba(22, 193, 170, 0.15);
 }
 
-.table a{
+.table a {
     color: white;
 }
 
-.table a:hover{
+.table a:hover {
     color: white;
 }
-
 
 .btn-action {
     margin: 0 0.25rem;
@@ -84,10 +83,6 @@
 }
 
 @media (max-width: 768px) {
-    .table td:last-child {
-        text-align: center;
-    }
-
     .table thead {
         display: none;
     }
@@ -105,6 +100,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 0.5rem 1rem;
+        text-align: left;
     }
 
     .table td::before {
@@ -112,10 +108,6 @@
         font-weight: bold;
         color: var(--primary-color);
         flex-basis: 40%;
-    }
-
-    .btn-action {
-        width: 100%;
-        margin: 0.5rem 0;
+        text-align: left; 
     }
 }
