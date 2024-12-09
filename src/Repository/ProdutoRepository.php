@@ -83,7 +83,8 @@ class ProdutoRepository extends ServiceEntityRepository
     public function buscarProdutosAtivos(?string $nome = null): array
     {
         $qb = $this->createQueryBuilder('p')
-                ->where('p.quantidade > 0'); 
+                ->where('p.quantidade > 0')
+                ->andWhere('p.ativo = 1');
 
         if ($nome) {
             $qb->andWhere('p.nome LIKE :nome')

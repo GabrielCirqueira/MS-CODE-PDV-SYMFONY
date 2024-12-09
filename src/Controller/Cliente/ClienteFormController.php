@@ -58,6 +58,7 @@ class ClienteFormController extends AbstractController
         }
 
         $cliente->setNome((string) $nome);
+        $cliente->setAtivo(True);
 
         $this->clienteService->adicionarCliente($cliente);
 
