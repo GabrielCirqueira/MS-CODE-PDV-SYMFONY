@@ -51,7 +51,7 @@ class Carrinho
     {   
         $this->cliente = $cliente;
         $this->usuario = $usuario;
-        $this->status = "Pendente";
+        $this->status = self::STATUS_PENDENTE;
         $this->itens = new ArrayCollection();
         $this->criadoEm = new \DateTimeImmutable();
     }
