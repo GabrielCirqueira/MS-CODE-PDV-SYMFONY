@@ -1,3 +1,5 @@
+@import url(variaveis.css);
+
 .container-categoria {
     background-color: #f8f9fa;
     border-radius: 10px;
@@ -17,17 +19,17 @@
 }
 
 h1 {
-    color: #16c1aa;
+    color: var(--primary-color);
 }
 
-.btn-primary {
-    background-color: #16c1aa;
+.container-categoria .btn-primary {
+    background-color: var(--primary-color);
     width: 100%;
     border: none;
 }
 
 .btn-primary:hover {
-    background-color: #139a88;
+    background-color: var(--primary-color-hover);
 }
 
 .form-label {
@@ -36,12 +38,12 @@ h1 {
 }
 
 .form-control:focus {
-    border-color: #16c1aa;
+    border-color: var(--primary-color);
     box-shadow: 0 0 5px rgba(22, 193, 170, 0.5);
 }
 
 .input-group-text {
-    background-color: #16c1aa;
+    background-color: var(--primary-color);
     color: white;
     border: none;
 }

@@ -1,0 +1,112 @@
+@import url(variaveis.css);
+
+.entrada-dados-personalizada {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .entrada-dados-grupo {
+    margin-bottom: 20px;
+  }
+
+  .container-usuarios {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+  
+.custom-checkbox-button {
+    display: none;
+}
+
+.custom-checkbox-button + label {
+    display: inline-block;
+    padding: 10px;
+    margin: 5px;
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-checkbox-button:checked + label {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+  .botao-permissao-personalizado {
+    display: inline-block;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    background-color: transparent;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .area-perms{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .botao-permissao-personalizado:hover {
+    background-color: var(--primary-color-hover);
+    color: #fff;
+  }
+
+  .botao-permissao-personalizado input {
+    display: none;
+  }
+
+  .botao-permissao-personalizado.selecionado {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+
+  .cartao-permissoes {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .cabecalho-cartao-permissoes {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-weight: bold;
+  }
+
+  .botao-salvar-personalizado {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 200px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  .botao-salvar-personalizado:hover {
+    background-color: var(--primary-color-hover);
+    border-color: var(--primary-color-hover);
+  }

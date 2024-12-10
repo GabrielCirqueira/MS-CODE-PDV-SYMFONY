@@ -1,9 +1,12 @@
-@import url(includes/login.css);
-@import url(includes/header.css);
-@import url(includes/home.css);
-@import url(includes/categoria.css);
-@import url(includes/tabela.css);
-@import url(includes/carrinho.css);
+@import url('includes/variaveis.css');
+@import url('includes/login.css');
+@import url('includes/header.css');
+@import url('includes/home.css');
+@import url('includes/categoria.css');
+@import url('includes/popUp.css');
+@import url('includes/usuario.css');
+@import url('includes/tabela.css');
+@import url('includes/carrinho.css');
 
 body {
   background-color: rgba(247, 247, 247, 0.526);
@@ -15,3 +18,68 @@ body {
   color: rgb(82, 82, 82);
 }
 
+.icone{
+  color: var(--primary-color);
+}
+
+.acesso-restrito-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.acesso-restrito-title {
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.acesso-restrito-card {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.acesso-restrito-icon {
+  color: #f39c12;
+}
+
+.acesso-restrito-card-title {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.acesso-restrito-card-text {
+  color: #555;
+}
+
+.acesso-restrito-btn-back {
+  border-radius: 10px;
+  font-size: 1.2rem;
+  padding: 10px 30px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.acesso-restrito-btn-login {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-size: 1.2rem;
+  padding: 10px 30px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.acesso-restrito-btn-login:hover {
+  background-color: var(--primary-color-hover);
+  border-color: var(--primary-color-hover);
+}
+
+.acesso-restrito-btn-back:hover {
+  background-color: #f8d7da;
+  cursor: pointer;
+}
+
+.text-primary-color {
+  color: var(--primary-color) !important;
+}
+
+form .btn-primary{
+  width: 100%;
+}

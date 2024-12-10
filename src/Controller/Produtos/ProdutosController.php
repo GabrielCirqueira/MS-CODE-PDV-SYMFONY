@@ -2,21 +2,33 @@
 
 namespace App\Controller\Produtos;
 
-use App\Entity\Produtos;
 use App\Repository\CategoriaRepository;
 use App\Repository\ProdutoRepository;
-use App\Repository\VendasRepository;
 use App\Service\ProdutoService;
+use App\Service\VerificarPermissaoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProdutosController extends AbstractController
 {
+    private $verificarPermissaoService;
+
+    public function __construct(VerificarPermissaoService $verificarPermissaoService)
+    {
+        $this->verificarPermissaoService = $verificarPermissaoService;
+    }
+
     #[Route('/produtos', name: 'produtos')]
     public function index(ProdutoRepository $produtoRepository): Response
     {
+        if (!$this->verificarPermissaoService->execute('Ver-Produtos')) {
+            return $this->render('Login/error.html.twig');
+        }
+
         $produtos = $produtoRepository->findAll();
         return $this->render('produtos/produtos.html.twig', [
             "modo" => "adicionar",
@@ -27,6 +39,10 @@ class ProdutosController extends AbstractController
     #[Route('/produtos/adicionar', name: 'adicionarProdutos', methods: "GET")]
     public function adicionarProduto(CategoriaRepository $categoriaRepository): Response
     {
+        if (!$this->verificarPermissaoService->execute('Adicionar-Produtos')) {
+            return $this->render('Login/error.html.twig');
+        }
+
         $categorias = $categoriaRepository->findAll();
         return $this->render('produtos/addProduto.html.twig', [
             'categorias' => $categorias,

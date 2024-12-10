@@ -1,10 +1,12 @@
+@import url(variaveis.css);
+
 .header-custom {
     background-color: #ffffff;
     border-color: #eaeaea;
 }
 
 .site-title {
-    color: #16c1aa;
+    color: var(--primary-color);
 }
 
 .logo {
@@ -25,7 +27,7 @@
 }
 
 .nav-link:hover, .nav-link.active {
-    color: #16c1aa;
+    color: var(--primary-color);
     background-color: #d3d3d36f;
 }
 
@@ -34,20 +36,18 @@
 }
 
 .user-icon {
-    color: #16c1aa;
+    color: var(--primary-color);
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .user-icon:hover {
-    color: #0fa78f;
+    color: var(--primary-color-hover);
     transform: scale(1.1);
 }
 
- 
-
 @media (max-width: 768px) {
     .nav {
-        flex-direction: column;
+        display: none !important;
     }
     
     .nav-link {
@@ -55,22 +55,19 @@
     }
 }
 
-/* MENU LATERAL */
-
-
 #offcanvasRight {
     background-color: #f8f9fa; 
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);  
     border-left: 1px solid #ddd;
 }
- 
+
 .offcanvas-header {
-    background-color: #16c1aa; 
+    background-color: var(--primary-color); 
     color: white;
 }
- 
+
 .user-info i {
-    color: #16c1aa; 
+    color: var(--primary-color); 
 }
 
 .user-info h6 {
@@ -106,4 +103,51 @@
 .btn-outline-danger:hover {
     background-color: #dc3545;
     color: #fff;
+}
+
+.offcanvas-body {
+    background-color: #f8f9fa;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.nav-item {
+    list-style: none;
+    margin-bottom: 15px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    color: #343a40;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+    background-color: var(--primary-color);
+}
+
+.dropdown-menu {
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.dropdown-item {
+    color: #343a40;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
 }

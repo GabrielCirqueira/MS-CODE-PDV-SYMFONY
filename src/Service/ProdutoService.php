@@ -23,9 +23,10 @@ class ProdutoService
         $categoria = $this->categoriaRepository->find($dados["categoria"]);
 
         $produto->setNome($dados["nome"]);
-        $produto->setCategoriaId($categoria);
+        $produto->setCategoria($categoria);
         $produto->setQuantidade($dados["quantidade"]);
         $produto->setvalorUnitario($dados["valor"]);
+        $produto->setAtivo(True);
         $produto->setDescricao($dados["descricao"]);
 
         $this->produtoRepository->salvarProduto($produto);

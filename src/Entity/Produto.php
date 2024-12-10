@@ -19,8 +19,8 @@ class Produto implements JsonSerializable
     #[ORM\Column(length: 255)]
     #[Groups('produto')]
     private string $nome;
-    
-    #[ORM\Column(length:255,nullable:true)]
+
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups('produto')]
     private ?string $descricao = null;
 
@@ -42,12 +42,14 @@ class Produto implements JsonSerializable
 
     #[ORM\ManyToOne]
     #[Groups('produto')]
-    private Categoria $categoriaId;
+    private ?Categoria $categoria = null;
 
-    #[ORM\ManyToOne(inversedBy: 'produto_id')]
-    private ?Item $item = null;
+    #[ORM\Column]
+    private ?bool $ativo = null;
 
-    public function __construct(){
+
+    public function __construct()
+    {
         $this->criadoEm = new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo'));
     }
 
@@ -68,21 +70,21 @@ class Produto implements JsonSerializable
         return $this;
     }
 
-    public function getQuantidade(): ?int
+    public function getDescricao(): ?string
     {
-        return $this->quantidade;
+        return $this->descricao;
     }
 
-    public function setDescricao(string $descricao): static
+    public function setDescricao(?string $descricao): static
     {
         $this->descricao = $descricao;
 
         return $this;
     }
 
-    public function getDescricao(): ?string
+    public function getQuantidade(): ?int
     {
-        return $this->descricao;
+        return $this->quantidade;
     }
 
     public function setQuantidade(int $quantidade): static
@@ -121,36 +123,25 @@ class Produto implements JsonSerializable
         return $this->atualizadoEm;
     }
 
-    public function setAtualizadoEm(\DateTimeInterface $atualizadoEm): static
+    public function setAtualizadoEm(?\DateTimeInterface $atualizadoEm): static
     {
         $this->atualizadoEm = $atualizadoEm;
 
         return $this;
     }
 
-    public function getCategoriaId(): ?Categoria
+    public function getCategoria(): ?Categoria
     {
-        return $this->categoriaId;
+        return $this->categoria;
     }
 
-    public function setCategoriaId(?Categoria $categoriaId): static
+    public function setCategoria(?Categoria $categoria): static
     {
-        $this->categoriaId = $categoriaId;
+        $this->categoria = $categoria;
 
         return $this;
     }
 
-    public function getItem(): ?Item
-    {
-        return $this->item;
-    }
-
-    public function setItem(?Item $item): static
-    {
-        $this->item = $item;
-
-        return $this;
-    }
 
     public function jsonSerialize(): array
     {
@@ -162,7 +153,19 @@ class Produto implements JsonSerializable
             'valorUnitario' => $this->getValorUnitario(),
             'criadoEm' => $this->getCriadoEm(),
             'atualizadoEm' => $this->getAtualizadoEm(),
-            'categoria' => $this->getCategoriaId()->getNome(),
+            'categoria' => $this->getCategoria()?->getNome(),
         ];
+    }
+
+    public function isAtivo(): ?bool
+    {
+        return $this->ativo;
+    }
+
+    public function setAtivo(bool $ativo): static
+    {
+        $this->ativo = $ativo;
+
+        return $this;
     }
 }

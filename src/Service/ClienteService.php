@@ -21,7 +21,7 @@ class ClienteService
 
     public function adicionarCliente(Cliente $cliente)
     {
-        return $this->clienteRepository->adicionar($cliente);
+        return $this->clienteRepository->salvar($cliente);
     }
 
     public function excluirCliente(int $id)

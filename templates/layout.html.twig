@@ -4,32 +4,141 @@
 <div class="border-bottom mb-2 bg-white shadow-sm header-custom">
     <div class="container">
         <header class="d-flex flex-wrap justify-content-between align-items-center py-3">
-            <a href="{{path('home')}}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <img class="me-3 logo" src="{{asset('img/cart.png')}}" width="50" alt="Logotipo">
-                <span class="fs-4 fw-bold site-title">Ms Code - Estoque</span>
+            <a href="{{ path('home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <img class="me-3 logo" src="{{ asset('img/cart.png') }}" width="50" alt="Logotipo">
+                <span class="fs-4 fw-bold site-title">BuyFast</span>
             </a>
 
-            <ul class="nav">
-                <li class="nav-item">
-                    <a href="{{ path('home') }}" class="nav-link {{ app.request.attributes.get('_route') == 'home' ? 'active' : '' }}">Início</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{path('vendas')}}" class="nav-link {{ app.request.attributes.get('_route') == 'vendas' ? 'active' : '' }}">Vendas</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{path('clientes')}}" class="nav-link {{ app.request.attributes.get('_route') == 'clientes' ? 'active' : '' }}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('produtos') }}" class="nav-link {{ app.request.attributes.get('_route') == 'produtos' ? 'active' : '' }}">Produtos</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('categorias') }}" class="nav-link {{ app.request.attributes.get('_route') == 'categorias' ? 'active' : '' }}">Categorias</a>
-                </li>
+            <button class="btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
 
-                <li class="nav-item">
-                <a href="{{ path('carrinho') }}" class="nav-link {{ app.request.attributes.get('_route') == 'carrinho' ? 'active' : '' }}">Carrinho</a>
-                </li>
-                
+            <ul class="nav">
+                {% set temPermissaoProdutos = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'Adicionar-Produtos' or permissao.nome == 'Ver-Produtos' %}
+                        {% set temPermissaoProdutos = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoProdutos %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownProdutos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Produtos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownProdutos">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'Adicionar-Produtos' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarProdutos') }}">Adicionar Produto</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'Ver-Produtos' %}
+                                    <li><a class="dropdown-item" href="{{ path('produtos') }}">Listar Produtos</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoCategorias = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'Adicionar-Categoria' or permissao.nome == 'Ver-Categorias' %}
+                        {% set temPermissaoCategorias = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoCategorias %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownCategorias">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'Adicionar-Categoria' %}
+                                    <li><a class="dropdown-item" href="{{ path('addCategoria') }}">Adicionar Categoria</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'Ver-Categorias' %}
+                                    <li><a class="dropdown-item" href="{{ path('categorias') }}">Listar Categorias</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoClientes = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'adicionar-cliente' or permissao.nome == 'ver-clientes' %}
+                        {% set temPermissaoClientes = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoClientes %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownClientes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Clientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownClientes">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'adicionar-cliente' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarCliente') }}">Adicionar Cliente</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'ver-clientes' %}
+                                    <li><a class="dropdown-item" href="{{ path('clientes') }}">Listar Clientes</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoVendas = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'nova-venda' or permissao.nome == 'listar-vendas' %}
+                        {% set temPermissaoVendas = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoVendas %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownVendas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Vendas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownVendas">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'nova-venda' %}
+                                    <li><a class="dropdown-item" href="{{ path('carrinho') }}">Nova Venda</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'listar-vendas' %}
+                                    <li><a class="dropdown-item" href="{{ path('carrinhosListar') }}">Listar Vendas</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoSistema = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'criar-usuario' or permissao.nome == 'ver-usuarios' %}
+                        {% set temPermissaoSistema = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoSistema %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownSistema" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sistema
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownSistema">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'criar-usuario' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarUsuario') }}">Cadastrar Usuários</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'ver-usuarios' %}
+                                    <li><a class="dropdown-item" href="{{ path('usuariosListar')}}">Gerenciar Usuários</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
                 <li class="nav-item">
                     <a data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight">
                         <i class="fas fa-user-circle fa-2x user-icon"></i>
@@ -39,27 +148,172 @@
         </header>
     </div>
 </div>
+
+<div class="offcanvas offcanvas-start" style="width: 250px" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        {% set temPermissaoProdutos = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'Adicionar-Produtos' or permissao.nome == 'Ver-Produtos' %}
+                        {% set temPermissaoProdutos = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoProdutos %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownProdutos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Produtos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownProdutos">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'Adicionar-Produtos' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarProdutos') }}">Adicionar Produto</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'Ver-Produtos' %}
+                                    <li><a class="dropdown-item" href="{{ path('produtos') }}">Listar Produtos</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoCategorias = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'Adicionar-Categoria' or permissao.nome == 'Ver-Categorias' %}
+                        {% set temPermissaoCategorias = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoCategorias %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownCategorias">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'Adicionar-Categoria' %}
+                                    <li><a class="dropdown-item" href="{{ path('addCategoria') }}">Adicionar Categoria</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'Ver-Categorias' %}
+                                    <li><a class="dropdown-item" href="{{ path('categorias') }}">Listar Categorias</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoClientes = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'adicionar-cliente' or permissao.nome == 'ver-clientes' %}
+                        {% set temPermissaoClientes = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoClientes %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownClientes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Clientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownClientes">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'adicionar-cliente' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarCliente') }}">Adicionar Cliente</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'ver-clientes' %}
+                                    <li><a class="dropdown-item" href="{{ path('clientes') }}">Listar Clientes</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoVendas = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'nova-venda' or permissao.nome == 'listar-vendas' %}
+                        {% set temPermissaoVendas = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoVendas %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownVendas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Vendas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownVendas">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'nova-venda' %}
+                                    <li><a class="dropdown-item" href="{{ path('carrinho') }}">Nova Venda</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'listar-vendas' %}
+                                    <li><a class="dropdown-item" href="{{ path('carrinhosListar') }}">Listar Vendas</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+                {% set temPermissaoSistema = false %}
+                {% for permissao in app.user.permissoes %}
+                    {% if permissao.nome == 'criar-usuario' or permissao.nome == 'ver-usuarios' %}
+                        {% set temPermissaoSistema = true %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% if temPermissaoSistema %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="dropdownSistema" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sistema
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownSistema">
+                            {% for permissao in app.user.permissoes %}
+                                {% if permissao.nome == 'criar-usuario' %}
+                                    <li><a class="dropdown-item" href="{{ path('adicionarUsuario') }}">Cadastrar Usuários</a></li>
+                                {% endif %}
+                                {% if permissao.nome == 'ver-usuarios' %}
+                                    <li><a class="dropdown-item" href="{{ path('usuariosListar')}}">Gerenciar Usuários</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            
+    </div>
+</div>
+
 {% endblock %}
- 
+
 {% block menu %}
 
-<div class="offcanvas offcanvas-end" style="width: 250px;" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-    <div class="offcanvas-header bg-light text-dark border-bottom">
-        <h5 id="offcanvasRightLabel" class="mb-0"><i class="fas fa-user-cog me-2"></i>Painel de Usuário</h5>
+<div class="offcanvas offcanvas-end user-panel" style="width: 240px;" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header bg-light text-dark border-bottom shadow-sm">
+        <h5 id="offcanvasRightLabel" class="mb-0">
+            Painel de Usuário
+        </h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <div class="offcanvas-body p-3 d-flex flex-column">
- 
         <div class="user-info text-center mb-4">
-            <i class="fas fa-user-circle fa-4x mb-2 text-primary"></i>
-            <h6 class="mb-0">{{ app.user.nome }}</h6>
-            <p class="text-muted mb-2">{{ app.user.email }}</p>
+            <i class="icone fas fa-user-circle fa-4x mb-2"></i>
+            <h6 class="mb-0 user-name">João Silva</h6>
+            <p class="text-muted mb-2 user-email">joao.silva@email.com</p>
+             
         </div>
- 
-        <div class="mt-auto">
-            <a href="{{ path('logout') }}" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center">
-                <i class="fas fa-sign-out-alt me-2"></i> Sair
+
+        <ul class="nav flex-column mb-auto user-links">
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">
+                    <i class="icone fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+            </li>
+        </ul>
+
+        <div class="logout-section mt-auto text-center">
+            <a href="/logout" class="btn btn-danger btn-sm">
+                <i class="fas fa-sign-out-alt me-1"></i> Sair
             </a>
         </div>
     </div>
@@ -68,8 +322,13 @@
 
 {% endblock %}
 
-
 {% block footer%}
+<script>
+    function toggleMenu() {
+        const nav = document.querySelector('.nav');
+        nav.classList.toggle('active');
+    }
+</script>
 <!-- <footer class="bg-dark text-white text-center py-3 mt-auto">
     <div class="container">
         <p class="mb-2">

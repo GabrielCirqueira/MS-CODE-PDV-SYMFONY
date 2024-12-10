@@ -69,7 +69,7 @@ class ProdutoRepository extends ServiceEntityRepository
         $categoria = $this->CategoriaRepository->find($dados["categoria"]);
 
         $produto->setNome($dados["nome"]);
-        $produto->setCategoriaId($categoria);
+        $produto->setCategoria($categoria);
         $produto->setQuantidade($dados["quantidade"]);
         $produto->setvalorUnitario($dados["valor"]);
         $produto->setDescricao($dados["descricao"]);
@@ -83,7 +83,8 @@ class ProdutoRepository extends ServiceEntityRepository
     public function buscarProdutosAtivos(?string $nome = null): array
     {
         $qb = $this->createQueryBuilder('p')
-                ->where('p.quantidade > 0'); 
+                ->where('p.quantidade > 0')
+                ->andWhere('p.ativo = 1');
 
         if ($nome) {
             $qb->andWhere('p.nome LIKE :nome')

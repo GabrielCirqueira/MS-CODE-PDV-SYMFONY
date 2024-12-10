@@ -1,0 +1,200 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Carrinho{% endblock %} 
+
+{% block body %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h1 class="display-6 text-primary-color">
+                <i class="fas fa-shopping-cart me-3"></i>Detalhes do Carrinho
+            </h1>
+        </div>
+    </div>
+
+    <div class="card-group mb-5">
+        <div class="card carrinho-aguardando-card shadow-sm text-center">
+            <div class="card-body">
+                <i class="fas fa-user fa-3x mb-3 card-icon"></i>
+                <h5 class="card-title">Nome do Cliente</h5>
+                <p class="card-text">{{ carrinho.cliente.nome }}</p>
+            </div>
+        </div>
+        <div class="card carrinho-aguardando-card shadow-sm text-center">
+            <div class="card-body">
+                <i class="fas fa-id-card fa-3x mb-3 card-icon"></i>
+                <h5 class="card-title">CPF do Cliente</h5>
+                <p class="card-text cpf">{{ carrinho.cliente.cpf }}</p>
+            </div>
+        </div>
+        <div class="card carrinho-aguardando-card shadow-sm text-center">
+            <div class="card-body">
+                <i class="fas fa-calendar-alt fa-3x mb-3 card-icon"></i>
+                <h5 id="tituloData" class="card-title">{{ carrinho.finalizadoEm ? "Data de Finalização" : "Data de criação" }}</h5>
+                <p id="ValorData" class="card-text">{{ carrinho.finalizadoEm ? carrinho.finalizadoEm|date('d/m/Y') : carrinho.criadoEm|date('d/m/Y') }}</p>
+            </div>
+        </div>
+        <div class="card carrinho-aguardando-card shadow-sm text-center">
+            <div class="card-body">
+                <i id="statusIcone" class="fas 
+                {% if carrinho.status is same as('Pendente') %}
+                    fa-clock
+                {% elseif carrinho.status is same as('Aguardando Pagamento') %}
+                    fa-hourglass-half
+                {% elseif carrinho.status is same as('Finalizado') %}
+                    fa-check-circle
+                {% elseif carrinho.status is same as('Cancelado') %}
+                    fa-times-circle
+                {% else %}
+                    fa-question-circle
+                {% endif %}
+                fa-3x mb-3 card-icon">
+            </i>
+                <h5 class="card-title">Status do Carrinho</h5>
+                <p id="statusValor" class="card-text">{{ carrinho.status }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4 text-primary-color">
+                <i class="fas fa-list me-2"></i>Produtos no Carrinho
+            </h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center align-middle">Produto</th>
+                            <th class="text-center align-middle">Categoria</th>
+                            <th class="text-center align-middle">Valor Unitário</th>
+                            <th class="text-center align-middle">Quantidade</th>
+                            <th class="text-center align-middle">Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produto in produtos %}
+                        <tr>
+                            <td class="text-center align-middle">{{ produto.nome }}</td>
+                            <td class="text-center align-middle">{{ produto.categoria }}</td>
+                            <td data-valor="{{ produto.valorUnitario / 100}}"  class="text-center align-middle">R$ {{ produto.valorUnitario }}</td>
+                            <td class="text-center align-middle">{{ produto.quantidade }}</td>
+                            <td data-valor="{{ produto.valor / 100}}" class="text-center align-middle">R$ {{ produto.valor / 100 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-active">
+                            <td colspan="4" class="text-end fw-bold">Total do Carrinho:</td>
+                            <td class="text-center fw-bold" data-valor="{{ carrinho.valorTotal }}">{{
+                                carrinho.valorTotal }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="carrinho" value="{{carrinho.id}}">
+    {% if not carrinho.finalizadoEm %}
+    <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center gap-3">
+            <button id="btnCancelar" class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#PPcancelarCarrinho">
+                <i class="fas fa-times-circle me-2"></i>Cancelar Carrinho
+            </button>
+
+            <button id="btnFinalizar" class="btn btn-primary-custom btn-lg text-white" data-bs-toggle="modal"
+                data-bs-target="#PPfinalizarCarrinho">
+                <i class="fas fa-check-circle me-2"></i>Finalizar Venda
+            </button>
+        </div>
+    </div>
+    {% endif %}
+
+    {% include 'popup.html.twig' with {
+    id: 'PPcancelarCarrinho',
+    title: 'Cancelar Carrinho',
+    text: 'Tem certeza que deseja cancelar o carrinho de ' ~ carrinho.cliente.nome ~ '? ' ,
+    confirmar: '',
+    buttons: [
+    { id: 'ConfirmarCancelar', class: 'primary', label: 'Confirmar', action: '' }
+    ]
+    } %}
+
+    {% include 'popup.html.twig' with {
+    id: 'PPfinalizarCarrinho',
+    title: 'Finalizar Carrinho',
+    confirmar: '',
+    text: 'Tem certeza que deseja finalizar o carrinho de ' ~ carrinho.cliente.nome ~ '? ',
+    buttons: [
+    { id: 'confirmarFinalizarCarrinho', class: 'primary', label: 'Confirmar', action: '' }
+    ]
+    } %}
+
+    {% include 'popup.html.twig' with {
+    id: 'PPsucessoFinalizarCarrinho',
+    title: 'Sucesso!',
+    confirmar: 'Confirmar',
+    text: 'Você finalizou o carrinho de ' ~ carrinho.cliente.nome ~ ' com sucesso!',
+    buttons: []
+    } %}
+
+    {% include 'popup.html.twig' with {
+        id: 'PPsucessoCancelarCarrinho',
+        title: 'Sucesso!',
+        confirmar: 'Confirmar',
+        text: 'Você Cancelou o carrinho de ' ~ carrinho.cliente.nome ~ ' com sucesso!',
+        buttons: []
+        } %}
+    <script>
+        function formatarValorBR(valor) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+        }
+                
+        $('[data-valor]').each(function () {
+            let valor = parseFloat($(this).data('valor'));
+            $(this).text(formatarValorBR(valor));
+        });
+
+        $("#confirmarFinalizarCarrinho").click(function () {
+            const id = $("#carrinho").val();
+            $.ajax({
+                url: "/api/carrinho/" + id + "/finalizar",
+                method: 'GET',
+                success: function (dados) {
+                    $("#tituloData").text("Data de Finalização");
+                    $("#valorData").text(dados.carrinho.dataFinalizado);
+                    $("#statusValor").text("Finalizado");
+                    $("#btnFinalizar").remove();
+                    $("#btnCancelar").remove();
+                    $("#statusIcone").removeClass().addClass("fas fa-check-circle fa-3x mb-3 card-icon");
+                    (new bootstrap.Modal(document.getElementById("PPsucessoFinalizarCarrinho"))).show();
+                    $("#PPfinalizarCarrinho").modal('hide');
+                },
+                error: function () {
+                    console.error("Erro ao buscar dados na API.");
+                }
+            });
+        });
+
+        $("#ConfirmarCancelar").click(function () {
+            const id = $("#carrinho").val();
+            $.ajax({
+                url: "/api/carrinho/" + id + "/cancelar",
+                method: 'GET',
+                success: function (dados) {
+                    $("#tituloData").text("Data de Finalização");
+                    $("#valorData").text(dados.carrinho.dataFinalizado);
+                    $("#statusValor").text("Cancelado");
+                    $("#statusIcone").removeClass().addClass("fas fa-times-circle fa-3x mb-3 card-icon");
+                    $("#btnCancelar").remove();
+                    $("#btnFinalizar").remove();
+                    (new bootstrap.Modal(document.getElementById("PPsucessoCancelarCarrinho"))).show();
+                    $("#PPcancelarCarrinho").modal('hide');
+                },
+                error: function () {
+                    console.error("Erro ao buscar dados na API.");
+                }
+            });
+        });
+
+    </script>
+    {% endblock %}

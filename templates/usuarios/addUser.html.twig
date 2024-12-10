@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Adicionar Usuário{% endblock %}
+
+{% block body %}
+
+<div class="container py-5 main">
+  <div class="container-usuarios">
+    <div class="mb-4 text-center">
+      <h1><i class="fas fa-user-plus"></i> Novo Usuário</h1>
+    </div>
+    {% include 'flash.html.twig' %}
+
+    <div class="w-100 mt-2">
+      <form method="POST" action="{{ path('registrarUsuario') }}">
+        <div class="mb-3">
+          <label for="nome" class="form-label"><strong>Nome:</strong></label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-user"></i>
+            </span>
+            <input type="text" value="{{modo == 'adicionar' ? '' : produto.nome}}" class="form-control" id="nome" name="nome">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="nome" class="form-label"><strong>Email:</strong></label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-envelope"></i>
+            </span>
+            <input type="text" value="{{modo == 'adicionar' ? '' : produto.nome}}" class="form-control" id="email" name="email">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="nome" class="form-label"><strong>Senha:</strong></label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input type="text" value="{{modo == 'adicionar' ? '' : produto.nome}}" class="form-control" id="senha" name="senha">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label"><strong>Permissões:</strong></label>
+          <p class="text-muted small">Clique nos botões para selecionar as permissões:</p>
+          <center>
+
+          <div class="row area-perms">
+            {% for grupo, permissoesDoGrupo in permissoesAgrupadas %}
+              <div class="col-md-6">
+                <div class="cartao-permissoes">
+                  <div class="cabecalho-cartao-permissoes">
+                    <i class="fas fa-folder me-2"></i>
+                    {{ grupo }}
+                  </div>
+                  <div class="p-3">
+                    {% for permissao in permissoesDoGrupo %}
+                      <input name="permissoes[]" id="perm-{{ permissao.id }}" type="checkbox"
+                             value="{{ permissao.id }}" class="custom-checkbox-button">
+                      <label for="perm-{{ permissao.id }}">{{ permissao.nome | replace({'-' : ' '}) | title }}</label>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          </center>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('addUsuario') }}">
+
+        <div class="text-center">
+          <button type="submit" class="botao-salvar-personalizado btn btn-primary">
+            <i class="fas fa-save"></i> Salvar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

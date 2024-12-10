@@ -2,6 +2,7 @@
 
 namespace App\Controller\Cliente;
 
+use App\Repository\ClienteRepository;
 use App\Service\ClienteService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,10 +20,10 @@ class ClienteApiController extends AbstractController
     }
 
     #[Route('/api/clientes', name: 'getClientes', methods: ['GET'])]
-    public function getClientes(SerializerInterface $serializer): JsonResponse
+    public function getClientes(SerializerInterface $serializer, ClienteRepository $clienteRepository): JsonResponse
     {
         try {
-            $clientes = $this->clienteService->listarTodosClientes();
+            $clientes = $clienteRepository->findBy(["ativo" => True]);
             $json = $serializer->serialize($clientes, 'json', ['groups' => 'cliente']);
             return new JsonResponse($json, Response::HTTP_OK, [], true);
         } catch (\Exception $e) {

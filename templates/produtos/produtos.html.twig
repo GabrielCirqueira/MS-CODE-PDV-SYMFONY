@@ -1,50 +1,218 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Produtos{% endblock %} 
+{% block title %}Produtos{% endblock %}
 
 {% block body %}
-
 <div class="container py-5 main container-table">
-    <div class="mb-4 d-flex flex-row justify-content-between">
-      <h1>Produtos</h1>
-      <div>
-        <a href="{{path('adicionarProdutos')}}" class="btn btn-primary"><i class="bi bi-plus"></i>Novo produto</a>
-      </div>
+    <div class="mb-4 d-flex flex-row justify-content-between align-items-center">
+        <h1>Produtos</h1>
+        <div>
+            <a href="{{ path('adicionarProdutos') }}" class="btn btn-primary"><i class="bi bi-plus"></i> Novo Produto</a>
+        </div>
     </div>
+
     {% include 'flash.html.twig' %}
 
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Nome</th>
-          <th scope="col">Descrição</th>
-          <th scope="col">Categoria</th>
-          <th scope="col">Valor</th>
-          <th scope="col">Qtd. Disponível</th>
-          <th scope="col-2 text-align-right">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for produto in produtos %}
-          <tr>
-            <td data-label="nome">{{ produto.nome }}</td>
-            <td data-label="descricao">{{ produto.descricao }}</td>
-            <td data-label="categoria">{{ produto.categoriaId.nome }}</td>
-            <td data-label="valor">R$ {{ produto.valorUnitario }},00 </td>
-            <td data-label="quantidade">{{ produto.quantidade }} Disponiveis</td>
-            <td>
-              <a href="{{path('venderProduto',{'id': produto.id})}}" class="btn btn-warning btn-sm">
-                Vender
-              </a>
-              <a href="{{path('aumentarQuantidadeProduto',{'id': produto.id})}}"class="btn btn-sm" style="background-color: #16c1aa;" ><i class="fas fa-plus"></i></a>
-              
-              <a href="{{path('editarProduto',{'id': produto.id})}}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></a>
-              <a href="{{path('excluirProduto',{'id': produto.id, 'nome': produto.nome})}}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    <div class="filter-section mb-4">
+        <div class="d-flex flex-wrap gap-3 align-items-end">
+            <div class="filter-wrapper w-100 w-md-25">
+                <label for="filterNome" class="form-label styled-label">
+                    <i class="fas fa-box"></i> Filtrar por Nome
+                </label>
+                <input type="text" id="filterNome" class="form-control filter-input" placeholder="Digite o nome do produto">
+            </div>
+            <div class="filter-wrapper w-100 w-md-25">
+                <label for="filterCategoria" class="form-label styled-label">
+                    <i class="fas fa-tags"></i> Filtrar por Categoria
+                </label>
+                <input type="text" id="filterCategoria" class="form-control filter-input" placeholder="Digite a categoria">
+            </div>
+            <div class="filter-wrapper w-100 w-md-25">
+                <label for="filterStatus" class="form-label styled-label">
+                    <i class="fas fa-toggle-on"></i> Status
+                </label>
+                <select id="filterStatus" class="form-select filter-input">
+                    <option value="">Todos</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+            <div class="filter-wrapper w-100 w-md-25">
+                <label for="filterValorMin" class="form-label styled-label">
+                    <i class="fas fa-dollar-sign"></i> Valor Mínimo
+                </label>
+                <input type="number" id="filterValorMin" class="form-control filter-input" placeholder="Digite o valor mínimo">
+            </div>
+            <div class="filter-wrapper w-100 w-md-25">
+                <label for="filterValorMax" class="form-label styled-label">
+                    <i class="fas fa-dollar-sign"></i> Valor Máximo
+                </label>
+                <input type="number" id="filterValorMax" class="form-control filter-input" placeholder="Digite o valor máximo">
+            </div>
+        </div>
+    </div>
 
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">
+                    Valor 
+                    <button id="sortValorAsc" class="btn btn-link btn-sm px-1"><i style="color: white;" class="fas fa-sort-amount-up"></i></button>
+                    <button id="sortValorDesc" class="btn btn-link btn-sm px-1"><i style="color: white;" class="fas fa-sort-amount-down"></i></button>
+                </th>
+                <th scope="col">Qtd. Disponível</th>
+                <th scope="col">Status</th>
+                <th scope="col-2 text-align-right">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="produtoTable">
+            {% for produto in produtos %}
+            <tr>
+                <td data-label="nome">{{ produto.nome }}</td>
+                <td data-label="categoria">{{ produto.categoria.nome }}</td>
+                <td data-label="valor" data-valor="{{ produto.valorUnitario }}">R$ {{ produto.valorUnitario }},00</td>
+                <td data-label="quantidade">{{ produto.quantidade }} Disponíveis</td>
+                <td data-label="status">
+                  <span data-status="{{ produto.ativo == 0 ? '0' : '1' }}" class="badge {{ produto.ativo == 0 ? 'bg-danger' : 'bg-success' }}">
+                    {{ produto.ativo == 0 ? 'Inativo' : 'Ativo' }}
+                </span>
+                </td>
+                <td>
+                  <button id="btnAtivar-{{produto.id}}" data-id="{{produto.id}}" value="{{ produto.nome }}" class="btn-ativar btn btn-success btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#PPstatusAlterarAtivar">
+                    <i class="fas fa-check-circle"></i>
+                </button>
+                <button id="btnInativar-{{produto.id}}" data-id="{{produto.id}}" value="{{ produto.nome }}" class="btn-inativar btn btn-danger btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#PPstatusAlterar">
+                    <i class="fas fa-ban"></i>
+                </button>
+                    <a href="{{ path('editarProduto', { 'id': produto.id }) }}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="PPstatusAlterarAtivar" tabindex="-1" aria-labelledby="PPstatusAlterarAtivarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="PPstatusAlterarAtivarLabel">Ativar Produto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              Você tem certeza que deseja ativar o produto <strong id="nomeProdutoAtivar"></strong>?
+          </div>
+          <div class="modal-footer">
+            <button class="popup-close btn btn-secondary " data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+            <a href="" id="ConfirmarAtivar" class="btn btn-primary" onclick="">
+                Confirmar
+            </a>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="PPstatusAlterar" tabindex="-1" aria-labelledby="PPstatusAlterarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="PPstatusAlterarLabel">Inativar Produto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              Você tem certeza que deseja inativar o produto <strong id="nomeProdutoInativar"></strong>?
+          </div>
+          <div class="modal-footer">
+            <button class="popup-close btn btn-secondary " data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+            <a href="" id="ConfirmarInativar" class="btn btn-primary" onclick="">
+                Confirmar
+            </a>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+      $('[data-valor]').each(function () {
+        let valor = parseFloat($(this).data('valor'));
+        $(this).text(formatarValorBR(valor));
+    });
+
+        function verificarLinhasVisiveis() {
+            let linhasVisiveis = $('#produtoTable tr:visible').length;
+            let mensagemSemRegistros = $('#mensagemSemRegistros');
+            
+            if (linhasVisiveis === 0) {
+                if (mensagemSemRegistros.length === 0) {
+                    $('#produtoTable').append(
+                        `<tr id="mensagemSemRegistros">
+                            <td colspan="6" class="text-center text-muted">Nenhum registro encontrado.</td>
+                        </tr>`
+                    );
+                }
+            } else {
+                mensagemSemRegistros.remove();
+            }
+        }
+
+        $('.btn-ativar').click(function() {
+          var produtoId = $(this).data('id');
+          var nomeProduto = $(this).val();
+          $('#nomeProdutoAtivar').text(nomeProduto);
+          $('#confirmarAtivar').data('id', produtoId);
+          var novaUrl = "produtos/ativar/" + produtoId;
+          $("#ConfirmarAtivar").attr("href", novaUrl);
+      });
+
+      $('.btn-inativar').click(function() {
+          var produtoId = $(this).data('id');
+          var nomeProduto = $(this).val();
+          $('#nomeProdutoInativar').text(nomeProduto);
+          $('#confirmarInativar').data('id', produtoId);
+          var novaUrl = "produtos/inativar/" + produtoId;
+          $("#ConfirmarInativar").attr("href", novaUrl);
+      });
+ 
+        $('.filter-input').on('input change', function () {
+            let nome = $('#filterNome').val().toLowerCase();
+            let categoria = $('#filterCategoria').val().toLowerCase();
+            let status = $('#filterStatus').val();
+            let valorMin = parseFloat($('#filterValorMin').val());
+            let valorMax = parseFloat($('#filterValorMax').val());
+
+            $('#produtoTable tr').filter(function () {
+                let nomeMatch = $(this).find('td[data-label="nome"]').text().toLowerCase().indexOf(nome) > -1;
+                let categoriaMatch = $(this).find('td[data-label="categoria"]').text().toLowerCase().indexOf(categoria) > -1;
+                let statusMatch = !status || $(this).find('td[data-label="status"]').text() === status;
+                let valor = parseFloat($(this).find('td[data-valor]').data('valor'));
+                let valorMatch = (!valorMin || valor >= valorMin) && (!valorMax || valor <= valorMax);
+
+                $(this).toggle(nomeMatch && categoriaMatch && statusMatch && valorMatch);
+            });
+
+            verificarLinhasVisiveis();
+        });
+
+        $('#sortValorAsc').click(function () {
+            sortTable(2, true);
+        });
+
+        $('#sortValorDesc').click(function () {
+            sortTable(2, false);
+        });
+
+        function sortTable(columnIndex, ascending) {
+            let rows = $('#produtoTable tr').toArray();
+            rows.sort(function (a, b) {
+                let valA = parseFloat($(a).find(`td:nth-child(${columnIndex + 1})`).data('valor')) || 0;
+                let valB = parseFloat($(b).find(`td:nth-child(${columnIndex + 1})`).data('valor')) || 0;
+                return ascending ? valA - valB : valB - valA;
+            });
+            $('#produtoTable').append(rows);
+        }
+    });
+</script>
 {% endblock %}

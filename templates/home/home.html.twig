@@ -1,46 +1,45 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Pagina Inicial{% endblock %}
+{% block title %}Página Inicial{% endblock %}
 
 {% block body %}
-<div class="mt-5 main-container">
-    <h1>Bem-vindo à Página Inicial</h1>
-    <p>Explore as opções abaixo:</p>
+<div class="main-container d-flex justify-content-center">
+    <div class="mt-5">
+        <section class="welcome-section text-center">
+            <h1 class="welcome-heading">
+                <i class="fas fa-boxes"></i> Bem-vindo, {{ app.user.nome }}!
+            </h1>
+            <p class="system-description">
+                Este é o <strong>Sistema de Estoque</strong>, projetado para facilitar a gestão e organização dos seus produtos.
+            </p>
+        </section>
 
-    <div class="row justify-content-center">
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <i class="fas fa-shopping-cart fa-3x mb-3" style="color: #16c1aa;"></i>
-                    <h5 class="card-title">Vendas</h5>
-                    <p class="card-text">Acesse nossa área de <br> vendas para mais informações.</p>
-                    <a href="{{path('vendas')}}" class="btn btn-custom">Ir para Vendas</a>
-                </div>
-            </div>
-        </div>
+        <hr class="divider">
 
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <i class="fas fa-list-alt fa-3x mb-3" style="color: #16c1aa;"></i>
-                    <h5 class="card-title">Categorias</h5>
-                    <p class="card-text">Confira nossas categorias<br> de produtos.</p>
-                    <a href="{{path('categorias')}}" class="btn btn-custom">Ver Categorias</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <i class="fas fa-boxes fa-3x mb-3" style="color: #16c1aa;"></i>
-                    <h5 class="card-title">Produtos</h5>
-                    <p class="card-text">Veja nossos produtos <br>disponíveis no estoque.</p>
-                    <a href="{{path('produtos')}}" class="btn btn-custom">Ver Produtos</a>
-                </div>
-            </div>
-        </div>
+        <section class="features-section mt-4">
+            <h2 class="features-heading text-center mb-4">
+                <i class="fas fa-tools"></i> Recursos disponíveis
+            </h2>
+            <ul class="features-list d-flex flex-wrap justify-content-center">
+                <li class="feature-item">
+                    <i class="fas fa-box-open feature-icon"></i>
+                    <span class="feature-text">Gerencie Produtos</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-th-large feature-icon"></i>
+                    <span class="feature-text">Categorias Organizadas</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-chart-line feature-icon"></i>
+                    <span class="feature-text">Acompanhe Vendas</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-users feature-icon"></i>
+                    <span class="feature-text">Gerencie Usuários</span>
+                </li>
+            </ul>
+        </section>
     </div>
 </div>
- 
+
 {% endblock %}

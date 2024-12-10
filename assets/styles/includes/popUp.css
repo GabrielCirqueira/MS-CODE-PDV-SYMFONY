@@ -1,0 +1,134 @@
+:root {
+    --popup-bg: rgba(0, 0, 0, 0.6);
+    --popup-content-bg: #fff;
+    --popup-border-radius: 10px;
+}
+
+.modal-backdrop {
+    background-color: var(--popup-bg) !important;
+    opacity: 0;
+    animation: backdrop-fade-in 0.3s forwards ease-in-out;
+}
+
+.modal-dialog {
+    background: var(--popup-content-bg);
+    border-radius: var(--popup-border-radius);
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transform: translateY(-50px);
+    opacity: 0;
+    animation: popup-in 0.4s forwards ease-in-out;
+}
+
+.modal-dialog p{
+ margin: 0px;
+ padding: 0px;
+}
+
+.modal-header {
+    display: flex;
+    border: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.modal-title {
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.btn-close:hover {
+    color: var(--primary-color-hover);
+}
+
+.modal-content {
+    border: none;
+}
+
+.modal-body {
+    font-size: 1rem;
+    color: #333;
+}
+
+.modal-footer {
+    display: flex;
+    border: none;
+    justify-content: flex-end;
+    flex-direction: row;
+    gap: 10px;
+    padding: 15px 5px;
+}
+
+.modal-footer .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-footer .btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.modal-footer .btn-primary:hover {
+    background: var(--primary-color-hover);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.modal-footer .btn-secondary {
+    background: #ddd;
+    color: #333;
+}
+
+.modal-footer .btn-secondary:hover {
+    background: #bbb;
+}
+
+@keyframes popup-in {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes popup-out {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+}
+
+@keyframes backdrop-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
