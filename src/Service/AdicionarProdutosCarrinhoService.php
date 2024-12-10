@@ -57,7 +57,6 @@ class AdicionarProdutosCarrinhoService
 
                 $item = new Item($produto, $carrinho, $quantidade, $valorTotalItem);
                 $this->itemRepository->salvar($item);
-                echo $produtoData["id"] . PHP_EOL . $valorTotalItem . PHP_EOL;
                 $valorCarrinho += $valorTotalItem;
             }
         }

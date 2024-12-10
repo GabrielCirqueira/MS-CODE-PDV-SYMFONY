@@ -78,6 +78,7 @@ class UsuarioController extends AbstractController
         $user = new User();
         $user->setNome($nome);
         $user->setEmail($email);
+        $user->setAtivo(True);
         $user->setPassword(password_hash($senha, PASSWORD_BCRYPT));
 
         foreach ($permissoesIds as $id) {
