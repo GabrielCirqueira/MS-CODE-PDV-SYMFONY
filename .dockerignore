@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+var/log/
+var/cache/
+
+# Composer
+/vendor/
+
+# Tests
+/tests/
+phpunit.xml.dist
+.phpunit.result.cache
+
+# Docker
+docker-compose.override.yaml
+compose.override.yaml
+
+# Environment
+.env.local
+.env.local.php
+.env.*.local
+
+# Others
+/node_modules/
+npm-debug.log
+yarn-error.log
+.DS_Store
+Thumbs.db
