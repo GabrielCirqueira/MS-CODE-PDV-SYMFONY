@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: symfony-pdv-app
     ports:
-      - "8080:80"
+      - "8087:80"
     volumes:
       - .:/var/www/html
       - ./var:/var/www/html/var

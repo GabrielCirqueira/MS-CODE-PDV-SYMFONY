@@ -78,22 +78,53 @@ class PopularBancoCommand extends Command
     private function criarPermissoes(SymfonyStyle $io): array
     {
         $permissoesData = [
+            // Permissões de ROLE
             ['nome' => 'ROLE_ADMIN', 'grupo' => 'Administração', 'descricao' => 'Administrador do Sistema'],
             ['nome' => 'ROLE_GERENTE', 'grupo' => 'Gestão', 'descricao' => 'Gerente da Loja'],
             ['nome' => 'ROLE_VENDEDOR', 'grupo' => 'Vendas', 'descricao' => 'Vendedor'],
             ['nome' => 'ROLE_ESTOQUE', 'grupo' => 'Operacional', 'descricao' => 'Controle de Estoque'],
             ['nome' => 'ROLE_FINANCEIRO', 'grupo' => 'Financeiro', 'descricao' => 'Setor Financeiro'],
+            
+            // Permissões Granulares - Produtos
+            ['nome' => 'Adicionar-Produtos', 'grupo' => 'Produtos', 'descricao' => 'Permite adicionar novos produtos'],
+            ['nome' => 'Ver-Produtos', 'grupo' => 'Produtos', 'descricao' => 'Permite visualizar produtos'],
+            
+            // Permissões Granulares - Categorias
+            ['nome' => 'Adicionar-Categoria', 'grupo' => 'Categorias', 'descricao' => 'Permite adicionar categorias'],
+            ['nome' => 'Ver-Categorias', 'grupo' => 'Categorias', 'descricao' => 'Permite visualizar categorias'],
+            
+            // Permissões Granulares - Clientes
+            ['nome' => 'adicionar-cliente', 'grupo' => 'Clientes', 'descricao' => 'Permite adicionar clientes'],
+            ['nome' => 'ver-clientes', 'grupo' => 'Clientes', 'descricao' => 'Permite visualizar clientes'],
+            
+            // Permissões Granulares - Vendas
+            ['nome' => 'nova-venda', 'grupo' => 'Vendas', 'descricao' => 'Permite criar nova venda'],
+            ['nome' => 'listar-vendas', 'grupo' => 'Vendas', 'descricao' => 'Permite listar vendas'],
+            
+            // Permissões Granulares - Usuários
+            ['nome' => 'criar-usuario', 'grupo' => 'Usuários', 'descricao' => 'Permite criar usuários'],
+            ['nome' => 'ver-usuarios', 'grupo' => 'Usuários', 'descricao' => 'Permite visualizar usuários'],
         ];
 
         $permissoes = [];
+        $permissaoRepository = $this->entityManager->getRepository(Permissao::class);
+        
         foreach ($permissoesData as $data) {
-            $permissao = new Permissao();
-            $permissao->setNome($data['nome']);
-            $permissao->setGrupo($data['grupo']);
-            $permissao->setDescricao($data['descricao']);
-            $this->entityManager->persist($permissao);
-            $permissoes[$data['nome']] = $permissao;
-            $io->writeln("  ✓ {$data['nome']} ({$data['grupo']}) - {$data['descricao']}");
+            // Verificar se a permissão já existe
+            $permissaoExistente = $permissaoRepository->findOneBy(['nome' => $data['nome']]);
+            
+            if ($permissaoExistente) {
+                $permissoes[$data['nome']] = $permissaoExistente;
+                $io->writeln("  ⊙ {$data['nome']} (já existe)");
+            } else {
+                $permissao = new Permissao();
+                $permissao->setNome($data['nome']);
+                $permissao->setGrupo($data['grupo']);
+                $permissao->setDescricao($data['descricao']);
+                $this->entityManager->persist($permissao);
+                $permissoes[$data['nome']] = $permissao;
+                $io->writeln("  ✓ {$data['nome']} ({$data['grupo']}) - {$data['descricao']}");
+            }
         }
 
         $this->entityManager->flush();
@@ -107,39 +138,86 @@ class PopularBancoCommand extends Command
                 'nome' => 'Administrador',
                 'email' => 'admin@admin.com',
                 'senha' => 'admin123',
-                'permissao' => 'ROLE_ADMIN',
+                'permissoes' => 'all', // Todas as permissões
             ],
             [
                 'nome' => 'João Gerente',
                 'email' => 'gerente@pdv.com',
                 'senha' => 'gerente123',
-                'permissao' => 'ROLE_GERENTE',
+                'permissoes' => [
+                    'ROLE_GERENTE',
+                    'Ver-Produtos',
+                    'Adicionar-Produtos',
+                    'Ver-Categorias',
+                    'Adicionar-Categoria',
+                    'ver-clientes',
+                    'adicionar-cliente',
+                    'nova-venda',
+                    'listar-vendas',
+                    'ver-usuarios',
+                ],
             ],
             [
                 'nome' => 'Maria Vendedora',
                 'email' => 'vendedor@pdv.com',
                 'senha' => 'vendedor123',
-                'permissao' => 'ROLE_VENDEDOR',
+                'permissoes' => [
+                    'ROLE_VENDEDOR',
+                    'Ver-Produtos',
+                    'ver-clientes',
+                    'adicionar-cliente',
+                    'nova-venda',
+                ],
             ],
             [
                 'nome' => 'Carlos Estoquista',
                 'email' => 'estoque@pdv.com',
                 'senha' => 'estoque123',
-                'permissao' => 'ROLE_ESTOQUE',
+                'permissoes' => [
+                    'ROLE_ESTOQUE',
+                    'Ver-Produtos',
+                    'Adicionar-Produtos',
+                    'Ver-Categorias',
+                    'Adicionar-Categoria',
+                ],
             ],
         ];
 
+        $userRepository = $this->entityManager->getRepository(User::class);
+        
         foreach ($usuariosData as $data) {
-            $user = new User();
-            $user->setNome($data['nome']);
-            $user->setEmail($data['email']);
-            $hashedPassword = $this->passwordHasher->hashPassword($user, $data['senha']);
-            $user->setPassword($hashedPassword);
-            $user->addPermissao($permissoes[$data['permissao']]);
-            $user->setAtivo(true);
+            // Verificar se o usuário já existe
+            $userExistente = $userRepository->findOneBy(['email' => $data['email']]);
             
-            $this->entityManager->persist($user);
-            $io->writeln("  ✓ {$data['nome']} ({$data['email']})");
+            if ($userExistente) {
+                $io->writeln("  ⊙ {$data['nome']} (já existe)");
+            } else {
+                $user = new User();
+                $user->setNome($data['nome']);
+                $user->setEmail($data['email']);
+                $hashedPassword = $this->passwordHasher->hashPassword($user, $data['senha']);
+                $user->setPassword($hashedPassword);
+                
+                // Adicionar permissões
+                if ($data['permissoes'] === 'all') {
+                    // Admin recebe TODAS as permissões
+                    foreach ($permissoes as $permissao) {
+                        $user->addPermissao($permissao);
+                    }
+                } else {
+                    // Outros usuários recebem suas permissões específicas
+                    foreach ($data['permissoes'] as $nomePermissao) {
+                        if (isset($permissoes[$nomePermissao])) {
+                            $user->addPermissao($permissoes[$nomePermissao]);
+                        }
+                    }
+                }
+                
+                $user->setAtivo(true);
+                
+                $this->entityManager->persist($user);
+                $io->writeln("  ✓ {$data['nome']} ({$data['email']})");
+            }
         }
 
         $this->entityManager->flush();
@@ -159,12 +237,22 @@ class PopularBancoCommand extends Command
         ];
 
         $categorias = [];
+        $categoriaRepository = $this->entityManager->getRepository(Categoria::class);
+        
         foreach ($categoriasData as $data) {
-            $categoria = new Categoria();
-            $categoria->setNome($data['nome']);
-            $this->entityManager->persist($categoria);
-            $categorias[] = $categoria;
-            $io->writeln("  ✓ {$data['nome']}");
+            // Verificar se a categoria já existe
+            $categoriaExistente = $categoriaRepository->findOneBy(['nome' => $data['nome']]);
+            
+            if ($categoriaExistente) {
+                $categorias[] = $categoriaExistente;
+                $io->writeln("  ⊙ {$data['nome']} (já existe)");
+            } else {
+                $categoria = new Categoria();
+                $categoria->setNome($data['nome']);
+                $this->entityManager->persist($categoria);
+                $categorias[] = $categoria;
+                $io->writeln("  ✓ {$data['nome']}");
+            }
         }
 
         $this->entityManager->flush();
@@ -173,6 +261,15 @@ class PopularBancoCommand extends Command
 
     private function criarProdutos(SymfonyStyle $io, array $categorias): void
     {
+        $produtoRepository = $this->entityManager->getRepository(Produto::class);
+        
+        // Verificar se já existem produtos
+        $produtosExistentes = $produtoRepository->findAll();
+        if (count($produtosExistentes) > 0) {
+            $io->writeln("  ⊙ Já existem " . count($produtosExistentes) . " produtos no banco. Pulando criação...");
+            return;
+        }
+        
         $produtosData = [
             // Eletrônicos
             ['nome' => 'Notebook Dell', 'descricao' => 'Notebook Core i5 8GB', 'valor' => 350000, 'quantidade' => 15, 'categoria' => 0, 'ativo' => true],
@@ -231,6 +328,15 @@ class PopularBancoCommand extends Command
 
     private function criarClientes(SymfonyStyle $io): void
     {
+        $clienteRepository = $this->entityManager->getRepository(Cliente::class);
+        
+        // Verificar se já existem clientes
+        $clientesExistentes = $clienteRepository->findAll();
+        if (count($clientesExistentes) > 0) {
+            $io->writeln("  ⊙ Já existem " . count($clientesExistentes) . " clientes no banco. Pulando criação...");
+            return;
+        }
+        
         $clientesData = [
             ['nome' => 'José Silva', 'cpf' => '12345678901', 'ativo' => true],
             ['nome' => 'Ana Santos', 'cpf' => '98765432109', 'ativo' => true],
